@@ -5,7 +5,7 @@ test_that("dsviz", {
   viz <- hgchmagic::hgch_bar_Cat(tibble(a = c("a","b")))
 
   dv <- dsviz(viz, name = title)
-  #dsviz_write(dv, "tmp")
+  #dsviz_write(dv, "tmp/viz")
   pin_url <- pin(dv, user_id = "test-user")
 
   dv <- dsviz(viz, name = "Another Viz")

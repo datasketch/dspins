@@ -1,11 +1,9 @@
-
-
 #' @export
 dsviz <- function(viz, name = NULL, description = NULL, ...){
   args <- list(...)
   dv <- list(
     name = name,
-    description = NULL,
+    description = description,
     slug = create_slug(name),
     type = dsviz_type(viz),
     viz_type = NULL,

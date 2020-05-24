@@ -41,7 +41,7 @@ file_ext <- function (x){
 
 #' @export
 unix_timestamp <- function(){
-  as.numeric(as.POSIXct(Sys.time()))
+  as.integer(as.POSIXct(Sys.time()))
 }
 
 #' @export
