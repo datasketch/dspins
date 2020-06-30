@@ -17,7 +17,7 @@ test_that("dspins, list, get ", {
 
   pin_url <- pin(f, user_id = "test-user") # local board by default
 
-  pinned <- pin_list(board = board_name(user_id))
+  pinned <- pin_list(user_id)
   pin_remove("mtcars", board = board_name(user_id))
 
 

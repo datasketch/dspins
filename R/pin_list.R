@@ -5,7 +5,7 @@ pin_list <- function(user_id){
   # if(length(pin_list_from_bucket) > length(in_data_txt$name )){
   #   message()
   # }
-  pin_find(board = board_name(user_id))
+  pin_find(board = board_name(user_id), extended = TRUE)
 
 }
 

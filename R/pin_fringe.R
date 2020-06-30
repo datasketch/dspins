@@ -16,7 +16,7 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   }
 
 
-  upload_url <- paste0("https://s3.amazonaws.com/",board_name(user_id),"/some-file")
+  #upload_url <- paste0("https://s3.amazonaws.com/",board_name(user_id),"/some-file")
   upload_url <- tryCatch(board_pin_store(board, path, f$slug, f$description, "fringe",
                            extract = FALSE,
                            metadata,...),

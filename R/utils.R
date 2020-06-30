@@ -72,3 +72,7 @@ is.url <- function(x){
   grepl("^http", x)
 }
 
+
+
+#' @import pins
+NULL

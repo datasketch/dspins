@@ -1,9 +1,9 @@
 
 
-
+#' @export
 user_board_create <- function(user_id, env_file = ".env"){
 
-  load_env()
+  # load_env()
 
   if(!user_bucket_exists(user_id)){
     message("No bucket exists for this user. Creating bucket.")
@@ -19,13 +19,13 @@ user_board_create <- function(user_id, env_file = ".env"){
 }
 
 user_bucket_exists <- function(username){
-  load_env()
+  # load_env()
   aws.s3::bucket_exists(paste0("dskt.ch.", username))
 }
 
 
 user_bucket_create <- function(username){
-  load_env()
+  # load_env()
   aws.s3::put_bucket(paste0("dskt.ch.", username),
                      region = "us-east-1"
                      #headers = list(`x-amz-acl` = "public-read")

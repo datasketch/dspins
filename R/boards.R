@@ -1,5 +1,6 @@
 
 
+#' @export
 board_name <- function(user_id){
   if(missing(user_id)) stop("Need user_id")
   if(grepl("[^A-Za-z0-9-]",user_id))
@@ -7,11 +8,13 @@ board_name <- function(user_id){
   paste0("dskt-ch-", user_id)
 }
 
+#' @export
 dspins_user_board_exists <- function(user_id){
   suppressMessages(x <- aws.s3::bucket_exists(board_name(user_id)))
   as.logical(x)
 }
 
+#' @export
 dspins_is_board_connected <- function(user_id){
   board_name(user_id) %in% user_board_list_local()
 }
@@ -19,12 +22,17 @@ dspins_is_board_connected <- function(user_id){
 
 
 
-
+#' @export
 dspins_user_board_connect <- function(user_id){
+  load_env()
   if(!dspins_user_board_exists(user_id)){
-    new_bucket <- user_bucket_create(user_id)
-    if(!new_bucket)
-      stop("Something happened while trying to create new user bucket")
+    message("User board does not exist")
+    # new_bucket <- tryCatch(user_bucket_create(user_id), error=function(e) e, warning=function(w) w)
+    new_bucket <- tryCatch(aws.s3::put_bucket(board_name(user_id), region = "us-east-1"),
+                           error=function(e) e, warning=function(w) w)
+    if(inherits(new_bucket,"error")){
+      stop(new_bucket)
+    }
   }
   nm <- board_name(user_id)
   if(!nm %in% user_board_list_local()){
@@ -33,25 +41,30 @@ dspins_user_board_connect <- function(user_id){
   nm %in% user_board_list_local()
 }
 
+
 user_bucket_create <- function(user_id){
-  aws.s3::put_bucket(board_name(user_id), region = "us-east-1")
+  # load_env()
+  message("creating bucket: ", board_name(user_id))
+  cat("hello")
+  # aws.s3::put_bucket(board_name(user_id), region = "us-east-1")
                      # headers = list(`x-amz-acl` = "public-read"))
 }
 
 user_board_list_local <- function(){
   x <- pins::board_list()
-  x[grepl("^dskt\\.ch\\.",x)]
+  x[grepl("^dskt-ch-",x)]
 }
 
 user_board_list_remote <- function(){
-  load_env()
+  # load_env()
   x <- aws.s3::bucket_list_df()
   x <- x[[1]]
   x[grepl("^dskt\\.ch\\.",x)]
 }
 
+#' @export
 load_env <- function(file = ".env"){
-  if(length(Sys.getenv("AWS_ACCESS_KEY_ID")) == 0){
+  if(nchar(Sys.getenv("AWS_ACCESS_KEY_ID")) == 0){
     dotenv::load_dot_env()
   }
 }

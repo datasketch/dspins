@@ -7,6 +7,3 @@
 ## usethis namespace: end
 NULL
 
-
-#' @import pins
-NULL

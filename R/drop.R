@@ -35,6 +35,7 @@ drop <- function(path, name = NULL, description = NULL, ...){
 }
 
 
+#' @export
 drop_write <- function(drop, path = NULL, ...){
   if(!"drop" %in% class(drop)){
     stop("drop must be of class drop")

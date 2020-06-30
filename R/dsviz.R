@@ -22,7 +22,7 @@ dsviz <- function(viz, name = NULL, description = NULL, ...){
   dv
 }
 
-
+#' @export
 dsviz_write <- function(dv, path, ...){
   if(!"dsviz" %in% class(dv)){
     stop("dv must be of class dsviz")
@@ -48,6 +48,7 @@ dsviz_write <- function(dv, path, ...){
   yaml::write_yaml(y, file.path(path, paste0(basename(dv$slug),".yaml")))
 }
 
+#' @export
 dsviz_type <- function(viz){
   if(all(c("gg", "dsviz") %in% class(viz))){
     return("gg")
