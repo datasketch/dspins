@@ -5,8 +5,14 @@ pin_list <- function(user_id){
   # if(length(pin_list_from_bucket) > length(in_data_txt$name )){
   #   message()
   # }
-  pin_find(board = board_name(user_id), extended = TRUE)
-
+  l <-tryCatch(pin_find(board = board_name(user_id), extended = TRUE),
+           error=function(e) e, warning=function(w) w)
+  if(inherits(l,"error")){
+    message("No pins in board\n Error: ",
+            paste0(l$call[1], l$message[1], sep = "\n"))
+    return()
+  }
+  l
 }
 
 

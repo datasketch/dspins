@@ -73,6 +73,3 @@ is.url <- function(x){
 }
 
 
-
-#' @import pins
-NULL

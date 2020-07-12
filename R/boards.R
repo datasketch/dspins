@@ -30,6 +30,7 @@ dspins_user_board_connect <- function(user_id){
     # new_bucket <- tryCatch(user_bucket_create(user_id), error=function(e) e, warning=function(w) w)
     new_bucket <- tryCatch(aws.s3::put_bucket(board_name(user_id), region = "us-east-1"),
                            error=function(e) e, warning=function(w) w)
+    message("User board created: ", board_name(user_id))
     if(inherits(new_bucket,"error")){
       stop(new_bucket)
     }
