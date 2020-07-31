@@ -1,7 +1,7 @@
 #' @export
 pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   path <- tempfile()
-  path <- "tmp"
+  #path <- "tmp"
   dir.create(path)
   on.exit(unlink(path, recursive = TRUE))
 
