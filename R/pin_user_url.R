@@ -1,5 +1,5 @@
 #' @export
-pin_user_url <- function(title, element, user_id, user_name) {
+pin_user_url <- function(title, element, user_id, user_name, ...) {
   if (is.reactive(title)) title <- title()
   if (is.reactive(element)) element <- element()
 
