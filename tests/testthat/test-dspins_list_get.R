@@ -2,10 +2,11 @@ test_that("dspins, list, get ", {
 
   #options(pins.verbose = FALSE)
 
-  user_id <- "test-user"
-  dspins_user_board_connect(user_id)
+  user_id <- paste0(rep("0",24),collapse = "")
 
-  pin(mtcars, board = board_name("test-user"))
+  expect_true(dspins_user_board_connect(user_id))
+
+  pinned_mtcars <- pin(mtcars, board = board_name(user_id))
 
   library(homodatum)
   data <- data.frame(book = c("Black", "Red"), value = 1:2)
@@ -15,9 +16,9 @@ test_that("dspins, list, get ", {
 
   #pin(f) # local board by default
 
-  pin_url <- pin(f, user_id = "test-user") # local board by default
+  pinned_fringe <- pin(f, user_id = user_id) # local board by default
 
-  pinned <- pin_list(user_id)
+  all_pins <- pin_list(user_id)
   pin_remove("mtcars", board = board_name(user_id))
 
 

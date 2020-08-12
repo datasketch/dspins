@@ -1,7 +1,7 @@
 #' @export
 pin_user_url <- function(title, element, user_id, user_name, ...) {
-  if (is.reactive(title)) title <- title()
-  if (is.reactive(element)) element <- element()
+  if (shiny::is.reactive(title)) title <- title()
+  if (shiny::is.reactive(element)) element <- element()
 
   Sys.setlocale(locale = "en_US.UTF-8")
   dv <- dsviz(element, name = title)
@@ -17,7 +17,7 @@ pin_user_url <- function(title, element, user_id, user_name, ...) {
 pin_fringe_url <- function(element = NULL, element_name = NULL, org_id = NULL, org_name = NULL, user_id = NULL, user_name = NULL, ...) {
   args <- as.list(match.call())[-1]
   lapply(names(args), function(s) {
-    if (is.reactive(args[[s]])) {
+    if (shiny::is.reactive(args[[s]])) {
       args[[s]] <<- do.call(args[[s]], list())
     } else {
       args[[s]] <<- args[[s]]
