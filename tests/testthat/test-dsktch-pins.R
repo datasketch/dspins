@@ -4,32 +4,32 @@ test_that("ds boards", {
 
   # use dotenv::load_dot_env() #when running interactively
   dotenv::load_dot_env("../../.env")
-  user_id <- paste0(rep("0",24),collapse = "")
-  expect_true(dspins_user_board_connect(user_id))
-  pins <- dspins::pin_list(user_id)
+  bucket_id <- paste0(rep("0",24),collapse = "")
+  expect_true(dspins_user_board_connect(bucket_id))
+  pins <- dspins::pin_list(bucket_id)
 
 
   # Fringes work
 
-  user_id <- paste0(rep("0",24),collapse = "")
+  bucket_id <- paste0(rep("0",24),collapse = "")
 
   library(homodatum)
   current_title <- paste0("Mtcars - ", as.character(Sys.time()))
   f <- fringe(mtcars, name = current_title)
   #drop_write(dp, path = "tmp/sample_path")
 
-  # Test user_id has 24 chars in board_name
-  expect_error(pin(f, user_id = "", acl = "public"), "Need a correct user_id")
+  # Test bucket_id has 24 chars in board_name
+  expect_error(pin(f, bucket_id = "", acl = "public"), "Need a correct bucket_id")
 
   # Save pin
-  this_pin <- pin(f, user_id = user_id, acl = "public")
-  pins <- dspins::pin_list(user_id)
+  this_pin <- pin(f, bucket_id = bucket_id, acl = "public")
+  pins <- dspins::pin_list(bucket_id)
   expect_true(any(pins$title == current_title))
 
 
   # dsviz
 
-  user_id <- paste0(rep("0",24),collapse = "")
+  bucket_id <- paste0(rep("0",24),collapse = "")
 
   # htmlwidgets
   library(hgchmagic)
@@ -38,7 +38,7 @@ test_that("ds boards", {
   h
   dv <- dsviz(h, name = current_title, description = "This is an htmlwidget")
   #dsviz_write(dv, "tmp/viz")
-  pin_url <- pin(dv, user_id = user_id)
+  pin_url <- pin(dv, bucket_id = bucket_id)
 
 
   # ggvis
@@ -48,7 +48,7 @@ test_that("ds boards", {
   g
   dv <- dsviz(g, name = current_title, description = "This is an htmlwidget")
   #dsviz_write(dv, "tmp/viz")
-  pin_url <- pin(dv, user_id = user_id)
+  pin_url <- pin(dv, bucket_id = bucket_id)
 
 })
 

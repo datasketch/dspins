@@ -1,8 +1,8 @@
 library(homodatum)
 # library(dspins)
 
-# user_id <- "wikitables3"
-# user_board_create(user_id)
+# bucket_id <- "wikitables3"
+# user_board_create(bucket_id)
 
 
 data <- data.frame(book = c("Black", "Red"), value = 1:2)

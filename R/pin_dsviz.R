@@ -15,16 +15,16 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   metadata$description <- NULL
 
   args <- list(...)
-  user_id <- args$user_id
-  if(!is.null(user_id)){
-    board <- board_name(user_id)
+  bucket_id <- args$bucket_id
+  if(!is.null(bucket_id)){
+    board <- board_name(bucket_id)
   } else {
-    stop("Need a user_id to save dsviz")
+    stop("Need a bucket_id to save dsviz")
   }
 
-  upload_url <- paste0("https://s3.amazonaws.com/",board_name(user_id), dv$name)
+  upload_url <- paste0("https://s3.amazonaws.com/",board_name(bucket_id), dv$name)
 
-  dspins_user_board_connect(args$user_id)
+  dspins_user_board_connect(args$bucket_id)
 
   board_pin_store(board, path, dv$slug, dv$description, "dsviz",
                   extract = FALSE,

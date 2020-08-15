@@ -12,16 +12,16 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   metadata$stats <- f$stats
 
   args <- list(...)
-  if(!is.null(args$user_id)){
-    board <- board_name(args$user_id)
+  if(!is.null(args$bucket_id)){
+    board <- board_name(args$bucket_id)
   }else{
-    stop("Need user_id")
+    stop("Need bucket_id")
   }
 
-  if(!dspins_is_board_connected(args$user_id))
-    stop("Board not connected. Run: dspins_user_board_connect(user_id)")
+  if(!dspins_is_board_connected(args$bucket_id))
+    stop("Board not connected. Run: dspins_user_board_connect(bucket_id)")
 
-  #upload_url <- paste0("https://s3.amazonaws.com/",board_name(user_id),"/some-file")
+  #upload_url <- paste0("https://s3.amazonaws.com/",board_name(bucket_id),"/some-file")
   upload_url <- tryCatch(board_pin_store(board, path, f$slug, f$description, "fringe",
                                          extract = FALSE,
                                          metadata,...),

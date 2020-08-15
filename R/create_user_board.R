@@ -1,19 +1,19 @@
 
 
 #' @export
-user_board_create <- function(user_id, env_file = ".env"){
+user_board_create <- function(bucket_id, env_file = ".env"){
 
   # load_env()
 
-  if(!user_bucket_exists(user_id)){
+  if(!user_bucket_exists(bucket_id)){
     message("No bucket exists for this user. Creating bucket.")
-    created <- user_bucket_create(user_id)
-    message("Bucket created: ",paste0("dskt.ch.",user_id), created)
+    created <- user_bucket_create(bucket_id)
+    message("Bucket created: ",paste0("dskt.ch.",bucket_id), created)
     if(!created)
       stop("Something wrong creating the bucket")
   }
   message("Registering board")
-  x <- board_register_s3(name = paste0("dskt.ch.", user_id), bucket = paste0("dskt.ch.", user_id))
+  x <- board_register_s3(name = paste0("dskt.ch.", bucket_id), bucket = paste0("dskt.ch.", bucket_id))
   message("Registered board: ", x)
   TRUE
 }

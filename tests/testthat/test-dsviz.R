@@ -4,15 +4,15 @@ test_that("dsviz", {
   title <- "Sample chart"
   viz <- hgchmagic::hgch_bar_Cat(tibble(a = c("a","b")))
 
-  user_id <- "000000000000000000000000"
+  bucket_id <- "000000000000000000000000"
 
   dv <- dsviz(viz, name = title)
   #dsviz_write(dv, "tmp/viz")
-  pin_url <- pin(dv, user_id = user_id)
+  pin_url <- pin(dv, bucket_id = bucket_id)
 
   dv <- dsviz(viz, name = "Another Viz")
   #dsviz_write(dv, "tmp")
-  pin_url <- pin(dv, user_id = user_id)
+  pin_url <- pin(dv, bucket_id = bucket_id)
 
   myviz <- pin_get("another-viz")
   myviz$viz

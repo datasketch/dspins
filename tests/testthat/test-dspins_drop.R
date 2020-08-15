@@ -6,8 +6,8 @@ test_that("dspins drop", {
   dp <- drop(sample_path)
   #drop_write(dp, path = "tmp/sample_path")
 
-  user_id <- "000000000000000000000000"
-  pin(dp, user_id = user_id, acl = "public")
+  bucket_id <- "000000000000000000000000"
+  pin(dp, bucket_id = bucket_id, acl = "public")
 
 
   dp <- drop(path)

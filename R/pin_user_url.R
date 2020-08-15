@@ -1,12 +1,12 @@
 #' @export
-pin_user_url <- function(title, element, user_id, user_name, ...) {
+pin_user_url <- function(title, element, bucket_id, user_name, ...) {
   if (shiny::is.reactive(title)) title <- title()
   if (shiny::is.reactive(element)) element <- element()
 
   Sys.setlocale(locale = "en_US.UTF-8")
   dv <- dsviz(element, name = title)
-  dspins_user_board_connect(user_id)
-  pin_url <- pin(dv, user_id = user_id)
+  dspins_user_board_connect(bucket_id)
+  pin_url <- pin(dv, bucket_id = bucket_id)
   url <- paste0(user_name, ".datasketch.co/", title)
   if (is.null(pin_url))
     url <- "pinnotfound"
@@ -14,7 +14,7 @@ pin_user_url <- function(title, element, user_id, user_name, ...) {
 }
 
 #' @export
-pin_fringe_url <- function(element = NULL, element_name = NULL, org_id = NULL, org_name = NULL, user_id = NULL, user_name = NULL, ...) {
+pin_fringe_url <- function(element = NULL, element_name = NULL, org_id = NULL, org_name = NULL, bucket_id = NULL, user_name = NULL, ...) {
   args <- as.list(match.call())[-1]
   lapply(names(args), function(s) {
     if (shiny::is.reactive(args[[s]])) {
@@ -26,10 +26,10 @@ pin_fringe_url <- function(element = NULL, element_name = NULL, org_id = NULL, o
   if (is.null(args$element)) {
     stop("Element cannot be null")
   }
-  if (is.null(c(args$user_id, args$org_id)) | is.null(c(args$user_name, args$org_name))) {
+  if (is.null(c(args$bucket_id, args$org_id)) | is.null(c(args$user_name, args$org_name))) {
     stop("User, organization id or name cannot be null")
   }
-  id <- args$org_id %||% args$user_id
+  id <- args$org_id %||% args$bucket_id
   name <- args$org_name %||% args$user_name
   el_name <- args$element_name %||% paste0("saved_", gsub(" ", "_", substr(as.POSIXct(Sys.time()), 1, 19)))
   args$name <- el_name
@@ -39,9 +39,9 @@ pin_fringe_url <- function(element = NULL, element_name = NULL, org_id = NULL, o
   }
   f <- modifyList(element, args)
   Sys.setlocale(locale = "en_US.UTF-8")
-  dspins_user_board_connect(f$user_id)
+  dspins_user_board_connect(f$bucket_id)
   message("\n\nSAVING PIN\n\n")
-  pin_url <- pin(f, user_id = f$user_id)
+  pin_url <- pin(f, bucket_id = f$bucket_id)
   message("\n\nSAVED PIN\n\n", pin_url)
   url <-  paste0(f$user_name, ".datasketch.co/", f$name)
   if (is.null(pin_url)) url <- "pinnotfound"

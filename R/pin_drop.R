@@ -10,18 +10,18 @@ pin.drop <- function(drop, name = NULL, description = NULL, board = NULL, ...) {
   metadata$description <- NULL
 
   args <- list(...)
-  user_id <- args$user_id
-  if(!is.null(user_id)){
-    board <- board_name(user_id)
+  bucket_id <- args$bucket_id
+  if(!is.null(bucket_id)){
+    board <- board_name(bucket_id)
   } else{
-    stop("Need to provide a user_id")
+    stop("Need to provide a bucket_id")
   }
 
   drop_write(drop, path)
 
-  dspins_user_board_connect(user_id)
+  dspins_user_board_connect(bucket_id)
 
-  upload_url <- paste0("https://s3.amazonaws.com/",file.path(board_name(user_id), drop$slug))
+  upload_url <- paste0("https://s3.amazonaws.com/",file.path(board_name(bucket_id), drop$slug))
 
   board_pin_store(board, path, drop$slug, drop$description, "drop",
                   extract = FALSE,
