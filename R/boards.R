@@ -2,7 +2,9 @@
 
 #' @export
 board_name <- function(user_id){
-  if(missing(user_id)) stop("Need user_id")
+  if(missing(user_id)) stop("Need a user_id")
+  if(nchar(user_id) <= 23)
+    stop("Need a correct user_id")
   if(grepl("[^A-Za-z0-9-]",user_id))
     stop("user_id can only contain letters, numbers and dashes")
   paste0("dskt-ch-", user_id)
