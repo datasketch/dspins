@@ -1,6 +1,6 @@
 
 #' @export
-pin_list <- function(bucket_id){
+dspin_list <- function(bucket_id){
   # in_data_txt <- pin_find(board = board_name(bucket_id))
   # if(length(pin_list_from_bucket) > length(in_data_txt$name )){
   #   message()

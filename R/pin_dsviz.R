@@ -29,7 +29,7 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   board_pin_store(board, path, dv$slug, dv$description, "dsviz",
                   extract = FALSE,
                   metadata,...)
-  upload_url
+  dv
 }
 
 #' @export

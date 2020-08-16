@@ -6,7 +6,7 @@ test_that("ds boards", {
   dotenv::load_dot_env("../../.env")
   bucket_id <- paste0(rep("0",24),collapse = "")
   expect_true(dspins_user_board_connect(bucket_id))
-  pins <- dspins::pin_list(bucket_id)
+  pins <- dspins::dspin_list(bucket_id)
 
 
   # Fringes work
@@ -23,7 +23,7 @@ test_that("ds boards", {
 
   # Save pin
   this_pin <- pin(f, bucket_id = bucket_id, acl = "public")
-  pins <- dspins::pin_list(bucket_id)
+  pins <- dspins::dspin_list(bucket_id)
   expect_true(any(pins$title == current_title))
 
 

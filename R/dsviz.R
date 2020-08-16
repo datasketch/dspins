@@ -8,12 +8,15 @@ dsviz <- function(viz, name = NULL, description = NULL, ...){
   if(type == "gg")
     formats <- c("png", "svg")
 
+
+  name <- name %||% get_dsviz_title(viz)
+
   dv <- list(
     name = name,
     description = description,
     slug = create_slug(name),
     type = type,
-    viz_type = NULL,
+    viz_type = type,
     width = 600L,
     height = 400L,
     access = args$access %||% "private",
@@ -77,6 +80,12 @@ dsviz_write <- function(dv, path, ...){
 }
 
 #' @export
+is_dsviz <- function(viz){
+  "dsviz" %in% class(viz)
+}
+
+
+#' @export
 dsviz_type <- function(viz){
   if(all(c("gg") %in% class(viz))){
     return("gg")
@@ -87,7 +96,17 @@ dsviz_type <- function(viz){
 }
 
 
-
+get_dsviz_title <- function(viz){
+  type <- dsviz_type(viz)
+  if(type == "htmlwidget"){
+    if("highchart" %in% class(viz)){
+      return(viz$x$hc_opts$title$text)
+    }
+  }
+  if(type == "gg"){
+    return(viz$labels$title)
+  }
+}
 
 
 
