@@ -3,11 +3,14 @@
 #' @export
 board_name <- function(bucket_id){
   if(missing(bucket_id)) stop("Need a bucket_id")
-  if(nchar(bucket_id) <= 23)
+  if(nchar(bucket_id) == 0)
     stop("Need a correct bucket_id")
+  # if(nchar(bucket_id) <= 23)
+  #   stop("Need a correct bucket_id")
   if(grepl("[^A-Za-z0-9-]",bucket_id))
     stop("bucket_id can only contain letters, numbers and dashes")
-  paste0("dskt-ch-", bucket_id)
+  # paste0("dskt-ch-", bucket_id)
+  paste0(bucket_id,".dskt.ch")
 }
 
 #' @export
@@ -36,6 +39,7 @@ dspins_user_board_connect <- function(bucket_id){
     if(inherits(new_bucket,"error")){
       stop(new_bucket)
     }
+    aws.s3::put_website(board_name(bucket_id), request_body = s3_website_xml_body(bucket_id))
   }
   nm <- board_name(bucket_id)
   if(!nm %in% user_board_list_local()){
@@ -55,7 +59,7 @@ user_bucket_create <- function(bucket_id){
 
 user_board_list_local <- function(){
   x <- pins::board_list()
-  x[grepl("^dskt-ch-",x)]
+  x[grepl("*\\.dskt\\.ch$",x)]
 }
 
 user_board_list_remote <- function(){
@@ -73,4 +77,28 @@ load_env <- function(file = ".env"){
 }
 
 
+s3_website_xml_body <- function(user_name = ""){
+  paste0(
+  "
+  <WebsiteConfiguration xmlns='http://s3.amazonaws.com/doc/2006-03-01/'>
+  <IndexDocument>
+    <Suffix>index.html</Suffix>
+  </IndexDocument>
+  <ErrorDocument>
+    <Key>Error.html</Key>
+  </ErrorDocument>
 
+  <RoutingRules>
+    <RoutingRule>
+    <Condition>
+      <HttpErrorCodeReturnedEquals>404</HttpErrorCodeReturnedEquals >
+    </Condition>
+    <Redirect>
+      <HostName>datasektch.co</HostName>
+      <ReplaceKeyPrefixWith>",user_name,"</ReplaceKeyPrefixWith>
+    </Redirect>
+    </RoutingRule>
+  </RoutingRules>
+</WebsiteConfiguration>
+  ")
+}

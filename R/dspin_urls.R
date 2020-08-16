@@ -1,12 +1,11 @@
 #' @export
 dspin_urls <- function(element = NULL,
-                     user_id = NULL, user_name = NULL,
-                     org_id = NULL, org_name = NULL,
+                     user_name = NULL, org_name = NULL,
                      overwrite = FALSE, ...) {
   if (is.null(element)) {
     stop("Element cannot be null")
   }
-  if (is.null(c(user_id, org_id)) | is.null(c(user_name, org_name))) {
+  if (is.null(user_name) && is.null(org_name)) {
     stop("User, organization id or name cannot be null")
   }
 
@@ -20,8 +19,7 @@ dspin_urls <- function(element = NULL,
   #   }
   # })
 
-  bucket_id <- org_id %||% user_id
-  bucket_name <- org_name %||% user_name
+  bucket_id <- org_name %||% user_name
 
   Sys.setlocale(locale = "en_US.UTF-8")
 
@@ -33,7 +31,7 @@ dspin_urls <- function(element = NULL,
   element_type(element)
 
   el <- pin(element, bucket_id = bucket_id, ...)
-  get_element_urls(el, bucket_name = bucket_name)
+  get_element_urls(el, bucket_id)
 }
 
 
@@ -43,11 +41,11 @@ element_type <- function(x){
   stop("Element must be fringe or dsviz")
 }
 
-get_element_urls <- function(element, bucket_name){
+get_element_urls <- function(element, bucket_id){
 
   element_slug <- element$slug
-  baselink <-  file.path(paste0("https://", bucket_name, ".datasketch.co"), element_slug)
-  link <-  file.path("https://datasketch.co", bucket_name, element_slug)
+  baselink <-  file.path(paste0("https://", bucket_id, ".dskt.ch"), element_slug)
+  link <-  file.path("https://datasketch.co", bucket_id, element_slug)
   el_type <- element_type(element)
 
   if(el_type == "dsviz"){

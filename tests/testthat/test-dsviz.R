@@ -4,7 +4,7 @@ test_that("dsviz", {
   title <- "Sample chart"
   viz <- hgchmagic::hgch_bar_Cat(tibble(a = c("a","b")))
 
-  bucket_id <- "000000000000000000000000"
+  bucket_id <- "test"
 
   dv <- dsviz(viz, name = title)
   #dsviz_write(dv, "tmp/viz")

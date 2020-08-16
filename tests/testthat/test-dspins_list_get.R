@@ -2,7 +2,7 @@ test_that("dspins, list, get ", {
 
   #options(pins.verbose = FALSE)
 
-  bucket_id <- paste0(rep("0",24),collapse = "")
+  bucket_id <- "test"
 
   expect_true(dspins_user_board_connect(bucket_id))
 

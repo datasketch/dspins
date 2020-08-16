@@ -4,32 +4,33 @@ test_that("ds boards", {
 
   # use dotenv::load_dot_env() #when running interactively
   dotenv::load_dot_env("../../.env")
-  bucket_id <- paste0(rep("0",24),collapse = "")
+
+  bucket_id <- "test2"
+
   expect_true(dspins_user_board_connect(bucket_id))
+  expect_true(dspins_is_board_connected(bucket_id))
+
   pins <- dspins::dspin_list(bucket_id)
 
 
   # Fringes work
-
-  bucket_id <- paste0(rep("0",24),collapse = "")
 
   library(homodatum)
   current_title <- paste0("Mtcars - ", as.character(Sys.time()))
   f <- fringe(mtcars, name = current_title)
   #drop_write(dp, path = "tmp/sample_path")
 
-  # Test bucket_id has 24 chars in board_name
-  expect_error(pin(f, bucket_id = "", acl = "public"), "Need a correct bucket_id")
-
   # Save pin
+
+  #aws.s3::put_object("inst/drop_sample/sample.txt",
+  #                   bucket = board_name(bucket_id))
+
   this_pin <- pin(f, bucket_id = bucket_id, acl = "public")
   pins <- dspins::dspin_list(bucket_id)
   expect_true(any(pins$title == current_title))
 
 
   # dsviz
-
-  bucket_id <- paste0(rep("0",24),collapse = "")
 
   # htmlwidgets
   library(hgchmagic)
@@ -49,6 +50,7 @@ test_that("ds boards", {
   dv <- dsviz(g, name = current_title, description = "This is an htmlwidget")
   #dsviz_write(dv, "tmp/viz")
   pin_url <- pin(dv, bucket_id = bucket_id)
+
 
 })
 
