@@ -73,3 +73,13 @@ is.url <- function(x){
 }
 
 
+
+change_content_type <- function(slug, bucket_id, format){
+  aws.s3::copy_object(glue::glue("{slug}/{slug}.{format}"), glue::glue("{slug}/{slug}.{format}"),
+                      glue::glue("{bucket_id}.dskt.ch"), glue::glue("{bucket_id}.dskt.ch"),
+                      headers = list(`Content-Type` = "text/html",
+                                     `x-amz-metadata-directive` = "REPLACE"))
+}
+
+
+

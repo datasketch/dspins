@@ -39,7 +39,13 @@ dspins_user_board_connect <- function(bucket_id){
     if(inherits(new_bucket,"error")){
       stop(new_bucket)
     }
-    aws.s3::put_website(board_name(bucket_id), request_body = s3_website_xml_body(bucket_id))
+    bucket_name <- board_name(bucket_id)
+    aws.s3::put_website(bucket_name, request_body = s3_website_xml_body(bucket_id))
+    policy <- paste0(
+      read_lines(system.file("bucket_policy.json", package = "dspins")),
+      collapse = "")
+    policy <- glue::glue(policy, .open = "{{", .close = "}}")
+    aws.s3::put_bucket_policy(board_name(bucket_id), policy)
   }
   nm <- board_name(bucket_id)
   if(!nm %in% user_board_list_local()){
@@ -54,7 +60,7 @@ user_bucket_create <- function(bucket_id){
   message("creating bucket: ", board_name(bucket_id))
   cat("hello")
   # aws.s3::put_bucket(board_name(bucket_id), region = "us-east-1")
-                     # headers = list(`x-amz-acl` = "public-read"))
+  # headers = list(`x-amz-acl` = "public-read"))
 }
 
 user_board_list_local <- function(){
@@ -79,7 +85,7 @@ load_env <- function(file = ".env"){
 
 s3_website_xml_body <- function(user_name = ""){
   paste0(
-  "
+    "
   <WebsiteConfiguration xmlns='http://s3.amazonaws.com/doc/2006-03-01/'>
   <IndexDocument>
     <Suffix>index.html</Suffix>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="https://unpkg.com/tabulator-tables@4.7.2/dist/css/tabulator_simple.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+  <style>
+    *,
+    *:before,
+    *:after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      box-sizing: border-box;
+      font-family: 'IBM Plex Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #table-search {
+      border: none;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      display: block;
+      font-family: inherit;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      width: 100%;
+    }
+
+    #table-search:focus {
+      outline: none;
+    }
+
+    #error {
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <input type="text" id="table-search" value="" placeholder="Search">
+  <div id="preview"></div>
+  <div id="error">
+    <p>Sorry, we can't load the preview</p>
+  </div>
+  <script src="https://unpkg.com/tabulator-tables@4.7.2/dist/js/tabulator.min.js"></script>
+  <script>
+    var data, dic;
+    var error = document.getElementById('error')
+    function loadJSON() {
+      var slug = location.href.match(/.*\/(.+?)(?=\.html)/)
+      var file
+      if (slug) {
+        file = slug[1] + '.json'
+      } else {
+        error.style.display = 'block'
+        return
+      }
+      return fetch('./' + file)
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('Error loading preview')
+          }
+          return response.json()
+        })
+        .then(function (json) {
+          data = json.preview || json.data_preview
+          dic = json.dic
+          document.title = json.info ? json.info.name + ' | Datasketch' : 'Datasketch'
+        })
+        .catch(function () {
+          error.style.display = 'block'
+        })
+    }
+
+    function initTable() {
+      var preview = document.getElementById('preview');
+      var search = document.getElementById('table-search');
+      var columns = dic.map(record => ({
+        field: record.id,
+        title: record.label,
+      }));
+      var fields = dic.map(record => record.id);
+      var table = new Tabulator(preview, {
+        data,
+        columns,
+        layout: 'fitColumns',
+        maxHeight: '100%'
+      });
+      search.addEventListener('input', function (event) {
+        var filters = fields.map(function (field) {
+          return {
+            field: field,
+            type: 'like',
+            value: event.target.value,
+          };
+        });
+        setTimeout(function () {
+          table.setFilter([filters]);
+        }, 500);
+      });
+    }
+
+    loadJSON().then(initTable)
+  </script>
+</body>
+
+</html>
