@@ -75,8 +75,8 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   message("Saved pin")
   message("Changing content type")
   change_content_type(slug = slug, bucket_id = bucket_id, format = "html")
-
-
+  change_content_type(slug = slug, bucket_id = bucket_id, format = "csv")
+  change_content_type(slug = slug, bucket_id = bucket_id, format = "json")
 
   f$meta <- NULL
   f
