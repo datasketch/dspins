@@ -42,8 +42,14 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
       permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.html"),
       embed =  paste0('<iframe src="',
                       glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.html"),
-                      '" frameborder=0 width="100%" height="400px"></iframe>')
-    ))
+                      '" frameborder=0 width="100%" height="400px"></iframe>')),
+    csv = list(
+      link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
+      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.csv")),
+    json = list(
+      link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
+      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.json"))
+  )
 
   f$files <- metadata$files
   f$share <- metadata$share
@@ -69,8 +75,8 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   message("Saved pin")
   message("Changing content type")
   change_content_type(slug = slug, bucket_id = bucket_id, format = "html")
-
-
+  change_content_type(slug = slug, bucket_id = bucket_id, format = "csv")
+  change_content_type(slug = slug, bucket_id = bucket_id, format = "json")
 
   f$meta <- NULL
   f

@@ -44,7 +44,7 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
     png = list(
       link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
       permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.png"),
-      embed =  paste0('<iframe src="',
+      embed =  paste0('<img src="',
                       glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.png"),
                       '"></img>')
     ),
