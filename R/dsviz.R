@@ -87,14 +87,13 @@ is_dsviz <- function(viz){
 
 #' @export
 dsviz_type <- function(viz){
-  if(all(c("gg") %in% class(viz))){
+  if(any(c("gg", "ggmagic") %in% class(viz))){
     return("gg")
   }
   if(all(c("htmlwidget") %in% class(viz))){
     return("htmlwidget")
   }
 }
-
 
 get_dsviz_title <- function(viz){
   type <- dsviz_type(viz)
