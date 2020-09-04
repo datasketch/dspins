@@ -63,7 +63,8 @@ dsviz_write <- function(dv, path, ...){
                             selfcontained = TRUE)
     dir.create(path, recursive = TRUE)
     file.copy(filepath, paste0(viz_path,".html"))
-    webshot::install_phantomjs()
+    if (!webshot::is_phantomjs_installed())
+      webshot::install_phantomjs()
     webshot::webshot(paste0(viz_path,".html"), paste0(viz_path,".png"),
                      vwidth = viz_width, vheight = viz_height, delay = 0.2)
     file.remove(filepath)
