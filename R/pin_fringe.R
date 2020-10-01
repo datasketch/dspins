@@ -64,10 +64,7 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   download_formats <- c("csv", "json", args$download_formats)
   message(download_formats)
   if("xlsx" %in% download_formats){
-    message(path)
-    message(list.files(path))
     fringe_write_xlsx(f, path = path, credits = credits)
-    message(list.files(path))
   }
 
 
