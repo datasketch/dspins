@@ -27,7 +27,7 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   }
   bucket_id <- args$bucket_id
 
-  formats <- c("csv", "json")
+  formats <- c(c("csv", "json"), args$download_formats)
   metadata$files <- lapply(formats, function(x){
     list(
       path = glue::glue("{slug}.{x}"),
@@ -57,6 +57,18 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
 
   fringe_write(f, path = path, overwrite_dic = TRUE)
   fringe_write_json(f, path = path)
+
+  credits <- args$credits %||% list(label = "Downloaded from:",
+                               value = paste0("http://datasketch.co/",bucket_id,"/",slug))
+
+  download_formats <- c("csv", "json", args$download_formats)
+  message(download_formats)
+  if("xlsx" %in% download_formats){
+    message(path)
+    message(list.files(path))
+    fringe_write_xlsx(f, path = path, credits = credits)
+    message(list.files(path))
+  }
 
 
   if(!dspins_is_board_connected(args$bucket_id))

@@ -3,10 +3,14 @@ dsviz <- function(viz, name = NULL, description = NULL, ...){
   args <- list(...)
 
   type <- dsviz_type(viz)
-  if(type == "htmlwidget")
+  if(type == "htmlwidget"){
     formats <- c("html","png")
-  if(type == "gg")
+    width <- args$width %||% "100%"
+  }
+  if(type == "gg"){
     formats <- c("png", "svg")
+    width <- args$width %||% 600L
+  }
 
 
   name <- name %||% get_dsviz_title(viz)
@@ -17,8 +21,8 @@ dsviz <- function(viz, name = NULL, description = NULL, ...){
     slug = create_slug(name),
     type = type,
     viz_type = type,
-    width = 600L,
-    height = 400L,
+    width = width,
+    height = as.integer(args$height) %||% 400L,
     access = args$access %||% "private",
     license = NULL,
     #time_created = NULL,
