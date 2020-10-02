@@ -39,6 +39,35 @@ dsviz <- function(viz, name = NULL, description = NULL, ...){
 }
 
 #' @export
+dsviz_update_meta <- function(dv, ...){
+  if(class(dv) != "dsviz") stop("Input must be of class 'dsviz'.")
+  fixed <- c("viz", "type", "viz_type")
+  args <- list(...)
+  if(any(names(args) %in% fixed)){
+    warning("Cannot update ",
+            paste0(names(args)[names(args) %in% fixed], collapse = ", "),
+            ". Removing from meta.")
+    args <- args[!names(args) %in% fixed]
+  }
+  info <- list(name = args$name %||% dv$name,
+               description = args$description %||% dv$description,
+               slug = args$slug %||% create_slug(args$name),
+               width = as.integer(args$width) %||% dv$width,
+               height = as.integer(args$height) %||% dv$height,
+               access = args$access %||% dv$access,
+               license = NULL,
+               #time_created = NULL,
+               time_last_updated = args$time_last_updated %||% dv$time_last_updated,
+               formats = args$formats %||% dv$formats,
+               tags = args$tags %||% dv$tags,
+               sources = args$sources %||% dv$sources,
+               dsapp = args$dsapp %||% dv$dsapp,
+               fringe = args$fringe %||% dv$fringe)
+  dv <- modifyList(dv, info)
+  dv
+}
+
+#' @export
 dsviz_write <- function(dv, path, ...){
   if(!"dsviz" %in% class(dv)){
     stop("dv must be of class dsviz")

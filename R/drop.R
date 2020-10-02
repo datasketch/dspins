@@ -34,6 +34,30 @@ drop <- function(path, name = NULL, description = NULL, ...){
   drop
 }
 
+#' @export
+drop_update_meta <- function(drop, ...){
+  if(class(drop) != "drop") stop("Input must be of class 'drop'.")
+  fixed <- c("files", "filesize", "format")
+  args <- list(...)
+  if(any(names(args) %in% fixed)){
+    warning("Cannot update ",
+            paste0(names(args)[names(args) %in% fixed], collapse = ", "),
+            ". Removing from meta.")
+    args <- args[!names(args) %in% fixed]
+  }
+  info <- list(name = args$name %||% drop$name,
+               description = args$description %||% drop$description,
+               slug = args$slug %||% create_slug(args$name),
+               access = args$access %||% drop$access,
+               license = NULL,
+               #time_created = NULL,
+               time_last_updated = args$time_last_updated %||% drop$time_last_updated,
+               tags = args$tags %||% drop$tags,
+               sources = args$sources %||% drop$sources)
+  drop <- modifyList(drop, info)
+  drop
+}
+
 
 #' @export
 drop_write <- function(drop, path = NULL, ...){
