@@ -43,11 +43,16 @@ test_that("dsviz_update_meta", {
   dv3 <- dsviz_update_meta(dv0, slug = "new_chart")
   expect_equal(dv2, dv3)
 
-  dv4 <- dsviz(viz, sources = list(title = "source name", path = "url-of-source"))
-  expect_equal(dv4$sources, list(title = "source name", path = "url-of-source"))
+  sources <- list(title = "source name", path = "url-of-source")
 
-  dv5 <- dsviz_update_meta(dv4, name = "this chart", sources = list(title = "another source", path = "url-of-source"))
-  expect_equal(dv5$sources, list(title = "another source", path = "url-of-source"))
+  dv4 <- dsviz(viz, sources = sources)
+  expect_equal(dv4$sources, sources)
+
+  update_sources <- list(list(title = "another source", path = "url-of-source"),
+                         list(title = "add one more", path = "url-of-this-source"))
+
+  dv5 <- dsviz_update_meta(dv4, name = "this chart", sources = update_sources)
+  expect_equal(dv5$sources, update_sources)
   expect_equal(dv5$name, "this chart")
 
   expect_warning(dsviz_update_meta(dv0, viz_type = "ggplot"),

@@ -35,11 +35,16 @@ test_that("drop_update_meta", {
   dp3 <- drop_update_meta(dp0, slug = "new_file")
   expect_equal(dp2, dp3)
 
-  dp4 <- drop(sample_path, sources = list(title = "source name", path = "url-of-source"))
-  expect_equal(dp4$sources, list(title = "source name", path = "url-of-source"))
+  sources <- list(title = "source name", path = "url-of-source")
 
-  dp5 <- drop_update_meta(dp4, name = "this file", sources = list(title = "another source", path = "url-of-source"))
-  expect_equal(dp5$sources, list(title = "another source", path = "url-of-source"))
+  dp4 <- drop(sample_path, sources = sources)
+  expect_equal(dp4$sources, sources)
+
+  update_sources <- list(list(title = "another source", path = "url-of-source"),
+                         list(title = "add one more", path = "url-of-this-source"))
+
+  dp5 <- drop_update_meta(dp4, name = "this file", sources = update_sources)
+  expect_equal(dp5$sources, update_sources)
   expect_equal(dp5$name, "this file")
 
   expect_warning(drop_update_meta(dp0, filesize = 300),
