@@ -52,9 +52,9 @@ drop_update_meta <- function(drop, ...){
                license = NULL,
                #time_created = NULL,
                time_last_updated = args$time_last_updated %||% drop$time_last_updated,
-               tags = args$tags %||% drop$tags,
-               sources = args$sources %||% drop$sources)
+               tags = args$tags %||% drop$tags)
   drop <- modifyList(drop, info)
+  drop$sources <- args$sources %||% drop$sources
   drop
 }
 
