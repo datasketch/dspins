@@ -21,7 +21,11 @@ dspin_urls <- function(element = NULL,
 
   bucket_id <- org_name %||% user_name
 
-  Sys.setlocale(locale = "en_US.UTF-8")
+  locale <- "en_US.UTF-8"
+  if(Sys.info()[['sysname']] == "Windows") {
+    locale <- "English_United States"
+  }
+  Sys.setlocale(locale = locale)
 
   if(!dspins_is_board_connected(bucket_id)){
     dspins_user_board_connect(bucket_id)
@@ -82,7 +86,11 @@ pin_user_url <- function(title, element, bucket_id, user_name, ...) {
   if (shiny::is.reactive(title)) title <- title()
   if (shiny::is.reactive(element)) element <- element()
 
-  Sys.setlocale(locale = "en_US.UTF-8")
+  locale <- "en_US.UTF-8"
+  if(Sys.info()[['sysname']] == "Windows") {
+    locale <- "English_United States"
+  }
+  Sys.setlocale(locale = locale)
   dv <- dsviz(element, name = title)
   dspins_user_board_connect(bucket_id)
   pin_url <- pin(dv, bucket_id = bucket_id)
@@ -107,7 +115,11 @@ pin_fringe_url <- function(element = NULL, element_name = NULL, org_id = NULL, o
     element <- fringe(na.omit(args$element))
   }
   f <- modifyList(element, args)
-  Sys.setlocale(locale = "en_US.UTF-8")
+  locale <- "en_US.UTF-8"
+  if(Sys.info()[['sysname']] == "Windows") {
+    locale <- "English_United States"
+  }
+  Sys.setlocale(locale = locale)
   dspins_user_board_connect(f$bucket_id)
   message("\n\nSAVING PIN\n\n")
   pin_url <- pin(f, bucket_id = f$bucket_id)
