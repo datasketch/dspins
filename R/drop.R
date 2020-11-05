@@ -4,15 +4,15 @@ drop <- function(path, name = NULL, description = NULL, ...){
 
   location <- local_or_remote(path)
   if(location == "remote"){
-    files <- path
+    files_paths <- path
   }
   if(location == "local"){
     file_dir <- file_or_dir(path)
     if(file_dir == "dir"){
-      files <- list.files(path, full.names = TRUE)
+      files_paths <- list.files(path, full.names = TRUE)
     }
     if(file_dir == "file"){
-      files <- path
+      files_paths <- path
     }
   }
   name <- name %||% create_slug(basename(path))
@@ -28,7 +28,7 @@ drop <- function(path, name = NULL, description = NULL, ...){
     format = file_ext(path),
     tags = args$tags,
     sources = args$sources,
-    files = files
+    files_paths = files_paths
   )
   class(drop) <- "drop"
   drop
@@ -37,7 +37,7 @@ drop <- function(path, name = NULL, description = NULL, ...){
 #' @export
 drop_update_meta <- function(drop, ...){
   if(class(drop) != "drop") stop("Input must be of class 'drop'.")
-  fixed <- c("files", "filesize", "format")
+  fixed <- c("files_paths", "filesize", "format")
   args <- list(...)
   if(any(names(args) %in% fixed)){
     warning("Cannot update ",
@@ -67,7 +67,7 @@ drop_write <- function(drop, path = NULL, ...){
   if(is.null(path)) stop("Need path")
   args <- list(...)
   dir.create(path, recursive = TRUE)
-  meta_files <- lapply(drop$files, function(x){
+  meta_files <- lapply(drop$files_paths, function(x){
     filename <- basename(x)
     target_path <- file.path(path, filename)
     file.copy(x, path)
