@@ -47,6 +47,13 @@ test_that("drop_update_meta", {
   expect_equal(dp5$sources, update_sources)
   expect_equal(dp5$name, "this file")
 
+  tag <- list('one tag')
+  tags <- list(c('one tag', 'another tag'))
+  dp6 <- drop_update_meta(dp0, tags = tag)
+  dp7 <- drop_update_meta(dp6, tags = tags)
+  expect_equal(dp6$tags, tag)
+  expect_equal(dp7$tags, tags)
+
   expect_warning(drop_update_meta(dp0, filesize = 300),
                  "Cannot update filesize. Removing from meta.")
 
