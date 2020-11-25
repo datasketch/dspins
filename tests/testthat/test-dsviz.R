@@ -55,6 +55,13 @@ test_that("dsviz_update_meta", {
   expect_equal(dv5$sources, update_sources)
   expect_equal(dv5$name, "this chart")
 
+  tag <- list('one tag')
+  tags <- list(c('one tag', 'another tag'))
+  dv6 <- dsviz_update_meta(dv0, tags = tag)
+  dv7 <- dsviz_update_meta(dv6, tags = tags)
+  expect_equal(dv6$tags, tag)
+  expect_equal(dv7$tags, tags)
+
   expect_warning(dsviz_update_meta(dv0, viz_type = "ggplot"),
                  "Cannot update viz_type. Removing from meta.")
 
