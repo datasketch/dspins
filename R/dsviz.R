@@ -59,11 +59,11 @@ dsviz_update_meta <- function(dv, ...){
                #time_created = NULL,
                time_last_updated = args$time_last_updated %||% dv$time_last_updated,
                formats = args$formats %||% dv$formats,
-               tags = args$tags %||% dv$tags,
                dsapp = args$dsapp %||% dv$dsapp,
                fringe = args$fringe %||% dv$fringe)
   dv <- modifyList(dv, info)
   dv$sources <- args$sources %||% dv$sources
+  dv$tags <- args$tags %||% dv$tags
   dv
 }
 
