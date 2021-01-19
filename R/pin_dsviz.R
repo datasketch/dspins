@@ -15,7 +15,7 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   args <- list(...)
   bucket_id <- args$bucket_id
   if(!is.null(bucket_id)){
-    board <- board_name(bucket_id)
+    board <- "user.dskt.ch"
   } else {
     stop("Need a bucket_id to save dsviz")
   }
@@ -29,30 +29,30 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
     list(
       path = glue::glue(paste0("{slug}.",x)),
       format = x,
-      url = glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.{x}")
+      url = glue::glue("https://s3.amazonaws.com/user.dskt.ch/{bucket_id}/{slug}/{slug}.{x}")
     )
   }) %>% setNames(formats)
 
   share <- list(
     html = list(
       link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.html"),
+      permalink =  glue::glue("https://s3.amazonaws.com/user.dskt.ch/{bucket_id}/{slug}/{slug}.html"),
       embed =  paste0('<iframe src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.html"),
+                      glue::glue("https://s3.amazonaws.com/user.dskt.ch/{bucket_id}/{slug}/{slug}.html"),
                       '" frameborder=0 width="100%" height="400px"></iframe>')
     ),
     png = list(
       link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.png"),
+      permalink =  glue::glue("https://s3.amazonaws.com/user.dskt.ch/{bucket_id}/{slug}/{slug}.png"),
       embed =  paste0('<img src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.png"),
+                      glue::glue("https://s3.amazonaws.com/user.dskt.ch/{bucket_id}/{slug}/{slug}.png"),
                       '"></img>')
     ),
     svg = list(
       link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.svg"),
+      permalink =  glue::glue("https://s3.amazonaws.com/user.dskt.ch/{bucket_id}/{slug}/{slug}.svg"),
       embed =  paste0('<img src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.svg"),
+                      glue::glue("https://s3.amazonaws.com/user.dskt.ch/{bucket_id}/{slug}/{slug}.svg"),
                       '></img>')
     )
   )
@@ -69,7 +69,9 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   if(!dspins_is_board_connected(args$bucket_id))
     stop("Board not connected. Run: dspins_user_board_connect(bucket_id)")
 
-  board_pin_store(board, path, slug, dv$description, "dsviz",
+  filedir_s3 <- paste0(bucket_id,"/",dv$slug)
+
+  board_pin_store(board, path, filedir_s3, dv$description, "dsviz",
                   extract = FALSE,
                   metadata,...)
 
