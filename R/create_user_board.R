@@ -12,9 +12,9 @@ user_board_create <- function(bucket_id, env_file = ".env"){
     if(!created)
       stop("Something wrong creating the bucket")
   }
-  message("Registering board")
-  x <- board_register_s3(name = paste0("dskt.ch.", bucket_id), bucket = paste0("dskt.ch.", bucket_id))
-  message("Registered board: ", x)
+  # message("Registering board")
+  # x <- board_register_s3(name = paste0("dskt.ch.", bucket_id), bucket = paste0("dskt.ch.", bucket_id))
+  # message("Registered board: ", x)
   TRUE
 }
 
