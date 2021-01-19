@@ -19,10 +19,6 @@ test_that("User url", {
   expect_equal(urls$link, "https://datasketch.co/test/data-frame-1-3")
   expect_equal(urls$permalink, "https://test.dskt.ch/data-frame-1-3/data-frame-1-3.json")
 
-  info <- dspin_info("new-data", user_name)
-  info$path
-
-
   # DSVIZ HTMLWIDGETS
 
   library(hgchmagic)
