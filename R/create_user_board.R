@@ -20,9 +20,8 @@ user_board_create <- function(bucket_id, env_file = ".env"){
 
 user_bucket_exists <- function(username){
   # load_env()
-  aws.s3::bucket_exists(paste0("dskt.ch.", username))
+  aws.s3::object_exists(object = username, bucket = "user.dskt.ch")
 }
-
 
 user_bucket_create <- function(username){
   # load_env()
