@@ -69,9 +69,9 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   if(!dspins_is_board_connected("user"))
     stop("Board not connected. Run: dspins_user_board_connect(bucket_id)")
 
-  filedir_s3 <- paste0(bucket_id,"/",dv$slug)
+  name <- paste0(bucket_id,"/",dv$slug)
 
-  board_pin_store(board, path, filedir_s3, dv$description, "dsviz",
+  board_pin_store(board, path, name, dv$description, "dsviz",
                   extract = FALSE,
                   metadata,...)
 
