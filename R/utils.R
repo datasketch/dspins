@@ -82,12 +82,15 @@ change_content_type <- function(slug, bucket_id, format, board = "user.dskt.ch")
                        png = "image/png",
                        svg = "image/svg+xml")
 
-  aws.s3::copy_object(glue::glue("{bucket_id}/{slug}/{slug}.{format}"), glue::glue("{bucket_id}.{slug}/{slug}.{format}"),
-                      glue::glue(board), glue::glue(board),
+  file_name <- glue::glue("{bucket_id}/{slug}/{slug}.{format}")
+
+  aws.s3::copy_object(from_object = file_name,
+                      to_object = file_name,
+                      from_bucket = board,
+                      to_bucket = board,
                       headers = list(`Content-Type` = content_type[[format]],
                                      `x-amz-metadata-directive` = "REPLACE"))
 
 }
-
 
 
