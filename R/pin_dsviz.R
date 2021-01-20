@@ -14,12 +14,12 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
 
   args <- list(...)
   bucket_id <- args$bucket_id
-  if(!is.null(bucket_id)){
-    board <- "user.dskt.ch"
-  } else {
+
+  if(is.null(bucket_id)){
     stop("Need a bucket_id to save dsviz")
   }
 
+  board <- "user.dskt.ch"
   slug <- dv$slug
 
   if(dv$type == "htmlwidget") formats <- c("html", "png")
@@ -66,7 +66,7 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
 
   #upload_url <- paste0("https://s3.amazonaws.com/",board_name(bucket_id), dv$name)
 
-  if(!dspins_is_board_connected(args$bucket_id))
+  if(!dspins_is_board_connected("user"))
     stop("Board not connected. Run: dspins_user_board_connect(bucket_id)")
 
   filedir_s3 <- paste0(bucket_id,"/",dv$slug)
