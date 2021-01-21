@@ -27,8 +27,8 @@ dspin_urls <- function(element = NULL,
   }
   Sys.setlocale(locale = locale)
 
-  if(!dspins_is_board_connected(bucket_id)){
-    dspins_user_board_connect(bucket_id)
+  if(!dspins_is_board_connected("user")){
+    dspins_user_board_connect("user")
   }
 
   # Validate element is fringe or dsviz
