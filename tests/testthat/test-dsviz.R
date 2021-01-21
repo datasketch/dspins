@@ -4,7 +4,7 @@ test_that("dsviz", {
   title <- "Sample chart"
   viz <- hgchmagic::hgch_bar_Cat(tibble(a = c("a","b")))
 
-  bucket_id <- "test"
+  bucket_id <- "test-dspins-do-not-delete"
 
   dv <- dsviz(viz, name = title)
   #dsviz_write(dv, "tmp/viz")
@@ -14,7 +14,7 @@ test_that("dsviz", {
   #dsviz_write(dv, "tmp")
   pin_url <- pin(dv, bucket_id = bucket_id)
 
-  myviz <- pin_get("another-viz")
+  myviz <- dspin_get("another-viz", bucket_id = bucket_id)
   myviz$viz
 
   ####

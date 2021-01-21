@@ -2,11 +2,11 @@ test_that("dspins, list, get ", {
 
   #options(pins.verbose = FALSE)
 
-  bucket_id <- "test"
+  bucket_id <- "test-dspins-do-not-delete"
 
-  expect_true(dspins_user_board_connect(bucket_id))
+  expect_true(dspins_user_board_connect("user"))
 
-  pinned_mtcars <- pin(mtcars, board = board_name(bucket_id))
+  pinned_mtcars <- pin(mtcars, bucket_id = bucket_id)
 
   library(homodatum)
   data <- data.frame(book = c("Black", "Red"), value = 1:2)
@@ -19,7 +19,7 @@ test_that("dspins, list, get ", {
   pinned_fringe <- pin(f, bucket_id = bucket_id) # local board by default
 
   all_pins <- dspin_list(bucket_id)
-  pin_remove("mtcars", board = board_name(bucket_id))
+  pin_remove("mtcars", board = "local")
 
 
 

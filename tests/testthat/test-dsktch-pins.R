@@ -3,9 +3,7 @@ test_that("ds boards", {
   library(pins)
 
   # use dotenv::load_dot_env() #when running interactively
-  # dotenv::load_dot_env("../../.env")
-
-  load_env()
+  dotenv::load_dot_env("../../.env")
 
   bucket_id <- "test-dspins-do-not-delete"
 
