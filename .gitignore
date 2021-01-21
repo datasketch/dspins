@@ -24,4 +24,5 @@ vignettes/*.pdf
 .env
 tmp/*
 .DS_Store
+inst/move_existing_files.R
 
