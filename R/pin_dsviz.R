@@ -69,7 +69,7 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   if(!dspins_is_board_connected("user"))
     stop("Board not connected. Run: dspins_user_board_connect(bucket_id)")
 
-  name <- paste0(bucket_id,"/",dv$slug)
+  name <- paste0(bucket_id,"/",slug)
 
   board_pin_store(board, path, name, dv$description, "dsviz",
                   extract = FALSE,
