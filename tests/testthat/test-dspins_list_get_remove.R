@@ -21,7 +21,7 @@ test_that("dspins, list, get, remove", {
   all_pins <- dspin_list(bucket_id)
   pin_remove("mtcars", board = "local")
 
-
+  get <- dspin_get("some-file-2", bucket_id = bucket_id)
 
 })
 
