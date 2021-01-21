@@ -12,5 +12,6 @@ dspin_list <- function(bucket_id){
             paste0(l$call[1], l$message[1], sep = "\n"))
     return()
   }
-  l %>% filter(str_detect(path, paste0("^", bucket_id, "/")))
+  # l %>% filter(str_detect(path, paste0("^", bucket_id, "/")))
+  l %>% dplyr::filter(grepl(paste0("^", bucket_id, "/"), path))
 }
