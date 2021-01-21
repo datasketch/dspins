@@ -5,7 +5,7 @@ user_board_create <- function(bucket_id, env_file = ".env"){
 
   # load_env()
 
-  if(!user_folder_exists(bucket_id)){
+  if(!dspins_user_board_exists(bucket_id)){
     message("No folder exists for this user. Creating folder.")
     created <- user_folder_create(bucket_id)
     message("Folder created: ", bucket_id,". ", created)
@@ -18,24 +18,6 @@ user_board_create <- function(bucket_id, env_file = ".env"){
   TRUE
 }
 
-user_bucket_exists <- function(username){
-  .Deprecated("user_folder_exists")
-  # load_env()
-  aws.s3::object_exists(object = username, bucket = "user.dskt.ch")
-}
-
-user_folder_exists <- function(username){
-  # load_env()
-  aws.s3::object_exists(object = username, bucket = "user.dskt.ch")
-}
-
-user_bucket_create <- function(username){
-  .Deprecated("user_folder_create")
-  # load_env()
-  aws.s3::put_folder(username,
-                     bucket = "user.dskt.ch"
-  )
-}
 
 user_folder_create <- function(username){
   # load_env()

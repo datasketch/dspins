@@ -15,12 +15,20 @@ board_name <- function(bucket_id){
 
 #' @export
 dspins_user_board_exists <- function(bucket_id){
+  datatxt_file_raw <- aws.s3::get_object(object = "data.txt", bucket = "user.dskt.ch")
+  datatxt_file <- yaml::read_yaml(rawConnection(datatxt_file_raw))
+  is_folder <- map_lgl(datatxt_file, ~ grepl(paste0(bucket_id,"/"),.x$path))
+  any(is_folder)
+}
+
+#' @export
+dspins_bucket_exists <- function(bucket_id){
   suppressMessages(x <- aws.s3::bucket_exists(board_name(bucket_id)))
   as.logical(x)
 }
 
 #' @export
-dspins_is_board_connected <- function(bucket_id){
+dspins_is_board_connected <- function(bucket_id = "user"){
   board_name(bucket_id) %in% user_board_list_local()
 }
 
@@ -30,7 +38,7 @@ dspins_is_board_connected <- function(bucket_id){
 #' @export
 dspins_user_board_connect <- function(bucket_id){
   load_env()
-  if(!dspins_user_board_exists(bucket_id)){
+  if(!dspins_bucket_exists(bucket_id)){
     message("User board does not exist")
     # new_bucket <- tryCatch(user_bucket_create(bucket_id), error=function(e) e, warning=function(w) w)
     new_bucket <- tryCatch(aws.s3::put_bucket(board_name(bucket_id), region = "us-east-1"),
@@ -52,15 +60,6 @@ dspins_user_board_connect <- function(bucket_id){
     board_register_s3(name = nm, bucket = nm)
   }
   nm %in% user_board_list_local()
-}
-
-
-user_bucket_create <- function(bucket_id){
-  # load_env()
-  message("creating bucket: ", board_name(bucket_id))
-  cat("hello")
-  # aws.s3::put_bucket(board_name(bucket_id), region = "us-east-1")
-  # headers = list(`x-amz-acl` = "public-read"))
 }
 
 user_board_list_local <- function(){
