@@ -3,12 +3,14 @@ test_that("ds boards", {
   library(pins)
 
   # use dotenv::load_dot_env() #when running interactively
-  dotenv::load_dot_env("../../.env")
+  # dotenv::load_dot_env("../../.env")
 
-  bucket_id <- "test2"
+  load_env()
 
-  expect_true(dspins_user_board_connect(bucket_id))
-  expect_true(dspins_is_board_connected(bucket_id))
+  bucket_id <- "test-dspins-do-not-delete"
+
+  expect_true(dspins_user_board_connect("user"))
+  expect_true(dspins_is_board_connected("user"))
 
   pins <- dspins::dspin_list(bucket_id)
 
@@ -40,7 +42,8 @@ test_that("ds boards", {
   dv <- dsviz(h, name = current_title, description = "This is an htmlwidget")
   #dsviz_write(dv, "tmp/viz")
   pin_url <- pin(dv, bucket_id = bucket_id)
-
+  pins <- dspins::dspin_list(bucket_id)
+  expect_true(any(pins$name == paste0(bucket_id, "/", create_slug(current_title))))
 
   # ggvis
   library(ggmagic)
@@ -50,6 +53,8 @@ test_that("ds boards", {
   dv <- dsviz(g, name = current_title, description = "This is an htmlwidget")
   #dsviz_write(dv, "tmp/viz")
   pin_url <- pin(dv, bucket_id = bucket_id)
+  pins <- dspins::dspin_list(bucket_id)
+  expect_true(any(pins$name == paste0(bucket_id, "/", create_slug(current_title))))
 
 
 })
