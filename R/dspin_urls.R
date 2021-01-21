@@ -21,6 +21,8 @@ dspin_urls <- function(element = NULL,
 
   bucket_id <- org_name %||% user_name
 
+  bucket_id <- valid_folder_name(bucket_id)
+
   locale <- "en_US.UTF-8"
   if(Sys.info()[['sysname']] == "Windows") {
     locale <- "English_United States"
