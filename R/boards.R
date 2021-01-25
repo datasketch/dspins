@@ -25,8 +25,8 @@ board_name <- function(bucket_id){
 
 #' @export
 dspins_user_board_exists <- function(bucket_id){
-  message("This function now automatically checks if board 'user.dskt.ch' exists.
-          In future releases the parameter 'bucket_id' will be removed.")
+  # message("This function now automatically checks if board 'user.dskt.ch' exists.
+  #         In future releases the parameter 'bucket_id' will be removed.")
   suppressMessages(x <- aws.s3::bucket_exists("user.dskt.ch"))
   as.logical(x)
 }
@@ -34,18 +34,18 @@ dspins_user_board_exists <- function(bucket_id){
 
 #' @export
 dspins_is_board_connected <- function(bucket_id){
-  message("This function now automatically checks if board 'user.dskt.ch' is connected.
-          In future releases the parameter 'bucket_id' will be removed.")
+  # message("This function now automatically checks if board 'user.dskt.ch' is connected.
+  #         In future releases the parameter 'bucket_id' will be removed.")
   "user.dskt.ch" %in% user_board_list_local()
 }
 
 
 #' @export
-dspins_user_board_connect <- function(bucket_id){
-  message("This function now automatically connects to the board 'user.dskt.ch'.
-          In future releases the parameter 'bucket_id' will be removed.")
+dspins_user_board_connect <- function(bucket_id = "user"){
+  # message("This function now automatically connects to the board 'user.dskt.ch'.
+  #         In future releases the parameter 'bucket_id' will be removed.")
   load_env()
-  bucket_id <- "user"
+  # bucket_id <- "user"
   if(!dspins_user_board_exists(bucket_id)){
     message("User board does not exist")
     # new_bucket <- tryCatch(user_bucket_create(bucket_id), error=function(e) e, warning=function(w) w)
