@@ -74,7 +74,7 @@ is.url <- function(x){
 
 
 
-change_content_type <- function(slug, bucket_id, format, board = "user.dskt.ch"){
+change_content_type <- function(slug, format, board){
 
   content_type <- list(csv = "text/csv",
                        html = "text/html",
@@ -82,7 +82,7 @@ change_content_type <- function(slug, bucket_id, format, board = "user.dskt.ch")
                        png = "image/png",
                        svg = "image/svg+xml")
 
-  file_name <- glue::glue("{bucket_id}/{slug}/{slug}.{format}")
+  file_name <- glue::glue("{slug}/{slug}.{format}")
 
   aws.s3::copy_object(from_object = file_name,
                       to_object = file_name,
