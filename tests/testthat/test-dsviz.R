@@ -4,18 +4,15 @@ test_that("dsviz", {
   title <- "Sample chart"
   viz <- hgchmagic::hgch_bar_Cat(tibble(a = c("a","b")))
 
-  bucket_id <- "test-dspins-do-not-delete"
+  bucket_id <- "testuser"
+  folder <- "test"
 
   dv <- dsviz(viz, name = title)
-  #dsviz_write(dv, "tmp/viz")
-  pin_url <- pin(dv, bucket_id = bucket_id)
+  pin_url <- pin(dv, folder = folder, bucket_id = bucket_id)
 
-  dv <- dsviz(viz, name = "Another Viz")
-  #dsviz_write(dv, "tmp")
-  pin_url <- pin(dv, bucket_id = bucket_id)
+  expect_message(pin(dv), "Need a folder to save dsviz")
 
-  myviz <- dspin_get("another-viz", bucket_id = bucket_id)
-  myviz$viz
+  expect_message(pin(dv, folder = folder), "No bucket_id specified. Using 'user.dskt.ch' by default.")
 
   ####
   # library(ggmagic)
