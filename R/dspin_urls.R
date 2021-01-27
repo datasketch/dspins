@@ -15,9 +15,7 @@ dspin_urls <- function(element = NULL,
     bucket_id <- "user"
   }
 
-  user_or_org_name <- org_name %||% user_name
-
-  folder <- valid_folder_name(user_or_org_name)
+  folder <- org_name %||% user_name
 
   locale <- "en_US.UTF-8"
   if(Sys.info()[['sysname']] == "Windows") {
