@@ -10,6 +10,7 @@ board_register_s3_dspins <- function(folder = "",
                               ...) {
 
   name <- paste0(bucket, "/", folder)
+  path <- folder
   board_register("s3_dspins",
                  name = name,
                  bucket = bucket,
@@ -35,8 +36,7 @@ board_initialize.s3_dspins <- function(board,
   if (nchar(key) == 0)  stop("The 's3_dspins' board requires a 'key' parameter.")
   if (nchar(secret) == 0)  stop("The 's3_dspins' board requires a 'secret' parameter.")
 
-  folder_name <- sub('.*/', '', board$name)
-  s3_url <- paste0("http://", bucket, ".", host, "/",folder_name)
+  s3_url <- paste0("http://", bucket, ".", host)
 
   board_register_datatxt(name = board$name,
                          url = s3_url,
