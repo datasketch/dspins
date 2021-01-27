@@ -1,6 +1,14 @@
 #' @export
-dspin_remove <- function(slug, bucket_id, board = "user.dskt.ch") {
-  name <- paste0(bucket_id, "/", slug)
+dspin_remove <- function(slug, folder = NULL, bucket_id = NULL) {
 
-  pin_remove(name = name, board = board)
+  if(is.null(bucket_id)){
+    stop("Need a bucket_id to remove pin")
+  }
+
+  if(is.null(folder)){
+    stop("Need a folder to remove pin")
+  }
+
+  board <- board_name(bucket_id, folder)
+  pin_remove(name = slug, board = board)
 }
