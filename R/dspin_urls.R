@@ -91,8 +91,8 @@ pin_user_url <- function(title, element, bucket_id, user_name, ...) {
   }
   Sys.setlocale(locale = locale)
   dv <- dsviz(element, name = title)
-  dspins_user_board_connect(bucket_id)
-  pin_url <- pin(dv, bucket_id = bucket_id)
+  dspins_user_board_connect(bucket_id = bucket_id, folder = user_name)
+  pin_url <- pin(dv, folder = user_name, bucket_id = bucket_id)
   url <- paste0(user_name, ".datasketch.co/", title)
   if (is.null(pin_url))
     url <- "pinnotfound"
