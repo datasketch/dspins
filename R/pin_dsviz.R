@@ -1,7 +1,6 @@
 #' @export
 pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   path <- tempfile()
-  #path <- "tmp"
   dir.create(path)
   on.exit(unlink(path, recursive = TRUE))
 
@@ -13,15 +12,16 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   metadata$description <- NULL
 
   args <- list(...)
-  bucket_id <- args$bucket_id
   folder <- args$folder
+  bucket_id <- args$bucket_id
 
   if(is.null(bucket_id)){
-    stop("Need a bucket_id to save dsviz")
+    message("No bucket_id specified. Using 'user.dskt.ch' by default.")
+    bucket_id <- "user"
   }
 
   if(is.null(folder)){
-    stop("Need a user folder to save dsviz")
+    stop("Need a folder to save dsviz")
   }
 
   bucket <- bucket_name(bucket_id)
@@ -80,12 +80,12 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
                   metadata,...)
 
   if(dv$type == "htmlwidget"){
-    change_content_type(slug = slug, format = "png", board = board)
-    change_content_type(slug = slug, format = "html", board = board)
+    change_content_type(slug = slug, format = "png", bucket = bucket, folder = folder)
+    change_content_type(slug = slug, format = "html", bucket = bucket, folder = folder)
   }
   if(dv$type == "gg"){
-    change_content_type(slug = slug, format = "png", board = board)
-    change_content_type(slug = slug, format = "svg", board = board)
+    change_content_type(slug = slug, format = "png", bucket = bucket, folder = folder)
+    change_content_type(slug = slug, format = "svg", bucket = bucket, folder = folder)
   }
 
   dv
