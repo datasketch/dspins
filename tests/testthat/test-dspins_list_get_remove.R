@@ -4,8 +4,8 @@ test_that("dspins, list ", {
 
   bucket_id <- "testuser"
   folder <- "test"
-
-  expect_true(dspins_user_board_connect(bucket_id, folder))
+  expect_true(dspins_user_board_connect(bucket_id = bucket_id, folder = folder))
+  expect_true(dspins_user_board_connect(bucket_id = "user", folder = folder))
 
   #local
   pinned_mtcars <- pin(mtcars)
