@@ -1,6 +1,8 @@
 #' @export
 dspin_urls <- function(element = NULL,
-                     user_name = NULL, org_name = NULL,
+                       user_name = NULL,
+                       org_name = NULL,
+                     bucket_id = NULL,
                      overwrite = FALSE, ...) {
   if (is.null(element)) {
     stop("Element cannot be null")
@@ -9,19 +11,13 @@ dspin_urls <- function(element = NULL,
     stop("User, organization id or name cannot be null")
   }
 
-  # Make sure it works with reactives
-  # args <- as.list(match.call())[-1]
-  # lapply(names(args), function(s) {
-  #   if (shiny::is.reactive(args[[s]])) {
-  #     args[[s]] <<- do.call(args[[s]], list())
-  #   } else {
-  #     args[[s]] <<- args[[s]]
-  #   }
-  # })
+  if(is.null(bucket_id)){
+    bucket_id <- "user"
+  }
 
-  bucket_id <- org_name %||% user_name
+  user_or_org_name <- org_name %||% user_name
 
-  bucket_id <- valid_folder_name(bucket_id)
+  folder <- valid_folder_name(user_or_org_name)
 
   locale <- "en_US.UTF-8"
   if(Sys.info()[['sysname']] == "Windows") {
@@ -29,15 +25,16 @@ dspin_urls <- function(element = NULL,
   }
   Sys.setlocale(locale = locale)
 
-  if(!dspins_is_board_connected("user")){
-    dspins_user_board_connect("user")
+  if(!dspins_is_board_connected(bucket_id, folder)){
+    message("creating new user board")
+    dspins_user_board_connect(bucket_id, folder)
   }
 
   # Validate element is fringe or dsviz
   element_type(element)
 
-  el <- pin(element, bucket_id = bucket_id, ...)
-  get_element_urls(el, bucket_id)
+  el <- pin(element, folder = folder, bucket_id = bucket_id, ...)
+  get_element_urls(el, folder, bucket_id)
 }
 
 
@@ -47,11 +44,11 @@ element_type <- function(x){
   stop("Element must be fringe or dsviz")
 }
 
-get_element_urls <- function(element, bucket_id){
+get_element_urls <- function(element, folder, bucket_id){
 
   element_slug <- element$slug
-  baselink <-  file.path(paste0("https://", bucket_id, ".dskt.ch"), element_slug)
-  link <-  file.path("https://datasketch.co", bucket_id, element_slug)
+  baselink <-  file.path(paste0("https://", bucket_id, ".dskt.ch"), folder, element_slug)
+  link <-  file.path("https://datasketch.co", folder, element_slug)
   el_type <- element_type(element)
 
   if(el_type == "dsviz"){
