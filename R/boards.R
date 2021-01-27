@@ -45,6 +45,8 @@ dspins_is_board_connected <- function(bucket_id = "user", folder){
 dspins_user_board_connect <- function(bucket_id = "user", folder){
   load_env()
 
+  folder <- valid_folder_name(folder)
+
   if(!dspins_bucket_exists(bucket_id)){
     message("Bucket does not exist")
     # new_bucket <- tryCatch(user_bucket_create(bucket_id), error=function(e) e, warning=function(w) w)
