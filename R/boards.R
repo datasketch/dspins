@@ -1,12 +1,12 @@
 
 #' @export
-valid_folder_name <- function(bucket_id){
-  if(missing(bucket_id)) stop("Need a bucket_id")
-  if(nchar(bucket_id) == 0)
-    stop("Need a correct bucket_id")
-  if(grepl("[^A-Za-z0-9-]",bucket_id))
-    stop("bucket_id can only contain letters, numbers and dashes")
-  bucket_id
+valid_folder_name <- function(folder){
+  if(missing(folder)) stop("Need a folder name")
+  if(nchar(folder) == 0)
+    stop("Need a correct folder name")
+  if(grepl("[^A-Za-z0-9-]",folder))
+    stop("folder name can only contain letters, numbers and dashes")
+  folder
 }
 
 #' @export
