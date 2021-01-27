@@ -1,17 +1,17 @@
 test_that("dspins drop", {
 
+  bucket_id <- "testuser"
+  folder <- "test"
+
   sample_path <- system.file("drop_sample", package = "dspins")
   path <- file.path(sample_path, "sample.txt")
 
-  dp <- drop(sample_path)
-  #drop_write(dp, path = "tmp/sample_path")
+  dp <- drop(sample_path, name = "Sample drop")
+  pin_url <- pin(dp, folder = folder, bucket_id = bucket_id)
 
-  bucket_id <- "test"
-  pin(dp, bucket_id = bucket_id, acl = "public")
+  expect_error(pin(dp), "Need a folder to save drop")
 
-
-  dp <- drop(path)
-
+  expect_message(pin(dp, folder = folder), "No bucket_id specified. Using 'user.dskt.ch' by default.")
 
 })
 
