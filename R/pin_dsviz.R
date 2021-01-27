@@ -70,14 +70,15 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
 
   dsviz_write(dv, path = path)
 
-  #upload_url <- paste0("https://s3.amazonaws.com/",board_name(bucket_id), dv$name)
-
   if(!dspins_is_board_connected(bucket_id, folder))
     stop("Board not connected. Run: dspins_user_board_connect(bucket_id, folder)")
 
   board_pin_store(board, path, slug, dv$description, "dsviz",
                   extract = FALSE,
                   metadata,...)
+
+  message("Saved pin")
+  message("Changing content type")
 
   if(dv$type == "htmlwidget"){
     change_content_type(slug = slug, format = "png", bucket = bucket, folder = folder)
