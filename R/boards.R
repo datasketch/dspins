@@ -1,7 +1,16 @@
 
+#' @export
+valid_folder_name <- function(folder){
+  if(missing(folder)) stop("Need a folder name")
+  if(nchar(folder) == 0)
+    stop("Need a correct folder name")
+  if(grepl("[^A-Za-z0-9-]",folder))
+    stop("folder name can only contain letters, numbers and dashes")
+  folder
+}
 
 #' @export
-board_name <- function(bucket_id){
+bucket_name <- function(bucket_id){
   if(missing(bucket_id)) stop("Need a bucket_id")
   if(nchar(bucket_id) == 0)
     stop("Need a correct bucket_id")
@@ -14,62 +23,65 @@ board_name <- function(bucket_id){
 }
 
 #' @export
-dspins_user_board_exists <- function(bucket_id){
-  suppressMessages(x <- aws.s3::bucket_exists(board_name(bucket_id)))
+board_name <- function(bucket_id, folder){
+  paste0(bucket_name(bucket_id),"/",folder)
+}
+
+
+#' @export
+dspins_bucket_exists <- function(bucket_id){
+  suppressMessages(x <- aws.s3::bucket_exists(bucket_name(bucket_id)))
   as.logical(x)
 }
 
+
 #' @export
-dspins_is_board_connected <- function(bucket_id){
-  board_name(bucket_id) %in% user_board_list_local()
+dspins_is_board_connected <- function(bucket_id = "user", folder){
+  paste0(bucket_name(bucket_id), "/",folder) %in% user_board_list_local()
 }
 
 
-
-
 #' @export
-dspins_user_board_connect <- function(bucket_id){
+dspins_user_board_connect <- function(bucket_id = "user", folder){
   load_env()
-  if(!dspins_user_board_exists(bucket_id)){
-    message("User board does not exist")
+
+  folder <- valid_folder_name(folder)
+
+  if(!dspins_bucket_exists(bucket_id)){
+    message("Bucket does not exist")
     # new_bucket <- tryCatch(user_bucket_create(bucket_id), error=function(e) e, warning=function(w) w)
-    new_bucket <- tryCatch(aws.s3::put_bucket(board_name(bucket_id), region = "us-east-1"),
+    new_bucket <- tryCatch(aws.s3::put_bucket(bucket_name(bucket_id), region = "us-east-1"),
                            error=function(e) e, warning=function(w) w)
-    message("User board created: ", board_name(bucket_id))
+    message("Bucket created: ", bucket_name(bucket_id))
     if(inherits(new_bucket,"error")){
       stop(new_bucket)
     }
-    bucket_name <- board_name(bucket_id)
+    bucket_name <- bucket_name(bucket_id)
     aws.s3::put_website(bucket_name, request_body = s3_website_xml_body(bucket_id))
     policy <- paste0(
-      read_lines(system.file("bucket_policy.json", package = "dspins")),
+      readr::read_lines(system.file("bucket_policy.json", package = "dspins")),
       collapse = "")
     policy <- glue::glue(policy, .open = "{{", .close = "}}")
-    aws.s3::put_bucket_policy(board_name(bucket_id), policy)
+    aws.s3::put_bucket_policy(bucket_name, policy)
   }
-  nm <- board_name(bucket_id)
-  if(!nm %in% user_board_list_local()){
-    board_register_s3(name = nm, bucket = nm)
+
+  bucket_name <- bucket_name(bucket_id)
+  board <- board_name(bucket_id, folder)
+
+  if(!board %in% user_board_list_local()){
+    board_register_s3_dspins(folder = folder, bucket = bucket_name)
+    message("User board registered: ", folder)
   }
-  nm %in% user_board_list_local()
-}
-
-
-user_bucket_create <- function(bucket_id){
-  # load_env()
-  message("creating bucket: ", board_name(bucket_id))
-  cat("hello")
-  # aws.s3::put_bucket(board_name(bucket_id), region = "us-east-1")
-  # headers = list(`x-amz-acl` = "public-read"))
+  board %in% user_board_list_local()
 }
 
 user_board_list_local <- function(){
   x <- pins::board_list()
-  x[grepl("*\\.dskt\\.ch$",x)]
+  x[grepl("/",x)]
+  # x[grepl("*\\.dskt\\.ch$",x)]
 }
 
 user_board_list_remote <- function(){
-  # load_env()
   x <- aws.s3::bucket_list_df()
   x <- x[[1]]
   x[grepl("^dskt\\.ch\\.",x)]

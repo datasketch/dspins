@@ -5,11 +5,24 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   on.exit(unlink(path, recursive = TRUE))
   saveRDS(f, file.path(path, "data.rds"), version = 2)
 
-
-
   data_html_path <- system.file("data_tpl.html", package = "dspins")
   file.copy(data_html_path, file.path(path, paste0(f$slug,".html")))
 
+  args <- list(...)
+  folder <- args$folder
+  bucket_id <- args$bucket_id
+
+  if(is.null(bucket_id)){
+    message("No bucket_id specified. Using 'user.dskt.ch' by default.")
+    bucket_id <- "user"
+  }
+
+  if(is.null(folder)){
+    stop("Need a folder to save fringe")
+  }
+
+  bucket <- bucket_name(bucket_id)
+  board <- board_name(bucket_id, folder)
   slug <- f$slug
 
   metadata <- f$meta
@@ -19,36 +32,28 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   metadata$group <- f$group
   metadata$frtype <- as.character(f$frtype)
 
-  args <- list(...)
-  if(!is.null(args$bucket_id)){
-    board <- board_name(args$bucket_id)
-  }else{
-    stop("Need bucket_id")
-  }
-  bucket_id <- args$bucket_id
-
   formats <- c(c("csv", "json"), args$download_formats)
   metadata$files <- lapply(formats, function(x){
     list(
       path = glue::glue("{slug}.{x}"),
       format = x,
-      url = glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.{x}")
+      url = glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.{x}")
     )
   }) %>% setNames(formats)
 
   metadata$share <- list(
     html = list(
-      link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.html"),
+      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
+      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.html"),
       embed =  paste0('<iframe src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.html"),
+                      glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.html"),
                       '" frameborder=0 width="100%" height="400px"></iframe>')),
     csv = list(
-      link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.csv")),
+      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
+      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.csv")),
     json = list(
-      link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.json"))
+      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
+      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.json"))
   )
 
   f$files <- metadata$files
@@ -59,7 +64,7 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   fringe_write_json(f, path = path)
 
   credits <- args$credits %||% list(label = "Downloaded from:",
-                               value = paste0("http://datasketch.co/",bucket_id,"/",slug))
+                               value = paste0("http://datasketch.co/",folder,"/",slug))
 
   download_formats <- c("csv", "json", args$download_formats)
   message(download_formats)
@@ -68,11 +73,10 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   }
 
 
-  if(!dspins_is_board_connected(args$bucket_id))
-    stop("Board not connected. Run: dspins_user_board_connect(bucket_id)")
+  if(!dspins_is_board_connected(bucket_id, folder))
+    stop("Board not connected. Run: dspins_user_board_connect(bucket_id, folder)")
 
-  #upload_url <- paste0("https://s3.amazonaws.com/",board_name(bucket_id),"/some-file")
-  upload_url <- tryCatch(board_pin_store(board, path, f$slug, f$description, "fringe",
+  upload_url <- tryCatch(board_pin_store(board, path, slug, f$description, "fringe",
                                          extract = FALSE,
                                          metadata,...),
                          error = function(e){
@@ -83,9 +87,10 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
                          })
   message("Saved pin")
   message("Changing content type")
-  change_content_type(slug = slug, bucket_id = bucket_id, format = "html")
-  change_content_type(slug = slug, bucket_id = bucket_id, format = "csv")
-  change_content_type(slug = slug, bucket_id = bucket_id, format = "json")
+
+  change_content_type(slug = slug, format = "html", bucket = bucket, folder = folder)
+  change_content_type(slug = slug, format = "csv", bucket = bucket, folder = folder)
+  change_content_type(slug = slug, format = "json", bucket = bucket, folder = folder)
 
   f$meta <- NULL
   f

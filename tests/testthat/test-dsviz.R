@@ -1,26 +1,44 @@
-test_that("dsviz", {
+test_that("dsviz hgchmagic", {
+
+  bucket_id <- "testuser"
+  folder <- "test"
+  expect_true(dspins_user_board_connect(bucket_id = bucket_id, folder = folder))
+  expect_true(dspins_user_board_connect(bucket_id = "user", folder = folder))
 
   library(hgchmagic)
-  title <- "Sample chart"
+  current_title <- paste0("Sample hgdviz - ", as.character(Sys.time()))
   viz <- hgchmagic::hgch_bar_Cat(tibble(a = c("a","b")))
 
-  bucket_id <- "test"
+  dv <- dsviz(viz, name = current_title)
+  pin_url <- pin(dv, folder = folder, bucket_id = bucket_id)
 
-  dv <- dsviz(viz, name = title)
-  #dsviz_write(dv, "tmp/viz")
-  pin_url <- pin(dv, bucket_id = bucket_id)
+  pins <- dspins::dspin_list(folder, bucket_id)
+  expect_true(any(pins$name == create_slug(current_title)))
 
-  dv <- dsviz(viz, name = "Another Viz")
-  #dsviz_write(dv, "tmp")
-  pin_url <- pin(dv, bucket_id = bucket_id)
+  expect_error(pin(dv), "Need a folder to save dsviz")
 
-  myviz <- pin_get("another-viz")
-  myviz$viz
+  expect_message(pin(dv, folder = folder), "No bucket_id specified. Using 'user.dskt.ch' by default.")
 
-  ####
-  # library(ggmagic)
-  # viz <- gg_pie_Cat(tibble(a = c("a","b")))
+})
 
+test_that("dsviz ggmagic", {
+
+  library(ggmagic)
+  current_title <- paste0("Sample ggdviz - ", as.character(Sys.time()))
+  viz <- gg_pie_Cat(tibble(a = c("a","b")))
+
+  bucket_id <- "testuser"
+  folder <- "test"
+
+  dv <- dsviz(viz, name = current_title)
+  pin_url <- pin(dv, folder = folder, bucket_id = bucket_id)
+
+  pins <- dspins::dspin_list(folder, bucket_id)
+  expect_true(any(pins$name == create_slug(current_title)))
+
+  expect_error(pin(dv), "Need a folder to save dsviz")
+
+  expect_message(pin(dv, folder = folder), "No bucket_id specified. Using 'user.dskt.ch' by default.")
 
 })
 

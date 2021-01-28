@@ -1,7 +1,6 @@
 #' @export
 pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   path <- tempfile()
-  #path <- "tmp"
   dir.create(path)
   on.exit(unlink(path, recursive = TRUE))
 
@@ -13,13 +12,20 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   metadata$description <- NULL
 
   args <- list(...)
+  folder <- args$folder
   bucket_id <- args$bucket_id
-  if(!is.null(bucket_id)){
-    board <- board_name(bucket_id)
-  } else {
-    stop("Need a bucket_id to save dsviz")
+
+  if(is.null(bucket_id)){
+    message("No bucket_id specified. Using 'user.dskt.ch' by default.")
+    bucket_id <- "user"
   }
 
+  if(is.null(folder)){
+    stop("Need a folder to save dsviz")
+  }
+
+  bucket <- bucket_name(bucket_id)
+  board <- board_name(bucket_id, folder)
   slug <- dv$slug
 
   if(dv$type == "htmlwidget") formats <- c("html", "png")
@@ -29,30 +35,30 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
     list(
       path = glue::glue(paste0("{slug}.",x)),
       format = x,
-      url = glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.{x}")
+      url = glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.{x}")
     )
   }) %>% setNames(formats)
 
   share <- list(
     html = list(
-      link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.html"),
+      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
+      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.html"),
       embed =  paste0('<iframe src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.html"),
+                      glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.html"),
                       '" frameborder=0 width="100%" height="400px"></iframe>')
     ),
     png = list(
-      link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.png"),
+      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
+      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.png"),
       embed =  paste0('<img src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.png"),
+                      glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.png"),
                       '"></img>')
     ),
     svg = list(
-      link =  glue::glue("https://datasketch.co/{bucket_id}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.svg"),
+      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
+      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.svg"),
       embed =  paste0('<img src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket_id}.dskt.ch/{slug}/{slug}.svg"),
+                      glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.svg"),
                       '></img>')
     )
   )
@@ -64,22 +70,23 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
 
   dsviz_write(dv, path = path)
 
-  #upload_url <- paste0("https://s3.amazonaws.com/",board_name(bucket_id), dv$name)
-
-  if(!dspins_is_board_connected(args$bucket_id))
-    stop("Board not connected. Run: dspins_user_board_connect(bucket_id)")
+  if(!dspins_is_board_connected(bucket_id, folder))
+    stop("Board not connected. Run: dspins_user_board_connect(bucket_id, folder)")
 
   board_pin_store(board, path, slug, dv$description, "dsviz",
                   extract = FALSE,
                   metadata,...)
 
+  message("Saved pin")
+  message("Changing content type")
+
   if(dv$type == "htmlwidget"){
-    change_content_type(slug = slug, bucket_id = bucket_id, format = "png")
-    change_content_type(slug = slug, bucket_id = bucket_id, format = "html")
+    change_content_type(slug = slug, format = "png", bucket = bucket, folder = folder)
+    change_content_type(slug = slug, format = "html", bucket = bucket, folder = folder)
   }
   if(dv$type == "gg"){
-    change_content_type(slug = slug, bucket_id = bucket_id, format = "png")
-    change_content_type(slug = slug, bucket_id = bucket_id, format = "svg")
+    change_content_type(slug = slug, format = "png", bucket = bucket, folder = folder)
+    change_content_type(slug = slug, format = "svg", bucket = bucket, folder = folder)
   }
 
   dv
