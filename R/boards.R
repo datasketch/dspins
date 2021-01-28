@@ -36,13 +36,13 @@ dspins_bucket_exists <- function(bucket_id){
 
 
 #' @export
-dspins_is_board_connected <- function(bucket_id = "user", folder){
+dspins_is_board_connected <- function(folder, bucket_id = "user"){
   paste0(bucket_name(bucket_id), "/",folder) %in% user_board_list_local()
 }
 
 
 #' @export
-dspins_user_board_connect <- function(bucket_id = "user", folder){
+dspins_user_board_connect <- function(folder, bucket_id = "user"){
   load_env()
 
   folder <- valid_folder_name(folder)

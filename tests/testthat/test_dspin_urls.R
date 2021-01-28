@@ -3,7 +3,7 @@ test_that("User url", {
   user_name <- "test"
   bucket_id <- "testuser"
 
-  expect_true(dspins_user_board_connect(bucket_id = bucket_id, folder = user_name))
+  expect_true(dspins_user_board_connect(folder = user_name, bucket_id = bucket_id))
 
   # FRINGES
 

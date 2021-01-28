@@ -2,8 +2,8 @@ test_that("fringe", {
 
   bucket_id <- "testuser"
   folder <- "test"
-  expect_true(dspins_user_board_connect(bucket_id = bucket_id, folder = folder))
-  expect_true(dspins_user_board_connect(bucket_id = "user", folder = folder))
+  expect_true(dspins_user_board_connect(folder = folder, bucket_id = bucket_id))
+  expect_true(dspins_user_board_connect(folder = folder, bucket_id = "user"))
 
   library(homodatum)
   current_title <- paste0("Sample fringe - ", as.character(Sys.time()))

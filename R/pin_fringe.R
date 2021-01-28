@@ -73,8 +73,8 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   }
 
 
-  if(!dspins_is_board_connected(bucket_id, folder))
-    stop("Board not connected. Run: dspins_user_board_connect(bucket_id, folder)")
+  if(!dspins_is_board_connected(folder, bucket_id))
+    stop("Board not connected. Run: dspins_user_board_connect(folder, bucket_id)")
 
   upload_url <- tryCatch(board_pin_store(board, path, slug, f$description, "fringe",
                                          extract = FALSE,

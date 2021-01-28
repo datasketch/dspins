@@ -70,8 +70,8 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
 
   dsviz_write(dv, path = path)
 
-  if(!dspins_is_board_connected(bucket_id, folder))
-    stop("Board not connected. Run: dspins_user_board_connect(bucket_id, folder)")
+  if(!dspins_is_board_connected(folder, bucket_id))
+    stop("Board not connected. Run: dspins_user_board_connect(folder, bucket_id)")
 
   board_pin_store(board, path, slug, dv$description, "dsviz",
                   extract = FALSE,
