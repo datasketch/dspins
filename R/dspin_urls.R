@@ -23,9 +23,9 @@ dspin_urls <- function(element = NULL,
   }
   Sys.setlocale(locale = locale)
 
-  if(!dspins_is_board_connected(bucket_id, folder)){
+  if(!dspins_is_board_connected(folder, bucket_id)){
     message("creating new user board")
-    dspins_user_board_connect(bucket_id, folder)
+    dspins_user_board_connect(folder, bucket_id)
   }
 
   # Validate element is fringe or dsviz

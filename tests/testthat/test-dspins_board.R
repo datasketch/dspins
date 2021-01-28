@@ -21,19 +21,19 @@ test_that("valid names", {
 
   bucket_id <- "testuser"
   folder <- ""
-  expect_error(dspins_user_board_connect(bucket_id = bucket_id, folder = folder))
+  expect_error(dspins_user_board_connect(folder = folder, bucket_id = bucket_id))
 
   bucket_id <- "testuser"
   folder <- "test_board"
-  expect_error(dspins_user_board_connect(bucket_id = bucket_id, folder = folder))
+  expect_error(dspins_user_board_connect(folder = folder, bucket_id = bucket_id))
 
   bucket_id <- ""
   folder <- "testboard"
-  expect_error(dspins_user_board_connect(bucket_id = bucket_id, folder = folder))
+  expect_error(dspins_user_board_connect(folder = folder, bucket_id = bucket_id))
 
   bucket_id <- "test_user"
   folder <- "testboard"
-  expect_error(dspins_user_board_connect(bucket_id = bucket_id, folder = folder))
+  expect_error(dspins_user_board_connect(folder = folder, bucket_id = bucket_id))
 
 })
 
@@ -41,8 +41,8 @@ test_that("dspins boards", {
 
   bucket_id <- "testuser"
   folder <- "test"
-  expect_true(dspins_user_board_connect(bucket_id = bucket_id, folder = folder))
-  expect_true(dspins_is_board_connected(bucket_id = bucket_id, folder = folder))
+  expect_true(dspins_user_board_connect(folder = folder, bucket_id = bucket_id))
+  expect_true(dspins_is_board_connected(folder = folder, bucket_id = bucket_id))
 
   bucket <- bucket_name(bucket_id)
   board_name <- board_name(bucket_id, folder)

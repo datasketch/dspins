@@ -22,6 +22,7 @@ board_register_s3_dspins <- function(folder = "",
                  ...)
 }
 
+#' @export
 board_initialize.s3_dspins <- function(board,
                                 bucket = Sys.getenv("AWS_BUCKET"),
                                 key = Sys.getenv("AWS_ACCESS_KEY_ID"),
@@ -77,6 +78,7 @@ board_register_s3_old <- function(name = "s3",
                  path = path,
                  ...)
 }
+
 
 board_initialize.s3_old <- function(board,
                                 bucket = Sys.getenv("AWS_BUCKET"),

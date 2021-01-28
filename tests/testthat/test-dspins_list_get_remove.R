@@ -4,7 +4,7 @@ test_that("dspins, list ", {
 
   bucket_id <- "testuser"
   folder <- "test"
-  expect_true(dspins_user_board_connect(bucket_id = bucket_id, folder = folder))
+  expect_true(dspins_user_board_connect(folder = folder, bucket_id = bucket_id))
   expect_true(dspins_user_board_connect(bucket_id = "user", folder = folder))
 
   #local
@@ -17,7 +17,7 @@ test_that("dspins, list ", {
                license = "CC-BY", date_created = unix_timestamp(),
               access = "private")
 
-  pinned_fringe <- pin(f, bucket_id = bucket_id, folder = folder)
+  pinned_fringe <- pin(f, folder = folder, bucket_id = bucket_id)
 
   expect_error(dspin_list(bucket_id = "testuser"), "Need a folder to retrieve list of pins.")
 
