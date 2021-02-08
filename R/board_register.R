@@ -20,6 +20,10 @@ board_register_s3_dspins <- function(folder = "",
                  region = region,
                  path = path,
                  ...)
+
+  board <- board_get(name)
+
+  datatxt_refresh_index_ds(board)
 }
 
 #' @export
@@ -54,6 +58,7 @@ board_initialize.s3_dspins <- function(board,
                          ...)
 
   board_get(board$name)
+
 }
 
 
