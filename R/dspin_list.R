@@ -11,9 +11,13 @@ dspin_list <- function(folder = NULL, bucket_id = NULL){
     stop("Need a folder to retrieve list of pins.")
   }
 
-  board <- board_name(bucket_id, folder)
+  boardname <- board_name(bucket_id, folder)
 
-  l <-tryCatch(pin_find(board = board, extended = TRUE),
+  board <- board_get(boardname)
+
+  datatxt_refresh_index_ds(board)
+
+  l <-tryCatch(pin_find(board = boardname, extended = TRUE),
            error=function(e) e, warning=function(w) w)
   if(inherits(l,"error")){
     message("No pins in board\n Error: ",
