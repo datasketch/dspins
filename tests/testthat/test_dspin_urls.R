@@ -14,12 +14,12 @@ test_that("User url", {
 
   ## Urls generation
   expect_equal(paste0("https://datasketch.co/",user_name, "/", f$slug), urls$link)
-  expect_equal(paste0("https://",bucket_id,".dskt.ch/",user_name,"/", f$slug, "/", f$slug, ".json"),
+  expect_equal(paste0("https://s3.amazonaws.com/",bucket_id,".dskt.ch/",user_name,"/", f$slug, "/", f$slug, ".json"),
                urls$permalink)
   # Pin url
   urls <- dspin_urls(element = f, user_name = user_name, bucket_id = bucket_id, download_formats = "xlsx")
   expect_equal(urls$link, paste0("https://datasketch.co/",user_name,"/", f$slug))
-  expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",f$slug,"/",f$slug,".json"))
+  expect_equal(urls$permalink, paste0("https://s3.amazonaws.com/",bucket_id,".dskt.ch/",user_name,"/",f$slug,"/",f$slug,".json"))
 
   # DSVIZ HTMLWIDGETS
 
@@ -32,14 +32,14 @@ test_that("User url", {
 
   ## Urls generation
   urls <- get_element_urls(dvhg, folder = user_name, bucket_id = bucket_id)
-  expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/", dvhg$slug, "/", dvhg$slug, ".html"))
+  expect_equal(urls$permalink, paste0("https://s3.amazonaws.com/",bucket_id,".dskt.ch/",user_name,"/", dvhg$slug, "/", dvhg$slug, ".html"))
   expect_equal(urls$iframe_embed,
-               paste0("<iframe src=\"",paste0("https://",bucket_id,".dskt.ch/",user_name,"/", dvhg$slug, "/", dvhg$slug, ".html"),"\" frameborder=0 width=\"100%\" height=\"400px\"></iframe>"))
+               paste0("<iframe src=\"",paste0("https://s3.amazonaws.com/",bucket_id,".dskt.ch/",user_name,"/", dvhg$slug, "/", dvhg$slug, ".html"),"\" frameborder=0 width=\"100%\" height=\"400px\"></iframe>"))
 
   # pin viz
   urls <- dspin_urls(element = dvhg, user_name = user_name, bucket_id = bucket_id)
   expect_equal(urls$link, paste0("https://datasketch.co/",user_name,"/", dvhg$slug))
-  expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",dvhg$slug,"/",dvhg$slug,".html"))
+  expect_equal(urls$permalink, paste0("https://s3.amazonaws.com/",bucket_id,".dskt.ch/",user_name,"/",dvhg$slug,"/",dvhg$slug,".html"))
 
   # DSVIZ GGMAGIC
   library(ggmagic)
@@ -48,12 +48,12 @@ test_that("User url", {
 
   ## Urls generation
   urls <- get_element_urls(dvgg, folder = user_name, bucket_id = bucket_id)
-  expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",dvgg$slug,"/",dvgg$slug,".png"))
+  expect_equal(urls$permalink, paste0("https://s3.amazonaws.com/",bucket_id,".dskt.ch/",user_name,"/",dvgg$slug,"/",dvgg$slug,".png"))
 
   # pin viz
   urls <- dspin_urls(element = dvgg, user_name = user_name, bucket_id = bucket_id)
   expect_equal(urls$link, paste0("https://datasketch.co/",user_name,"/", dvgg$slug))
-  expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",dvgg$slug,"/",dvgg$slug,".png"))
+  expect_equal(urls$permalink, paste0("https://s3.amazonaws.com/",bucket_id,".dskt.ch/",user_name,"/",dvgg$slug,"/",dvgg$slug,".png"))
 
 
 })
