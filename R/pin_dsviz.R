@@ -31,34 +31,36 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   if(dv$type == "htmlwidget") formats <- c("html", "png")
   if(dv$type == "gg") formats <- c("png", "svg")
 
+  url_base_path <- glue::glue("https://{bucket}/{folder}/{slug}/{slug}")
+
   metadata$files <- lapply(formats, function(x){
     list(
       path = glue::glue(paste0("{slug}.",x)),
       format = x,
-      url = glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.{x}")
+      url = glue::glue("{url_base_path}.{x}")
     )
   }) %>% setNames(formats)
 
   share <- list(
     html = list(
       link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.html"),
+      permalink =  glue::glue("{url_base_path}.html"),
       embed =  paste0('<iframe src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.html"),
+                      glue::glue("{url_base_path}.html"),
                       '" frameborder=0 width="100%" height="400px"></iframe>')
     ),
     png = list(
       link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.png"),
+      permalink =  glue::glue("{url_base_path}.png"),
       embed =  paste0('<img src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.png"),
+                      glue::glue("{url_base_path}.png"),
                       '"></img>')
     ),
     svg = list(
       link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.svg"),
+      permalink =  glue::glue("{url_base_path}.svg"),
       embed =  paste0('<img src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.svg"),
+                      glue::glue("{url_base_path}.svg"),
                       '></img>')
     )
   )
