@@ -32,28 +32,30 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   metadata$group <- f$group
   metadata$frtype <- as.character(f$frtype)
 
+  url_base_path <- glue::glue("https://{bucket}/{folder}/{slug}/{slug}")
+
   formats <- c(c("csv", "json"), args$download_formats)
   metadata$files <- lapply(formats, function(x){
     list(
       path = glue::glue("{slug}.{x}"),
       format = x,
-      url = glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.{x}")
+      url = glue::glue("{url_base_path}.{x}")
     )
   }) %>% setNames(formats)
 
   metadata$share <- list(
     html = list(
       link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.html"),
+      permalink =  glue::glue("{url_base_path}.html"),
       embed =  paste0('<iframe src="',
-                      glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.html"),
+                      glue::glue("{url_base_path}.html"),
                       '" frameborder=0 width="100%" height="400px"></iframe>')),
     csv = list(
       link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.csv")),
+      permalink =  glue::glue("{url_base_path}.csv")),
     json = list(
       link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.json"))
+      permalink =  glue::glue("{url_base_path}.json"))
   )
 
   f$files <- metadata$files
