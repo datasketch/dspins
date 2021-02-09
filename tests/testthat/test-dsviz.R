@@ -7,14 +7,38 @@ test_that("dsviz hgchmagic", {
 
   library(hgchmagic)
   current_title <- paste0("Sample hgdviz - ", as.character(Sys.time()))
+  current_slug <- create_slug(current_title)
   viz <- hgchmagic::hgch_bar_Cat(tibble(a = c("a","b")))
 
   dv <- dsviz(viz, name = current_title)
   pin_url <- pin(dv, folder = folder, bucket_id = bucket_id)
 
   pins <- dspins::dspin_list(folder, bucket_id)
-  expect_true(any(pins$name == create_slug(current_title)))
+  expect_true(any(pins$name == current_slug))
 
+  # test meta data
+  url_base_path <- paste0("https://",bucket_id,".dskt.ch/",folder,"/",current_slug,"/",current_slug)
+  url_share <- paste0("https://datasketch.co/",folder,"/",current_slug)
+
+  meta_info_pin <- pins %>% filter(name == current_slug)
+  expect_equal(unlist(meta_info_pin$formats), c("html", "png"))
+
+  expect_equal(meta_info_pin$files$html$path, paste0(current_slug,".html"))
+  expect_equal(meta_info_pin$files$html$url, paste0(url_base_path,".html"))
+
+  expect_equal(meta_info_pin$files$png$path, paste0(current_slug,".png"))
+  expect_equal(meta_info_pin$files$png$url, paste0(url_base_path,".png"))
+
+  expect_equal(meta_info_pin$share$html$link, url_share)
+  expect_equal(meta_info_pin$share$html$permalink, paste0(url_base_path,".html"))
+  expect_equal(meta_info_pin$share$html$embed, paste0("<iframe src=\"",paste0(url_base_path,".html"),"\" frameborder=0 width=\"100%\" height=\"400px\"></iframe>"))
+
+  expect_equal(meta_info_pin$share$png$link, url_share)
+  expect_equal(meta_info_pin$share$png$permalink, paste0(url_base_path,".png"))
+  expect_equal(meta_info_pin$share$png$embed, paste0("<img src=\"",paste0(url_base_path,".png"),"\"></img>"))
+
+
+  # test errors and warnings
   expect_error(pin(dv), "Need a folder to save dsviz")
 
   expect_message(pin(dv, folder = folder), "No bucket_id specified. Using 'user.dskt.ch' by default.")
