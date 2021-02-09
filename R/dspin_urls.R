@@ -45,7 +45,7 @@ element_type <- function(x){
 get_element_urls <- function(element, folder, bucket_id){
 
   element_slug <- element$slug
-  baselink <-  file.path(paste0("https://s3.amazonaws.com/", bucket_id, ".dskt.ch"), folder, element_slug)
+  baselink <-  file.path(paste0("https://", bucket_id, ".dskt.ch"), folder, element_slug)
   link <-  file.path("https://datasketch.co", folder, element_slug)
   el_type <- element_type(element)
 

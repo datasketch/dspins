@@ -27,16 +27,19 @@ pin.drop <- function(drop, name = NULL, description = NULL, board = NULL, ...) {
   metadata$description <- NULL
 
   format <- drop$format
+
+  url_base_path <- glue::glue("https://{bucket}/{folder}/{slug}/{slug}")
+
   metadata$files <- list(list(path = glue::glue(paste0("{slug}.", format)),
                               format = format,
-                              url = glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.{format}"))) %>%
+                              url = glue::glue("{url_base_path}.{format}"))) %>%
     setNames(format)
 
 
   metadata$share <- list(list(link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-                              permalink =  glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.{format}"),
+                              permalink =  glue::glue("{url_base_path}.{format}"),
                               embed =  paste0('<iframe src="',
-                                              glue::glue("https://s3.amazonaws.com/{bucket}/{folder}/{slug}/{slug}.{format}"),
+                                              glue::glue("{url_base_path}.{format}"),
                                               '" frameborder=0 width="100%" height="400px"></iframe>'))) %>%
     setNames(format)
 
