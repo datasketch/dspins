@@ -24,5 +24,7 @@ Suggests:
     testthat (>= 2.1.0),
     knitr,
     rmarkdown
+Remotes:
+    datasketch/homodatum
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
