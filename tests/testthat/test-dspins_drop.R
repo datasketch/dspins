@@ -20,7 +20,7 @@ test_that("dspins drop", {
   url_base_path <- paste0("https://",bucket_id,".dskt.ch/",folder,"/",current_slug,"/",current_slug)
   url_share <- paste0("https://datasketch.co/",folder,"/",current_slug)
 
-  meta_info_pin <- pins %>% filter(name == current_slug)
+  meta_info_pin <- pins %>% dplyr::filter(name == current_slug)
 
   files_paths <- sub('.*\\/', '',  meta_info_pin$files_paths[[1]])
   expect_true(length(setdiff(files_paths, c("sample.html", "sample.jpg", "sample.pdf", "sample.png", "sample.txt"))) == 0)
