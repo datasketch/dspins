@@ -26,7 +26,7 @@ board_register_s3_dspins <- function(folder = "",
   datatxt_refresh_index_ds(board)
 }
 
-#' @export
+#' @exportS3Method dspins::board_initialize
 board_initialize.s3_dspins <- function(board,
                                 bucket = Sys.getenv("AWS_BUCKET"),
                                 key = Sys.getenv("AWS_ACCESS_KEY_ID"),
