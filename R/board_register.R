@@ -12,7 +12,7 @@ board_register_s3_dspins <- function(folder = "",
 
   name <- paste0(bucket, "/", folder)
   path <- folder
-  board_register("s3_dspins",
+  pins::board_register("s3_dspins",
                  name = name,
                  bucket = bucket,
                  key = key,
@@ -22,7 +22,7 @@ board_register_s3_dspins <- function(folder = "",
                  path = path,
                  ...)
 
-  board <- board_get(name)
+  board <- pins::board_get(name)
 
   datatxt_refresh_index_ds(board)
 }
@@ -44,21 +44,21 @@ board_initialize.s3_dspins <- function(board,
 
   s3_url <- paste0("http://", bucket, ".", host)
 
-  board_register_datatxt(name = board$name,
-                         url = s3_url,
-                         cache = cache,
-                         headers = pins:::s3_headers,
-                         needs_index = FALSE,
-                         key = key,
-                         secret = secret,
-                         bucket = bucket,
-                         connect = FALSE,
-                         browse_url = paste0("https://s3.console.aws.amazon.com/s3/buckets/", board$name, "/"),
-                         host = host,
-                         path = path,
-                         ...)
+  pins::board_register_datatxt(name = board$name,
+                               url = s3_url,
+                               cache = cache,
+                               headers = pins:::s3_headers,
+                               needs_index = FALSE,
+                               key = key,
+                               secret = secret,
+                               bucket = bucket,
+                               connect = FALSE,
+                               browse_url = paste0("https://s3.console.aws.amazon.com/s3/buckets/", board$name, "/"),
+                               host = host,
+                               path = path,
+                               ...)
 
-  board_get(board$name)
+  pins::board_get(board$name)
 
 }
 

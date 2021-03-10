@@ -5,7 +5,7 @@ datatxt_refresh_index_ds <- function(board) {
   index_file <- "data.txt"
   index_url <- file_path_null(board$url, board$subpath, index_file)
 
-  index_file_get <- file_path_null(board$subpath, "data.txt")
+  index_file_get <- file_path_null(board$subpath, index_file)
 
   if (identical(board$index_randomize, TRUE)) {
     index_file_get <- paste0(index_file_get, "?rand=", stats::runif(1) * 10^8)
@@ -16,7 +16,7 @@ datatxt_refresh_index_ds <- function(board) {
                         httr::write_disk(temp_index, overwrite = TRUE),
                         board_datatxt_headers(board, index_file_get))
 
-  local_index <- file.path(board_local_storage(board$name, board = board), "data.txt")
+  local_index <- file.path(pins::board_local_storage(board$name, board = board), "data.txt")
   current_index <- board_manifest_get(local_index, default_empty = TRUE)
 
   if (httr::http_error(response)) {
