@@ -1,4 +1,4 @@
-#' @export
+#' @exportS3Method dspins::pin
 pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   path <- tempfile()
   dir.create(path)
@@ -94,12 +94,12 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   dv
 }
 
-#' @export
+#' @exportS3Method dspins::pin_load
 pin_load.dsviz <- function(path, ...) {
   readRDS(file.path(path, "data.rds"))
 }
 
-#' @export
+#' @exportS3Method dspins::pin_preview
 pin_preview.dsviz <- function(x, ...) {
   x
 }
