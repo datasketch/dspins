@@ -52,9 +52,9 @@ pin.drop <- function(drop, name = NULL, description = NULL, board = NULL, ...) {
   if(!dspins_is_board_connected(folder, bucket_id))
     stop("Board not connected. Run: dspins_user_board_connect(folder, bucket_id)")
 
-  board_pin_store(board, path, slug, drop$description, "drop",
-                  extract = FALSE,
-                  metadata,...)
+  pins::board_pin_store(board, path, slug, drop$description, "drop",
+                        extract = FALSE,
+                        metadata,...)
 
   message("Saved pin")
 

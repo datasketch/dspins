@@ -63,8 +63,8 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   f$share <- metadata$share
   f$meta <- metadata
 
-  fringe_write(f, path = path, overwrite_dic = TRUE)
-  fringe_write_json(f, path = path)
+  homodatum::fringe_write(f, path = path, overwrite_dic = TRUE)
+  homodatum::fringe_write_json(f, path = path)
 
   credits <- args$credits %||% list(label = "Downloaded from:",
                                value = paste0("http://datasketch.co/",folder,"/",slug))
@@ -72,16 +72,16 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   download_formats <- c("csv", "json", args$download_formats)
   message(download_formats)
   if("xlsx" %in% download_formats){
-    fringe_write_xlsx(f, path = path, credits = credits)
+    homodatum::fringe_write_xlsx(f, path = path, credits = credits)
   }
 
 
   if(!dspins_is_board_connected(folder, bucket_id))
     stop("Board not connected. Run: dspins_user_board_connect(folder, bucket_id)")
 
-  upload_url <- tryCatch(board_pin_store(board, path, slug, f$description, "fringe",
-                                         extract = FALSE,
-                                         metadata,...),
+  upload_url <- tryCatch(pins::board_pin_store(board, path, slug, f$description, "fringe",
+                                               extract = FALSE,
+                                               metadata,...),
                          error = function(e){
                            e
                          },
