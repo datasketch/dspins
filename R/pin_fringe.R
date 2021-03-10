@@ -1,4 +1,4 @@
-#' @export
+#' @exportS3Method dspins::pin
 pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   path <- tempfile()
   dir.create(path)
@@ -98,12 +98,12 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   f
 }
 
-#' @export
+#' @exportS3Method dspins::pin_load
 pin_load.fringe <- function(path, ...) {
   readRDS(file.path(path, "data.rds"))
 }
 
-#' @export
+#' @exportS3Method dspins::pin_preview
 pin_preview.fringe <- function(x, ...) {
   x
 }

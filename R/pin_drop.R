@@ -1,4 +1,4 @@
-#' @export
+#' @exportS3Method dspins::pin
 pin.drop <- function(drop, name = NULL, description = NULL, board = NULL, ...) {
   path <- tempfile()
   dir.create(path)
@@ -60,12 +60,12 @@ pin.drop <- function(drop, name = NULL, description = NULL, board = NULL, ...) {
   drop
 }
 
-#' @export
+#' @exportS3Method dspins::pin_load
 pin_load.drop <- function(path, ...) {
   NULL
 }
 
-#' @export
+#' @exportS3Method dspins::pin_preview
 pin_preview.drop <- function(x, ...) {
   x
 }
