@@ -1,3 +1,4 @@
+#' @importFrom pins board_initialize
 #' @export
 board_register_s3_dspins <- function(folder = "",
                                      bucket = Sys.getenv("AWS_BUCKET"),
