@@ -1,13 +1,13 @@
 Package: dspins
-Title: Data types for humans.
-Version: 1.0.0
+Title: DS pins
+Version: 1.0.1
 Authors@R: 
     person(given = "Juan Pablo",
            family = "Marin Diaz",
            role = c("aut", "cre"),
            email = "jpmarindiaz@gmail.com")
 Maintainer: Juan Pablo Marin Diaz <jpmarindiaz@gmail.com>
-Description: Data types for humans.
+Description: Save DS files.
 URL: https://github.com/datasketch/dspins
 License: MIT + file LICENSE
 Encoding: UTF-8
