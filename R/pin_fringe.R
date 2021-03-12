@@ -35,7 +35,7 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
 
   url_base_path <- glue::glue("https://{bucket}/{folder}/{slug}/{slug}")
 
-  formats <- c(c("csv", "json"), args$download_formats)
+  formats <- unique(c(c("csv", "json"), args$download_formats))
   metadata$files <- lapply(formats, function(x){
     list(
       path = glue::glue("{slug}.{x}"),
