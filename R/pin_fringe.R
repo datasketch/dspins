@@ -35,7 +35,7 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
 
   formats <- unique(c(c("csv", "json"), args$download_formats))
 
-  links <- create_ds_links(slug = slug, folder = folder, bucket = bucket, formats = formats, element_type = "fringe")
+  links <- create_ds_links(slug = slug, folder = folder, formats = formats, element_type = "fringe", bucket_id = bucket_id)
 
   metadata$files <- links$files
   metadata$share <- links$share

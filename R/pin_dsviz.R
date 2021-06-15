@@ -32,7 +32,7 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   if(dv$type == "htmlwidget") formats <- c("html", "png")
   if(dv$type == "gg") formats <- c("png", "svg")
 
-  links <- create_ds_links(slug = slug, folder = folder, bucket = bucket, formats = formats, element_type = "dsviz")
+  links <- create_ds_links(slug = slug, folder = folder, formats = formats, element_type = "dsviz", bucket_id = bucket_id)
 
   metadata$files <- links$files
   metadata$share <- links$share

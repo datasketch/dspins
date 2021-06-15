@@ -10,7 +10,9 @@
 #'
 #' @return List containing a list of links to files in ds profile and a list of links to share element
 #' @export
-create_ds_links <- function(slug, folder, bucket, formats, element_type){
+create_ds_links <- function(slug, folder, formats, element_type, bucket_id = "user"){
+
+  bucket <- bucket_name(bucket_id)
 
   files <- create_file_links(slug = slug, folder = folder, bucket = bucket, formats = formats, element_type = element_type)
   share <- create_share_links(slug = slug, folder = folder, bucket = bucket, formats = formats, element_type = element_type)

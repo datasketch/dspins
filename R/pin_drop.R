@@ -29,7 +29,7 @@ pin.drop <- function(drop, name = NULL, description = NULL, board = NULL, ...) {
 
   format <- drop$format
 
-  links <- create_ds_links(slug = slug, folder = folder, bucket = bucket, formats = format, element_type = "drop")
+  links <- create_ds_links(slug = slug, folder = folder, formats = format, element_type = "drop", bucket_id = bucket_id)
 
   metadata$files <- links$files
   metadata$share <- links$share
