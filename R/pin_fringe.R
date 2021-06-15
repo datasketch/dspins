@@ -33,31 +33,12 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   metadata$group <- f$group
   metadata$frtype <- as.character(f$frtype)
 
-  url_base_path <- glue::glue("https://{bucket}/{folder}/{slug}/{slug}")
-
   formats <- unique(c(c("csv", "json"), args$download_formats))
-  metadata$files <- lapply(formats, function(x){
-    list(
-      path = glue::glue("{slug}.{x}"),
-      format = x,
-      url = glue::glue("{url_base_path}.{x}")
-    )
-  }) %>% setNames(formats)
 
-  metadata$share <- list(
-    html = list(
-      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("{url_base_path}.html"),
-      embed =  paste0('<iframe src="',
-                      glue::glue("{url_base_path}.html"),
-                      '" frameborder=0 width="100%" height="400px"></iframe>')),
-    csv = list(
-      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("{url_base_path}.csv")),
-    json = list(
-      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("{url_base_path}.json"))
-  )
+  links <- create_ds_links(slug = slug, folder = folder, bucket = bucket, formats = formats, element_type = "fringe")
+
+  metadata$files <- links$files
+  metadata$share <- links$share
 
   f$files <- metadata$files
   f$share <- metadata$share

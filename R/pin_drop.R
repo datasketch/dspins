@@ -29,20 +29,10 @@ pin.drop <- function(drop, name = NULL, description = NULL, board = NULL, ...) {
 
   format <- drop$format
 
-  url_base_path <- glue::glue("https://{bucket}/{folder}/{slug}/{slug}")
+  links <- create_ds_links(slug = slug, folder = folder, bucket = bucket, formats = format, element_type = "drop")
 
-  metadata$files <- list(list(path = glue::glue(paste0("{slug}.", format)),
-                              format = format,
-                              url = glue::glue("{url_base_path}.{format}"))) %>%
-    setNames(format)
-
-
-  metadata$share <- list(list(link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-                              permalink =  glue::glue("{url_base_path}.{format}"),
-                              embed =  paste0('<iframe src="',
-                                              glue::glue("{url_base_path}.{format}"),
-                                              '" frameborder=0 width="100%" height="400px"></iframe>'))) %>%
-    setNames(format)
+  metadata$files <- links$files
+  metadata$share <- links$share
 
   drop$share <- metadata$share
   drop$files <- metadata$files
