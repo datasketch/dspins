@@ -4,9 +4,9 @@
 \name{dspins-package}
 \alias{dspins}
 \alias{dspins-package}
-\title{dspins: Data types for humans.}
+\title{dspins: DS pins}
 \description{
-Data types for humans.
+Save DS files.
 }
 \seealso{
 Useful links:
