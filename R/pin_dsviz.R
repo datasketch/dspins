@@ -32,41 +32,10 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   if(dv$type == "htmlwidget") formats <- c("html", "png")
   if(dv$type == "gg") formats <- c("png", "svg")
 
-  url_base_path <- glue::glue("https://{bucket}/{folder}/{slug}/{slug}")
+  links <- create_ds_links(slug = slug, folder = folder, formats = formats, element_type = "dsviz", bucket_id = bucket_id)
 
-  metadata$files <- lapply(formats, function(x){
-    list(
-      path = glue::glue(paste0("{slug}.",x)),
-      format = x,
-      url = glue::glue("{url_base_path}.{x}")
-    )
-  }) %>% setNames(formats)
-
-  share <- list(
-    html = list(
-      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("{url_base_path}.html"),
-      embed =  paste0('<iframe src="',
-                      glue::glue("{url_base_path}.html"),
-                      '" frameborder=0 width="100%" height="400px"></iframe>')
-    ),
-    png = list(
-      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("{url_base_path}.png"),
-      embed =  paste0('<img src="',
-                      glue::glue("{url_base_path}.png"),
-                      '"></img>')
-    ),
-    svg = list(
-      link =  glue::glue("https://datasketch.co/{folder}/{slug}"),
-      permalink =  glue::glue("{url_base_path}.svg"),
-      embed =  paste0('<img src="',
-                      glue::glue("{url_base_path}.svg"),
-                      '></img>')
-    )
-  )
-
-  metadata$share <- share[formats]
+  metadata$files <- links$files
+  metadata$share <- links$share
 
   dv$files <- metadata$files
   dv$share <- metadata$share
