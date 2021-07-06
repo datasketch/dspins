@@ -8,6 +8,7 @@ pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
   saveRDS(dv, file.path(path, "data.rds"), version = 2)
 
   metadata <- dv
+  metadata$title <- dv$name
   metadata$viz <- NULL
   metadata$name <- NULL
   metadata$description <- NULL
