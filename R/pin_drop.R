@@ -24,6 +24,7 @@ pin.drop <- function(drop, name = NULL, description = NULL, board = NULL, ...) {
 
   name <- create_slug(name) %||% slug
   metadata <- drop
+  metadata$title <- drop$name
   metadata$name <- NULL
   metadata$description <- NULL
 
