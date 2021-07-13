@@ -9,7 +9,7 @@ dsviz <- function(viz, name = NULL, description = NULL, ...){
   }
   if(type == "gg"){
     formats <- c("png", "svg")
-    width <- args$width %||% 600L
+    width <- args$width %||% 650L
   }
 
 
@@ -22,7 +22,7 @@ dsviz <- function(viz, name = NULL, description = NULL, ...){
     type = type,
     viz_type = type,
     width = width,
-    height = as.integer(args$height) %||% 400L,
+    height = as.integer(args$height) %||% 500L,
     access = args$access %||% "private",
     license = NULL,
     #time_created = NULL,
@@ -99,7 +99,7 @@ dsviz_write <- function(dv, path, ...){
     if (!webshot::is_phantomjs_installed())
       webshot::install_phantomjs()
     webshot::webshot(paste0(viz_path,".html"), paste0(viz_path,".png"),
-                     vwidth = viz_width, vheight = viz_height, delay = 0.2)
+                     vheight = viz_height, delay = 0.2)
     file.remove(filepath)
 
   }
