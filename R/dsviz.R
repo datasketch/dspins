@@ -75,8 +75,10 @@ dsviz_write <- function(dv, path, ...){
   args <- list(...)
   viz <- dv$viz
   type <- dsviz_type(viz)
-  viz_width <- dv$width
-  viz_height <- dv$height
+  # viz_width <- dv$width
+  # viz_height <- dv$height
+  viz_width <- 660
+  viz_height <- 500
 
   viz_path <- file.path(path, dv$slug)
 
