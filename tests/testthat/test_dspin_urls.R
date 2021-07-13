@@ -24,7 +24,7 @@ test_that("User url", {
   # DSVIZ HTMLWIDGETS
 
   library(hgchmagic)
-  hg <- hgch_bar_Cat(data.frame(Thinks = c("Rocks", "Paper", "Cuts")), title = "Nice chart")
+  hg <- hgch_donut_Cat(data.frame(Thinks = c("Rocks", "Paper", "Cuts")), title = "Nice chart", subtitle = "Nice subtitle")
 
   expect_error(get_element_urls(hg, folder = user_name, bucket_id = bucket_id), "Element must be fringe or dsviz")
   dvhg <- dsviz(hg, height = 600)
@@ -43,7 +43,8 @@ test_that("User url", {
 
   # DSVIZ GGMAGIC
   library(ggmagic)
-  gg <- gg_bar_Cat(d = data.frame(x=c("a","a","b")), title = "Another Chart")
+  gg <- gg_bar_Cat(d = data.frame(x=c("a","a","b"),
+                                  stringsAsFactors = FALSE), title = "Another Chart")
   dvgg <- dsviz(gg)
 
   ## Urls generation
