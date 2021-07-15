@@ -1,6 +1,90 @@
+ds_board_s3 <- function(
+  user_name = NULL,
+  org_name = NULL,
+  bucket_id = NULL,
+  versioned = TRUE,
+  access_key = NULL,
+  secret_access_key = NULL,
+  session_token = NULL,
+  credential_expiration = NULL,
+  profile = NULL,
+  region = NULL,
+  endpoint = NULL,
+  cache = NULL) {
 
-#' @export
-valid_folder_name <- function(folder){
+  if(all(is.null(user_name), is.null(org_name))) stop("User, organization id or name cannot be null")
+
+  load_env()
+
+  folder <- org_name
+  if(is.null(folder)) folder <- user_name
+
+  folder <- validate_folder_name(folder)
+
+  bucket <- get_bucket_name(bucket_id)
+
+  config <- compact(list(
+    credentials = compact(list(
+      creds = compact(list(
+        access_key_id = access_key,
+        secret_access_key = secret_access_key,
+        session_token = session_token
+      )),
+      profile = profile
+    )),
+    endpoint = endpoint,
+    region = "us-east-1"
+  ))
+
+  svc <- paws.storage::s3(config = config)
+
+  # Check that have access to the bucket
+  svc$head_bucket(bucket)
+
+  cache <- cache %||% paste0(board_cache_path(paste0("s3-", bucket)), "/", folder)
+  new_board_v1("dspins_board_s3",
+               name = "s3",
+               bucket = bucket,
+               folder = folder,
+               svc = svc,
+               cache = cache,
+               versioned = versioned
+  )
+}
+
+
+new_board <- function(board, api, cache, ...) {
+  if (!is.na(cache)) {
+    fs::dir_create(cache)
+  }
+
+  board <- structure(
+    list(
+      board = board,
+      api = api,
+      cache = cache,
+      ...
+    ),
+    class = c(board, "pins_board")
+  )
+
+  board
+}
+
+
+new_board_v1 <- function(board, cache, versioned = FALSE, ...) {
+  new_board(
+    board = board,
+    api = 1L,
+    cache = cache,
+    versioned = versioned,
+    ...
+  )
+}
+
+
+
+validate_folder_name <- function(folder){
   if(missing(folder)) stop("Need a folder name")
   if(nchar(folder) == 0)
     stop("Need a correct folder name")
@@ -9,7 +93,17 @@ valid_folder_name <- function(folder){
   folder
 }
 
-#' @export
+
+get_bucket_name <- function(bucket_id){
+  bucket_id <- validate_bucket_id(bucket_id)
+
+  bucket_name(bucket_id)
+}
+
+get_bucket_id <- function(bucket_name){
+  gsub(".dskt.ch", "", bucket_name)
+}
+
 bucket_name <- function(bucket_id){
   if(missing(bucket_id)) stop("Need a bucket_id")
   if(nchar(bucket_id) == 0)
@@ -22,9 +116,12 @@ bucket_name <- function(bucket_id){
   paste0(bucket_id,".dskt.ch")
 }
 
-#' @export
-board_name <- function(bucket_id, folder){
-  paste0(bucket_name(bucket_id),"/",folder)
+validate_bucket_id <- function(bucket_id){
+  if(is.null(bucket_id)){
+    message("No bucket_id specified. Using 'user.dskt.ch' by default.")
+    bucket_id <- "user"
+  }
+  bucket_id
 }
 
 
@@ -35,6 +132,32 @@ dspins_bucket_exists <- function(bucket_id){
 }
 
 
+dspins_bucket_create <- function(bucket_id){
+
+  if(!dspins_bucket_exists(bucket_id)){
+    # new_bucket <- tryCatch(user_bucket_create(bucket_id), error=function(e) e, warning=function(w) w)
+    new_bucket <- tryCatch(aws.s3::put_bucket(bucket_name(bucket_id), region = "us-east-1"),
+                           error=function(e) e, warning=function(w) w)
+    message("Bucket created: ", bucket_name(bucket_id))
+    if(inherits(new_bucket,"error")){
+      stop(new_bucket)
+    }
+    bucket_name <- bucket_name(bucket_id)
+    aws.s3::put_website(bucket_name, request_body = s3_website_xml_body(bucket_id))
+    policy <- paste0(
+      readr::read_lines(system.file("bucket_policy.json", package = "dspins")),
+      collapse = "")
+    policy <- glue::glue(policy, .open = "{{", .close = "}}")
+    aws.s3::put_bucket_policy(bucket_name, policy)
+  } else {
+    message("Bucket already exists.")
+  }
+
+}
+
+
+
+
 #' @export
 dspins_is_board_connected <- function(folder, bucket_id = "user"){
   paste0(bucket_name(bucket_id), "/",folder) %in% user_board_list_local()
@@ -43,6 +166,8 @@ dspins_is_board_connected <- function(folder, bucket_id = "user"){
 
 #' @export
 dspins_user_board_connect <- function(folder, bucket_id = "user"){
+  .Deprecated("ds_board_s3")
+
   load_env()
 
   folder <- valid_folder_name(folder)
@@ -83,8 +208,8 @@ user_board_list_local <- function(){
 
 user_board_list_remote <- function(){
   x <- aws.s3::bucket_list_df()
-  x <- x[[1]]
-  x[grepl("^dskt\\.ch\\.",x)]
+  x <- x[,1]
+  x[grepl(".dskt\\.ch",x)]
 }
 
 #' @export
