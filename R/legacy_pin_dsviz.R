@@ -1,6 +1,7 @@
 #' @importFrom pins pin
 #' @exportS3Method dspins::pin
 pin.dsviz <- function(dv, name = NULL, description = NULL, board = NULL, ...) {
+  .Deprecated("dspin_read")
   path <- tempfile()
   dir.create(path)
   on.exit(unlink(path, recursive = TRUE))

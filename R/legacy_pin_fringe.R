@@ -1,6 +1,7 @@
 #' @importFrom pins pin
 #' @exportS3Method dspins::pin
 pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
+  .Deprecated("dspin")
   path <- tempfile()
   dir.create(path)
   on.exit(unlink(path, recursive = TRUE))
@@ -60,7 +61,7 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   if(!dspins_is_board_connected(folder, bucket_id))
     stop("Board not connected. Run: dspins_user_board_connect(folder, bucket_id)")
 
-  upload_url <- tryCatch(pins::board_pin_store(board, path, slug, f$description, "fringe",
+  upload_url <- tryCatch(pins::board_pin_store(board, path, name = slug, f$description, "fringe",
                                                extract = FALSE,
                                                metadata,...),
                          error = function(e){

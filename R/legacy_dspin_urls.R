@@ -4,6 +4,7 @@ dspin_urls <- function(element = NULL,
                        org_name = NULL,
                      bucket_id = NULL,
                      overwrite = FALSE, ...) {
+  .Deprecated("pin_urls")
   if (is.null(element)) {
     stop("Element cannot be null")
   }
