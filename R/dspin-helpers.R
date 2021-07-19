@@ -63,6 +63,6 @@ ds_object_read <- function(meta){
   switch(meta$dstype,
          fringe = readRDS(path),
          dsviz = readRDS(path),
-         drop = stop("DS type `drop` can't be read. Retrieve uploaded paths with `pin_download()`"
+         drop = stop("DS type `drop` can't be read. Retrieve uploaded paths with `pin_download()`."
          ))
 }
