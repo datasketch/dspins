@@ -3,7 +3,7 @@ test_that("User url", {
   user_name <- "test"
   bucket_id <- "testuser"
 
-  expect_true(dspins_user_board_connect(folder = user_name, bucket_id = bucket_id))
+  expect_silent(board <- ds_board_s3(user_name = user_name, bucket_id = bucket_id))
 
   # FRINGES
 
@@ -17,7 +17,7 @@ test_that("User url", {
   expect_equal(paste0("https://",bucket_id,".dskt.ch/",user_name,"/", f$slug, "/", f$slug, ".json"),
                urls$permalink)
   # Pin url
-  urls <- dspin_urls(element = f, user_name = user_name, bucket_id = bucket_id, download_formats = "xlsx")
+  urls <- board %>% pin_urls(f, download_formats = "xlsx")
   expect_equal(urls$link, paste0("https://datasketch.co/",user_name,"/", f$slug))
   expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",f$slug,"/",f$slug,".json"))
 
@@ -26,7 +26,7 @@ test_that("User url", {
   library(hgchmagic)
   hg <- hgch_donut_Cat(data.frame(Thinks = c("Rocks", "Paper", "Cuts")), title = "Nice chart", subtitle = "Nice subtitle")
 
-  expect_error(get_element_urls(hg, folder = user_name, bucket_id = bucket_id), "Element must be fringe or dsviz")
+  expect_error(get_element_urls(hg, folder = user_name, bucket_id = bucket_id), "Element must be fringe, dsviz or drop.")
   dvhg <- dsviz(hg, height = 600)
   expect_equal(dvhg$height, 600L)
 
@@ -37,7 +37,7 @@ test_that("User url", {
                paste0("<iframe src=\"",paste0("https://",bucket_id,".dskt.ch/",user_name,"/", dvhg$slug, "/", dvhg$slug, ".html"),"\" frameborder=0 width=\"100%\" height=\"400px\"></iframe>"))
 
   # pin viz
-  urls <- dspin_urls(element = dvhg, user_name = user_name, bucket_id = bucket_id)
+  urls <- board %>% pin_urls(dvhg)
   expect_equal(urls$link, paste0("https://datasketch.co/",user_name,"/", dvhg$slug))
   expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",dvhg$slug,"/",dvhg$slug,".html"))
 
@@ -52,7 +52,7 @@ test_that("User url", {
   expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",dvgg$slug,"/",dvgg$slug,".png"))
 
   # pin viz
-  urls <- dspin_urls(element = dvgg, user_name = user_name, bucket_id = bucket_id)
+  urls <- board %>% pin_urls(dvgg)
   expect_equal(urls$link, paste0("https://datasketch.co/",user_name,"/", dvgg$slug))
   expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",dvgg$slug,"/",dvgg$slug,".png"))
 

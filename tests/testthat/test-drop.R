@@ -2,8 +2,8 @@ test_that("dspins drop", {
 
   bucket_id <- "testuser"
   folder <- "test"
-  expect_true(dspins_user_board_connect(folder = folder, bucket_id = bucket_id))
-  expect_true(dspins_user_board_connect(folder = folder, bucket_id = "user"))
+
+  board <- ds_board_s3(user_name = folder, bucket_id = bucket_id)
 
   sample_path <- system.file("drop_sample", package = "dspins")
   path <- file.path(sample_path, "sample.txt")
@@ -11,31 +11,28 @@ test_that("dspins drop", {
   current_title <- paste0("Sample drop - ", as.character(Sys.time()))
   current_slug <- create_slug(current_title)
   dp <- drop(sample_path, name = current_title)
-  pin_url <- pin(dp, folder = folder, bucket_id = bucket_id)
 
-  pins <- dspins::dspin_list(folder, bucket_id)
-  expect_true(any(pins$name == current_slug))
+  path <- tempfile()
+  dir.create(path)
+  on.exit(unlink(path, recursive = TRUE))
+
+  slug <- dp$slug
+
+  meta_info_pin <- dspin_write(dp, slug, board, path)
 
   # test meta data
   url_base_path <- paste0("https://",bucket_id,".dskt.ch/",folder,"/",current_slug,"/",current_slug)
   url_share <- paste0("https://datasketch.co/",folder,"/",current_slug)
 
-  meta_info_pin <- pins %>% dplyr::filter(name == current_slug)
-
   files_paths <- sub('.*\\/', '',  meta_info_pin$files_paths[[1]])
   expect_true(length(setdiff(files_paths, c("sample.html", "sample.jpg", "sample.pdf", "sample.png", "sample.txt"))) == 0)
 
-  expect_equal(meta_info_pin$files$`1`$path, paste0(current_slug,"."))
-  expect_equal(meta_info_pin$files$`1`$url, paste0(url_base_path,"."))
+  expect_equal(meta_info_pin$files[[1]]$path, paste0(current_slug,"."))
+  expect_equal(meta_info_pin$files[[1]]$url, paste0(url_base_path,"."))
 
-  expect_equal(meta_info_pin$share$`1`$link, url_share)
-  expect_equal(meta_info_pin$share$`1`$permalink, paste0(url_base_path,"."))
-  expect_equal(meta_info_pin$share$`1`$embed, paste0("<iframe src=\"",paste0(url_base_path,"."),"\" frameborder=0 width=\"100%\" height=\"400px\"></iframe>"))
-
-  # test errors and warnings
-  expect_error(pin(dp), "Need a folder to save drop")
-
-  expect_message(pin(dp, folder = folder), "No bucket_id specified. Using 'user.dskt.ch' by default.")
+  expect_equal(meta_info_pin$share[[1]]$link, url_share)
+  expect_equal(meta_info_pin$share[[1]]$permalink, paste0(url_base_path,"."))
+  expect_equal(meta_info_pin$share[[1]]$embed, paste0("<iframe src=\"",paste0(url_base_path,"."),"\" frameborder=0 width=\"100%\" height=\"400px\"></iframe>"))
 
 })
 
