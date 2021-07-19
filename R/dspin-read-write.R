@@ -22,20 +22,13 @@ pin_read.dspins_board_s3 <- function(board, name, version = NULL, hash = NULL, .
   meta <- pin_fetch(board, name, version = version, ...)
 
   meta$file <- switch(meta$dstype,
-                      "fringe" = meta$files$csv$path,
+                      "fringe" = "data.rds",
                       "dsviz" = "data.rds",
                       "drop" = NULL)
 
-  meta$filetype <- switch(meta$dstype,
-                          "fringe" = "csv",
-                          "dsviz" = "rds",
-                          "drop" = "file")
-
-  meta$api_version <- 1
-
   check_hash(meta, hash)
 
-  object_read(meta)
+  ds_object_read(meta)
 }
 
 

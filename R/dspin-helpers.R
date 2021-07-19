@@ -52,7 +52,7 @@ ds_s3_delete_slug <- function(board, slug) {
 }
 
 
-object_read <- function(meta) {
+ds_object_read <- function(meta){
   path <- fs::path(meta$local$dir, meta$file)
   missing <- !fs::file_exists(path)
 
@@ -60,27 +60,9 @@ object_read <- function(meta) {
     stop(paste0("Cache failure. Missing files:", path[!missing]))
   }
 
-  if (meta$api_version == 1) {
-    type <- rlang::arg_match0(meta$filetype, c("rds", "json", "arrow", "pickle", "csv", "file"))
-
-    switch(type,
-           rds = readRDS(path),
-           json = jsonlite::read_json(path, simplifyVector = TRUE),
-           arrow = arrow::read_feather(path),
-           pickle = stop("'pickle' pins not supported in R"),
-           csv = utils::read.csv(path, stringsAsFactors = TRUE),
-           file = stop("Pin created with `pin_upload()`. Retrieve uploaded paths with `pin_download()`"
-           ))
-  } else {
-    # used by board_rsconnect()
-    type <- arg_match0(meta$type, c("default", "files", "table"))
-    path <- fs::path_dir(path[[1]])
-
-    switch(type,
-           default = pin_load.default(path),
-           table = pin_load.table(path),
-           files = pin_load.files(path)
-    )
-  }
+  switch(meta$dstype,
+         fringe = readRDS(path),
+         dsviz = readRDS(path),
+         drop = stop("DS type `drop` can't be read. Retrieve uploaded paths with `pin_download()`"
+         ))
 }
-
