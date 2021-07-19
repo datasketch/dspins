@@ -17,7 +17,7 @@ pin_urls <- function(board,
   # Validate element is fringe or dsviz
   element_type(element)
 
-  board %>% pin_write(element)
+  board %>% pin_write(element, ...)
   get_element_urls(element, folder, bucket_id)
 }
 
@@ -25,7 +25,8 @@ pin_urls <- function(board,
 element_type <- function(x){
   if(homodatum::is_fringe(x)) return("fringe")
   if(is_dsviz(x)) return("dsviz")
-  stop("Element must be fringe or dsviz")
+  if(class(x) == "drop") return("drop")
+  stop("Element must be fringe, dsviz or drop.")
 }
 
 get_element_urls <- function(element, folder, bucket_id){
