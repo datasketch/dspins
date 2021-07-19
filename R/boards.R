@@ -2,7 +2,7 @@ ds_board_s3 <- function(
   user_name = NULL,
   org_name = NULL,
   bucket_id = NULL,
-  versioned = TRUE,
+  versioned = FALSE,
   access_key = NULL,
   secret_access_key = NULL,
   session_token = NULL,
@@ -22,6 +22,8 @@ ds_board_s3 <- function(
   folder <- validate_folder_name(folder)
 
   bucket <- get_bucket_name(bucket_id)
+
+  dspins_bucket_create(bucket_id = bucket_id)
 
   config <- compact(list(
     credentials = compact(list(
@@ -149,61 +151,17 @@ dspins_bucket_create <- function(bucket_id){
       collapse = "")
     policy <- glue::glue(policy, .open = "{{", .close = "}}")
     aws.s3::put_bucket_policy(bucket_name, policy)
+  }
+
+}
+
+#' @export
+is_dspins_board_s3 <- function(board){
+  if (inherits(board, "dspins_board_s3")) {
+    TRUE
   } else {
-    message("Bucket already exists.")
+    FALSE
   }
-
-}
-
-
-
-
-#' @export
-dspins_is_board_connected <- function(folder, bucket_id = "user"){
-  paste0(bucket_name(bucket_id), "/",folder) %in% user_board_list_local()
-}
-
-
-#' @export
-dspins_user_board_connect <- function(folder, bucket_id = "user"){
-  .Deprecated("ds_board_s3")
-
-  load_env()
-
-  folder <- valid_folder_name(folder)
-
-  if(!dspins_bucket_exists(bucket_id)){
-    message("Bucket does not exist")
-    # new_bucket <- tryCatch(user_bucket_create(bucket_id), error=function(e) e, warning=function(w) w)
-    new_bucket <- tryCatch(aws.s3::put_bucket(bucket_name(bucket_id), region = "us-east-1"),
-                           error=function(e) e, warning=function(w) w)
-    message("Bucket created: ", bucket_name(bucket_id))
-    if(inherits(new_bucket,"error")){
-      stop(new_bucket)
-    }
-    bucket_name <- bucket_name(bucket_id)
-    aws.s3::put_website(bucket_name, request_body = s3_website_xml_body(bucket_id))
-    policy <- paste0(
-      readr::read_lines(system.file("bucket_policy.json", package = "dspins")),
-      collapse = "")
-    policy <- glue::glue(policy, .open = "{{", .close = "}}")
-    aws.s3::put_bucket_policy(bucket_name, policy)
-  }
-
-  bucket_name <- bucket_name(bucket_id)
-  board <- board_name(bucket_id, folder)
-
-  if(!board %in% user_board_list_local()){
-    board_register_s3_dspins(folder = folder, bucket = bucket_name)
-    message("User board registered: ", folder)
-  }
-  board %in% user_board_list_local()
-}
-
-user_board_list_local <- function(){
-  x <- pins::board_list()
-  x[grepl("/",x)]
-  # x[grepl("*\\.dskt\\.ch$",x)]
 }
 
 user_board_list_remote <- function(){
@@ -218,7 +176,6 @@ load_env <- function(file = ".env"){
     dotenv::load_dot_env()
   }
 }
-
 
 s3_website_xml_body <- function(user_name = ""){
   paste0(
