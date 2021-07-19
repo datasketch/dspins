@@ -12,6 +12,7 @@ dspin_write.fringe <- function(x, slug, board, path,...){
   args <- list(...)
 
   metadata <- x$meta
+  metadata$dstype <- "fringe"
   metadata$title <- x$name
   metadata$stats <- x$stats
   metadata$slug <- slug
@@ -43,7 +44,6 @@ dspin_write.fringe <- function(x, slug, board, path,...){
   if("xlsx" %in% download_formats){
     homodatum::fringe_write_xlsx(x, path = path, credits = credits)
   }
-  metadata$type <- "fringe"
   metadata$description <- x$description
   metadata
 }

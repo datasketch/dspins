@@ -4,9 +4,12 @@ dspin_write.dsviz <- function(x, slug, board, path,...){
     abort("`board` must be a pin board")
   }
 
+  saveRDS(x, file.path(path, "data.rds"), version = 2)
+
   args <- list(...)
 
   metadata <- x
+  metadata$dstype <- "dsviz"
   metadata$title <- x$name
   metadata$viz <- NULL
   metadata$name <- NULL
@@ -28,7 +31,6 @@ dspin_write.dsviz <- function(x, slug, board, path,...){
 
   dspins::dsviz_write(x, path = path)
 
-  metadata$type <- "dsviz"
   metadata$description <- x$description
   metadata
 }

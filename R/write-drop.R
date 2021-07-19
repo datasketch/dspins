@@ -8,6 +8,7 @@ dspin_write.dsviz <- function(x, slug, board, path,...){
 
   name <- create_slug(name) %||% slug
   metadata <- x
+  metadata$dstype <- "drop"
   metadata$title <- x$name
   metadata$name <- NULL
   metadata$description <- NULL
@@ -27,7 +28,6 @@ dspin_write.dsviz <- function(x, slug, board, path,...){
 
   dspins::drop_write(x, path)
 
-  metadata$type <- "drop"
   metadata$description <- x$description
   metadata
 }
