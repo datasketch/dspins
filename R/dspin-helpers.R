@@ -60,7 +60,7 @@ ds_object_read <- function(meta){
     stop(paste0("Cache failure. Missing files:", path[!missing]))
   }
 
-  switch(meta$dstype,
+  switch(meta$type,
          fringe = readRDS(path),
          dsviz = readRDS(path),
          drop = stop("DS type `drop` can't be read. Retrieve uploaded paths with `pin_download()`."

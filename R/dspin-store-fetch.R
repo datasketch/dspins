@@ -5,7 +5,7 @@ pin_store.dspins_board_s3 <- function(board, slug, paths, metadata,
 
   all_paths <- list.files(paths, full.names = TRUE)
 
-  metadata$path <- fs::path_file(all_paths)
+  metadata <- c(path = list(fs::path_file(all_paths)), metadata)
 
   ds_s3_upload_yaml(board, fs::path(slug, "data.txt"), metadata)
   for (path in all_paths) {

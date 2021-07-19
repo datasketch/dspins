@@ -21,7 +21,7 @@ pin_read.dspins_board_s3 <- function(board, name, version = NULL, hash = NULL, .
 
   meta <- pin_fetch(board, name, version = version, ...)
 
-  meta$file <- switch(meta$dstype,
+  meta$file <- switch(meta$type,
                       "fringe" = "data.rds",
                       "dsviz" = "data.rds",
                       "drop" = NULL)
@@ -51,16 +51,16 @@ pin_write.dspins_board_s3 <- function(board,
   slug <- x$slug
 
   metadata <- dspin_write(x, slug, board, path, ...)
-  dstype <- metadata$dstype
+  dstype <- metadata$type
 
   pin_store(board, slug, path, metadata, versioned = versioned, ...)
 
   if(dstype == "dsviz"){
-    if(metadata$type == "htmlwidget"){
+    if(metadata$viz_type == "htmlwidget"){
       change_content_type(slug = slug, format = "png", board = board)
       change_content_type(slug = slug, format = "html", board = board)
     }
-    if(metadata$type == "gg"){
+    if(metadata$viz_type == "gg"){
       change_content_type(slug = slug, format = "png", board = board)
       change_content_type(slug = slug, format = "svg", board = board)
     }

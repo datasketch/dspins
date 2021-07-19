@@ -21,6 +21,8 @@ ds_board_s3 <- function(
 
   folder <- validate_folder_name(folder)
 
+  bucket_id <- validate_bucket_id(bucket_id)
+
   bucket <- get_bucket_name(bucket_id)
 
   dspins_bucket_create(bucket_id = bucket_id)
@@ -97,8 +99,6 @@ validate_folder_name <- function(folder){
 
 
 get_bucket_name <- function(bucket_id){
-  bucket_id <- validate_bucket_id(bucket_id)
-
   bucket_name(bucket_id)
 }
 

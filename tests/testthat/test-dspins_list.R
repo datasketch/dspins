@@ -23,7 +23,7 @@ test_that("dspins, list ", {
   expect_true(title %in% all_pins$title)
   expect_true(slug %in% all_pins$slug)
   expect_true(slug %in% all_pins$slug)
-  expect_true(all(unique(all_pins$dstype) %in% c("fringe", "dsviz", "drop")))
+  expect_true(all(unique(all_pins$type) %in% c("fringe", "dsviz", "drop")))
 
 })
 

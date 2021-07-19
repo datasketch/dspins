@@ -9,7 +9,7 @@ dspin_write.dsviz <- function(x, slug, board, path,...){
   args <- list(...)
 
   metadata <- x
-  metadata$dstype <- "dsviz"
+  metadata$type <- "dsviz"
   metadata$title <- x$name
   metadata$viz <- NULL
   metadata$name <- NULL

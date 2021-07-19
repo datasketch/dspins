@@ -7,8 +7,9 @@ dspin_write.drop <- function(x, slug, board, path,...){
   args <- list(...)
 
   name <- create_slug(x$name) %||% slug
+
   metadata <- x
-  metadata$dstype <- "drop"
+  metadata$type <- "drop"
   metadata$title <- x$name
   metadata$name <- NULL
   metadata$description <- NULL

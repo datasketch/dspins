@@ -50,7 +50,7 @@ test_that("dspins, meta ", {
 
   meta <- board %>% pin_meta("some-file-meta")
 
-  expect_equal(meta$dstype, "fringe")
+  expect_equal(meta$type, "fringe")
   expect_equal(meta$title, current_title)
   expect_equal(meta$stats, list(nrow = nrow(mtcars), ncol = ncol(mtcars)))
   expect_equal(meta$slug, slug)

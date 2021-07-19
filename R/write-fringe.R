@@ -12,7 +12,7 @@ dspin_write.fringe <- function(x, slug, board, path,...){
   args <- list(...)
 
   metadata <- x$meta
-  metadata$dstype <- "fringe"
+  metadata$type <- "fringe"
   metadata$title <- x$name
   metadata$stats <- x$stats
   metadata$slug <- slug
