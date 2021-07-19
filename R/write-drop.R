@@ -1,4 +1,4 @@
-dspin_write.dsviz <- function(x, slug, board, path,...){
+dspin_write.drop <- function(x, slug, board, path,...){
 
   if (!inherits(board, "pins_board")) {
     abort("`board` must be a pin board")
@@ -6,7 +6,7 @@ dspin_write.dsviz <- function(x, slug, board, path,...){
 
   args <- list(...)
 
-  name <- create_slug(name) %||% slug
+  name <- create_slug(x$name) %||% slug
   metadata <- x
   metadata$dstype <- "drop"
   metadata$title <- x$name
