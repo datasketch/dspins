@@ -89,7 +89,6 @@ legacy_user_board_list_remote <- function(){
   x[grepl("^dskt\\.ch\\.",x)]
 }
 
-#' @export
 legacy_load_env <- function(file = ".env"){
   if(nchar(Sys.getenv("AWS_ACCESS_KEY_ID")) == 0){
     dotenv::load_dot_env()

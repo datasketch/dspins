@@ -98,7 +98,6 @@ pin_user_url <- function(title, element, bucket_id, user_name, ...) {
   url
 }
 
-#' @export
 legacy_pin_fringe_url <- function(element = NULL, element_name = NULL, org_id = NULL, org_name = NULL, bucket_id = NULL, user_name = NULL, ...) {
 
   if (is.null(c(args$bucket_id, args$org_id)) | is.null(c(args$user_name, args$org_name))) {
