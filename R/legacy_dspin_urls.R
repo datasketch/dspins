@@ -37,13 +37,13 @@ dspin_urls <- function(element = NULL,
 }
 
 
-element_type <- function(x){
+legacy_element_type <- function(x){
   if(homodatum::is_fringe(x)) return("fringe")
   if(is_dsviz(x)) return("dsviz")
   stop("Element must be fringe or dsviz")
 }
 
-get_element_urls <- function(element, folder, bucket_id){
+legacy_get_element_urls <- function(element, folder, bucket_id){
 
   element_slug <- element$slug
   baselink <-  file.path(paste0("https://", bucket_id, ".dskt.ch"), folder, element_slug)
@@ -99,7 +99,7 @@ pin_user_url <- function(title, element, bucket_id, user_name, ...) {
 }
 
 #' @export
-pin_fringe_url <- function(element = NULL, element_name = NULL, org_id = NULL, org_name = NULL, bucket_id = NULL, user_name = NULL, ...) {
+legacy_pin_fringe_url <- function(element = NULL, element_name = NULL, org_id = NULL, org_name = NULL, bucket_id = NULL, user_name = NULL, ...) {
 
   if (is.null(c(args$bucket_id, args$org_id)) | is.null(c(args$user_name, args$org_name))) {
     stop("User, organization id or name cannot be null")

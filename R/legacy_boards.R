@@ -77,20 +77,20 @@ dspins_user_board_connect <- function(folder, bucket_id = "user"){
   board %in% user_board_list_local()
 }
 
-user_board_list_local <- function(){
+legacy_user_board_list_local <- function(){
   x <- pins::board_list()
   x[grepl("/",x)]
   # x[grepl("*\\.dskt\\.ch$",x)]
 }
 
-user_board_list_remote <- function(){
+legacy_user_board_list_remote <- function(){
   x <- aws.s3::bucket_list_df()
   x <- x[[1]]
   x[grepl("^dskt\\.ch\\.",x)]
 }
 
 #' @export
-load_env <- function(file = ".env"){
+legacy_load_env <- function(file = ".env"){
   if(nchar(Sys.getenv("AWS_ACCESS_KEY_ID")) == 0){
     dotenv::load_dot_env()
   }

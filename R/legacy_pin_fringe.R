@@ -81,14 +81,10 @@ pin.fringe <- function(f, name = NULL, description = NULL, board = NULL, ...) {
   f
 }
 
-#' @importFrom pins pin_load
-#' @exportS3Method dspins::pin_load
 pin_load.fringe <- function(path, ...) {
   readRDS(file.path(path, "data.rds"))
 }
 
-#' @importFrom pins pin_preview
-#' @exportS3Method dspins::pin_preview
 pin_preview.fringe <- function(x, ...) {
   x
 }
