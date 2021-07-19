@@ -61,7 +61,7 @@ object_read <- function(meta) {
   }
 
   if (meta$api_version == 1) {
-    type <- arg_match0(meta$type, c("rds", "json", "arrow", "pickle", "csv", "file"))
+    type <- rlang::arg_match0(meta$filetype, c("rds", "json", "arrow", "pickle", "csv", "file"))
 
     switch(type,
            rds = readRDS(path),
