@@ -1,6 +1,7 @@
 #' @importFrom pins pin
 #' @exportS3Method dspins::pin
 pin.drop <- function(drop, name = NULL, description = NULL, board = NULL, ...) {
+  .Deprecated("dspin")
   path <- tempfile()
   dir.create(path)
   on.exit(unlink(path, recursive = TRUE))
@@ -52,14 +53,10 @@ pin.drop <- function(drop, name = NULL, description = NULL, board = NULL, ...) {
   drop
 }
 
-#' @importFrom pins pin_load
-#' @exportS3Method dspins::pin_load
 pin_load.drop <- function(path, ...) {
   NULL
 }
 
-#' @importFrom pins pin_preview
-#' @exportS3Method dspins::pin_preview
 pin_preview.drop <- function(x, ...) {
   x
 }

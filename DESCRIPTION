@@ -1,6 +1,6 @@
 Package: dspins
 Title: DS pins
-Version: 1.1.3
+Version: 2.1.3
 Authors@R: 
     person(given = "Juan Pablo",
            family = "Marin Diaz",
@@ -19,12 +19,14 @@ Depends:
 Imports: 
     homodatum,
     aws.s3,
-    dotenv
+    dotenv,
+    paws.storage
 Suggests:
     testthat (>= 2.1.0),
     knitr,
     rmarkdown
 Remotes:
-    datasketch/homodatum
+    datasketch/homodatum,
+    rstudio/pins@322b3df464202ef3a4726cded3f1a549cefef11c
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
