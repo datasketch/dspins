@@ -1,4 +1,4 @@
-dspin_write.dsviz <- function(x, slug, board, path,...){
+dspin_save.dsviz <- function(x, slug, board, path,...){
 
   if (!inherits(board, "pins_board")) {
     abort("`board` must be a pin board")

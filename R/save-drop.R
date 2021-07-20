@@ -1,4 +1,4 @@
-dspin_write.drop <- function(x, slug, board, path,...){
+dspin_save.drop <- function(x, slug, board, path,...){
 
   if (!inherits(board, "pins_board")) {
     abort("`board` must be a pin board")

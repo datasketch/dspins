@@ -1,4 +1,23 @@
-dspin_write.fringe <- function(x, slug, board, path,...){
+#' Save DS elements
+#'
+#' Preprocesses metadata for elements of type `fringe`, `dsviz`, or `drop`
+#' and saves them to given path.
+#'
+#' @param element Element to be saved (`fringe`, `dsviz`, or `drop`)
+#' @param slug Slug of element to be saved
+#' @param board `dspins_board_s3` board
+#' @param path Path to save elements to
+#' @param ...
+#'
+#' @return Metadata for element
+#'
+#' @export
+dspin_save <- function(element, slug, board, path, ...) {
+  ellipsis::check_dots_used()
+  UseMethod("dspin_save")
+}
+
+dspin_save.fringe <- function(x, slug, board, path,...){
 
   if (!inherits(board, "pins_board")) {
     abort("`board` must be a pin board")
