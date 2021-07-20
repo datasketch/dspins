@@ -73,6 +73,28 @@ is.url <- function(x){
 }
 
 
+#' Change content types
+#'
+#' @param metadata Metadata of element
+#' @param board `dspins_board_s3` board
+change_content_types <- function(metadata, board){
+
+  slug <- metadata$slug
+  viz_type <- metadata$viz_type
+
+  if(is.null(viz_type)) stop("Need viz type to change content type.")
+  if(!viz_type %in% c("gg", "htmlwidget")) stop("Viz type must be `gg` or `htmlwidget`.")
+
+  if(viz_type == "htmlwidget"){
+    change_content_type(slug = slug, format = "png", board = board)
+    change_content_type(slug = slug, format = "html", board = board)
+  }
+  if(viz_type == "gg"){
+    change_content_type(slug = slug, format = "png", board = board)
+    change_content_type(slug = slug, format = "svg", board = board)
+  }
+}
+
 
 change_content_type <- function(slug, format, board){
 
