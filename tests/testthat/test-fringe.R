@@ -18,7 +18,7 @@ test_that("fringe", {
 
   slug <- f$slug
 
-  meta_info_pin <- dspin_write(f, slug, board, path)
+  meta_info_pin <- dspin_save(f, slug, board, path)
 
   # test meta data
   url_base_path <- paste0("https://",bucket_id,".dskt.ch/",folder,"/",current_slug,"/",current_slug)

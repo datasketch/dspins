@@ -1,4 +1,4 @@
-test_that("dspins, write fringe ", {
+test_that("dspins, write, read fringe ", {
 
   user_name <- "test"
   bucket_id <- "testuser"

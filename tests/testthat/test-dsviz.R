@@ -17,7 +17,7 @@ test_that("dsviz hgchmagic", {
 
   slug <- dv$slug
 
-  meta_info_pin <- dspin_write(dv, slug, board, path)
+  meta_info_pin <- dspin_save(dv, slug, board, path)
 
   # test meta data
   url_base_path <- paste0("https://",bucket_id,".dskt.ch/",folder,"/",current_slug,"/",current_slug)
@@ -60,7 +60,7 @@ test_that("dsviz ggmagic", {
 
   slug <- dv$slug
 
-  meta_info_pin <- dspin_write(dv, slug, board, path)
+  meta_info_pin <- dspin_save(dv, slug, board, path)
 
   # test meta data
   url_base_path <- paste0("https://",bucket_id,".dskt.ch/",folder,"/",current_slug,"/",current_slug)
