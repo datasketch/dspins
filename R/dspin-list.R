@@ -19,8 +19,13 @@
 #' board %>% pin_list()
 #' board %>% pin_list(extended = TRUE)
 #' }
-
 #' @export
+pin_list <- function(board, name, ...) {
+ellipsis::check_dots_used()
+UseMethod("pin_list")
+}
+
+
 pin_list.dspins_board_s3 <- function(board,
                                      extended = FALSE,
                                      ...) {

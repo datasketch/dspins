@@ -16,10 +16,9 @@
 #'
 #' board %>% pin_exists("mtcars-dataset")
 #' }
-pin_exists.dspins_board_s3 <- function(board, name, ...) {
-  folder <- board$folder
-  resp <- board$svc$list_objects_v2(board$bucket, Prefix = paste0(folder, "/", name, "/"))
-  resp$KeyCount > 0
+pin_exists <- function(board, name, ...) {
+  ellipsis::check_dots_used()
+  UseMethod("pin_exists")
 }
 
 
@@ -39,11 +38,9 @@ pin_exists.dspins_board_s3 <- function(board, name, ...) {
 #'
 #' board %>% pin_deleted("mtcars-dataset")
 #' }
-pin_delete.dspins_board_s3 <- function(board, names, ...) {
-  for (name in names) {
-    ds_s3_delete_slug(board, name)
-  }
-  invisible(board)
+pin_delete <- function(board, name, ...) {
+  ellipsis::check_dots_used()
+  UseMethod("pin_delete")
 }
 
 
@@ -65,6 +62,27 @@ pin_delete.dspins_board_s3 <- function(board, names, ...) {
 #'
 #' board %>% pin_meta("mtcars-dataset")
 #' }
+pin_meta <- function(board, name, ...) {
+  ellipsis::check_dots_used()
+  UseMethod("pin_meta")
+}
+
+
+pin_exists.dspins_board_s3 <- function(board, name, ...) {
+  folder <- board$folder
+  resp <- board$svc$list_objects_v2(board$bucket, Prefix = paste0(folder, "/", name, "/"))
+  resp$KeyCount > 0
+}
+
+
+pin_delete.dspins_board_s3 <- function(board, names, ...) {
+  for (name in names) {
+    ds_s3_delete_slug(board, name)
+  }
+  invisible(board)
+}
+
+
 pin_meta.dspins_board_s3 <- function(board, name, version = NULL, ...) {
 
   check_pin_exists(board, name)

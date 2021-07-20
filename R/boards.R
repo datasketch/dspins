@@ -186,6 +186,11 @@ user_board_list_remote <- function(){
   x[grepl(".dskt\\.ch",x)]
 }
 
+
+#' Load env variables
+#'
+#' @param file File containing AWS credentials
+#'
 #' @export
 load_env <- function(file = ".env"){
   if(nchar(Sys.getenv("AWS_ACCESS_KEY_ID")) == 0){

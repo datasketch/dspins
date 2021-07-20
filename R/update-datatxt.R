@@ -1,13 +1,8 @@
-#' Update datatxt
-#'
-#' Downloads the `data.txt` file for a given board and updates metadata.
-#'
-#' If the an entry already exists for the `slug` passed through `metadata$slug`,
-#' the existing entry is overwritten; otherwise it is added.
-#'
-#' @param metadata List of metadata of pin being saved.
-#' @param board Pin board of type `dspins_board_s3`.
 update_datatxt <- function(metadata, board){
+  # Downloads the `data.txt` file for a given board, updates metadata and
+  # uploads the updated metadata by overwriting the existing `data.txt`.
+  # If the an entry already exists for the `slug` passed through `metadata$slug`,
+  # the existing entry is overwritten; otherwise it is added.
 
   slug <- metadata$slug
 

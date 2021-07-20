@@ -73,10 +73,6 @@ is.url <- function(x){
 }
 
 
-#' Change content types
-#'
-#' @param metadata Metadata of element
-#' @param board `dspins_board_s3` board
 change_content_types <- function(metadata, board){
 
   slug <- metadata$slug
