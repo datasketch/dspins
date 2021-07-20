@@ -51,7 +51,6 @@ ds_s3_delete_slug <- function(board, slug) {
   invisible()
 }
 
-
 ds_object_read <- function(meta){
   path <- fs::path(meta$local$dir, meta$file)
   missing <- !fs::file_exists(path)
@@ -60,9 +59,5 @@ ds_object_read <- function(meta){
     stop(paste0("Cache failure. Missing files:", path[!missing]))
   }
 
-  switch(meta$type,
-         fringe = readRDS(path),
-         dsviz = readRDS(path),
-         drop = stop("DS type `drop` can't be read. Retrieve uploaded paths with `pin_download()`."
-         ))
+  readRDS(path)
 }

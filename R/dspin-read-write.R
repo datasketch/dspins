@@ -1,30 +1,65 @@
-pin_read <- function(board, name, version = NULL, ...) {
+#' Read DS pins
+#'
+#' Read a `fringe` or `dsviz` element to a board of type `dspins_board_s3`.
+#'
+#' Raises error for element of type `drop`.
+#'
+#' @param board `dspins_board_s3` board
+#' @param name Name of element to be read
+#' @param ...
+#'
+#' @return DS element
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' board <- ds_board_s3(user_name = "test", bucket_id = "user")
+#'
+#' board %>% pin_read("mtcars-dataset")
+#' }
+pin_read <- function(board, name, ...) {
   ellipsis::check_dots_used()
   UseMethod("pin_read")
 }
 
-pin_write <- function(board, name, version = NULL, ...) {
+
+#' Write DS pins
+#'
+#' Pin a `fringe`, `dsviz`, or `drop` element to a board of type `dspins_board_s3`.
+#'
+#' @param board `dspins_board_s3` board
+#' @param element Element to be saved (`fringe`, `dsviz`, or `drop`)
+#' @param ...
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' board <- ds_board_s3(user_name = "test", bucket_id = "user")
+#'
+#' fringe_mtcars <- homodatum::fringe(mtcars, name = "Mtcars dataset")
+#' board %>% pin_write(fringe_mtcars)
+#' }
+pin_write <- function(board, element, ...) {
   ellipsis::check_dots_used()
   UseMethod("pin_write")
 }
 
-#' @export
-dspin_write <- function(board, name, paths, metadata, versioned = NULL, x = NULL, ...) {
-  ellipsis::check_dots_used()
-  UseMethod("dspin_write")
-}
 
 
-pin_read.dspins_board_s3 <- function(board, name, version = NULL, hash = NULL, ...) {
+pin_read.dspins_board_s3 <- function(board,
+                                     name,
+                                     hash = NULL,
+                                     ...) {
   ellipsis::check_dots_used()
   check_board(board, "pin_read()", "pin_get()")
 
-  meta <- pin_fetch(board, name, version = version, ...)
+  meta <- pin_fetch(board, name, ...)
 
-  meta$file <- switch(meta$type,
-                      "fringe" = "data.rds",
-                      "dsviz" = "data.rds",
-                      "drop" = NULL)
+  if(meta$type == "drop") stop("DS type `drop` can't be read. Retrieve uploaded paths with `pin_download()`.")
+
+  meta$file <- "data.rds"
 
   check_hash(meta, hash)
 
@@ -33,38 +68,28 @@ pin_read.dspins_board_s3 <- function(board, name, version = NULL, hash = NULL, .
 
 
 pin_write.dspins_board_s3 <- function(board,
-                                      x,
-                                      name = NULL,
-                                      type = NULL,
-                                      desc = NULL,
-                                      metadata = NULL,
-                                      versioned = NULL,
+                                      element,
                                       ...) {
   ellipsis::check_dots_used()
 
-  element_type(x)
+  # Validate element is fringe or dsviz
+  element_type(element)
 
+  # Create temp path
   path <- tempfile()
   dir.create(path)
   on.exit(unlink(path, recursive = TRUE))
 
-  slug <- x$slug
+  slug <- element$slug
 
-  metadata <- dspin_write(x, slug, board, path, ...)
-  dstype <- metadata$type
+  # Save element to local path
+  metadata <- dspin_save(element, slug, board, path, ...)
 
-  pin_store(board, slug, path, metadata, versioned = versioned, ...)
+  # Upload files to ds s3 board
+  pin_store(board, slug, path, metadata, ...)
 
-  if(dstype == "dsviz"){
-    if(metadata$viz_type == "htmlwidget"){
-      change_content_type(slug = slug, format = "png", board = board)
-      change_content_type(slug = slug, format = "html", board = board)
-    }
-    if(metadata$viz_type == "gg"){
-      change_content_type(slug = slug, format = "png", board = board)
-      change_content_type(slug = slug, format = "svg", board = board)
-    }
-
+  if(metadata$type == "dsviz"){
+    change_content_types(metadata = metadata, board = board)
   }
 }
 

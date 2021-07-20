@@ -1,7 +1,29 @@
+#' DS pin list
+#'
+#' Get list of all pins saved to a board of type `dspins_board_s3`.
+#'
+#'
+#' @param board `dspins_board_s3` board
+#' @param extended Boolean to get simple or extended list, defaults to `FALSE`
+#' @param ...
+#'
+#' @return If `extended = FALSE`, returns character vector of names of DS pins in board;
+#' if `extended = TRUE`, returns `data.frame` showing contents of the board's `data.txt`.
+#'
 #' @export
-pin_list.dspins_board_s3 <- function(board, ...) {
-  args <- list(...)
-  extended <- args$extended
+#'
+#' @examples
+#' \dontrun{
+#' board <- ds_board_s3(user_name = "test", bucket_id = "user")
+#'
+#' board %>% pin_list()
+#' board %>% pin_list(extended = TRUE)
+#' }
+
+#' @export
+pin_list.dspins_board_s3 <- function(board,
+                                     extended = FALSE,
+                                     ...) {
 
   download <- tryCatch(ds_s3_download(board, "data.txt", immutable = TRUE),
                        error = function(e){ e })

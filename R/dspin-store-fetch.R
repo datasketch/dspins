@@ -1,9 +1,20 @@
+#' Store a DS pin
+#'
+#' Used by `pin_write()` to upload local DS file(s) to `dspins_board_s3`.
+#'
+#' @param board `dspins_board_s3` board
+#' @param slug Slug of element to be downloaded
+#' @param path Path to which DS pins have been saved
+#' @param metadata Metadata of DS pin
+#'
+#' @return Board
+#'
 #' @export
-pin_store.dspins_board_s3 <- function(board, slug, paths, metadata,
-                                      versioned = NULL, ...) {
+pin_store.dspins_board_s3 <- function(board, slug, path, metadata,
+                                      ...) {
   check_name(slug)
 
-  all_paths <- list.files(paths, full.names = TRUE)
+  all_paths <- list.files(path, full.names = TRUE)
 
   metadata <- c(path = list(fs::path_file(all_paths)), metadata)
 
@@ -15,44 +26,30 @@ pin_store.dspins_board_s3 <- function(board, slug, paths, metadata,
   metadata$path <- slug
   metadata$name <- slug
 
-  download <- tryCatch(ds_s3_download(board, "data.txt", immutable = TRUE),
-                       error = function(e){ e })
-
-  path <- fs::path(board$cache)
-  yaml_path <- fs::path(path, "data.txt")
-
-  if(!inherits(download, "error")){
-    yaml <- suppressWarnings(yaml::read_yaml(yaml_path, eval.expr = FALSE))
-    slug_exists <- yaml %>% purrr::map("slug") == slug
-    if(any(slug_exists)){
-      slug_index <- which(slug_exists)
-      yaml[[slug_index]] <- metadata
-    } else {
-      yaml[[length(yaml)+1]] <- metadata
-    }
-    write_meta(yaml, path)
-    ds_s3_upload_file(board, "data.txt", yaml_path)
-  } else {
-    yaml <- list()
-    yaml[[1]] <- metadata
-    write_meta(yaml, path)
-    ds_s3_upload_file(board, "data.txt", yaml_path)
-  }
+  update_datatxt(metadata = metadata, board = board)
 
   invisible(board)
 }
 
 
 
+#' Fetch a DS pin
+#'
+#' Used by `pin_read()` to download pins on `dspins_board_s3` to local cache.
+#'
+#' @param board `dspins_board_s3` board
+#' @param slug Slug of element to be downloaded
+#'
+#' @return Metadata of element
+#'
 #' @export
-pin_fetch.dspins_board_s3 <- function(board, name, version = NULL, ...) {
+pin_fetch.dspins_board_s3 <- function(board, slug, ...) {
 
-
-  meta <- pin_meta(board, name)
+  meta <- pin_meta(board, slug)
   cache_touch(board, meta)
 
   for (file in meta$path) {
-    key <- fs::path(name, file)
+    key <- fs::path(slug, file)
     ds <- ds_s3_download(board, key, immutable = TRUE)
   }
 

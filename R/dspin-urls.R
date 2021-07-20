@@ -1,4 +1,23 @@
+#' Write DS pins and return URLs
+#'
+#' Pin a `fringe`, `dsviz`, or `drop` element to a board of type `dspins_board_s3`
+#' and return links to pin on DS profile.
+#'
+#' @param board `dspins_board_s3` board
+#' @param element Element to be saved (`fringe`, `dsviz`, or `drop`)
+#' @param ...
+#'
+#' @return List of links to pin in DS profile
+#'
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' board <- ds_board_s3(user_name = "test", bucket_id = "user")
+#'
+#' fringe_mtcars <- homodatum::fringe(mtcars, name = "Mtcars dataset")
+#' dsurls <- board %>% pin_urls(fringe_mtcars)
+#' }
 pin_urls <- function(board,
                      element = NULL,
                       ...) {
@@ -13,9 +32,6 @@ pin_urls <- function(board,
     locale <- "English_United States"
   }
   Sys.setlocale(locale = locale)
-
-  # Validate element is fringe or dsviz
-  element_type(element)
 
   board %>% pin_write(element, ...)
   get_element_urls(element, folder, bucket_id)

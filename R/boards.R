@@ -1,3 +1,19 @@
+#' Use a folder within an AWS S3 bucket as a board.
+#'
+#' For authentication, an `.env` file with the necessary `AWS_ACCESS_KEY_ID`
+#' and `AWS_SECRET_ACCESS_KEY` env vars needs to be located in the root directory.
+#'
+#' If both `user_name` and `org_name` are specified, `org_name` is used.
+#'
+#' @param user_name DS user name
+#' @param org_name DS org name
+#' @param bucket_id DS bucket id. Defaults to `bucket_id = "user"`
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' board <- ds_board_s3(user_name = "test", bucket_id = "user")
+#' }
 ds_board_s3 <- function(
   user_name = NULL,
   org_name = NULL,
