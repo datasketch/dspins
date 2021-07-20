@@ -6,25 +6,26 @@ reference:
   - ds_board_s3
 - title: "Reading and writing pins"
 - contents:
-  - pin_read
-  - pin_write
-  - pin_urls
+  - dspin_read
+  - dspin_write
+  - dspin_urls
 - title: "Pin functions"
-  desc: "Check for existence of pins, delete pins, get meta data"
+  desc: "Functions on DS pins."
 - contents:
-  - pin_exists
-  - pin_delete
-  - pin_meta
+  - dspin_exists
+  - dspin_delete
+  - dspin_meta
+  - dspin_download
 - title: "Board functions"
   desc: "Get list of pins saved to board"
 - contents:
-  - pin_list
+  - dspin_list
 - title: "Other"
 - contents:
   - create_ds_links
 - title: "Internal functions"
   desc: "Functions that power the reading and writing of pins"
 - contents:
-  - pin_fetch
-  - pin_store
+  - dspin_fetch
+  - dspin_store
   - dspin_save

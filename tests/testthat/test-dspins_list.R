@@ -12,10 +12,10 @@ test_that("dspins, list ", {
                license = "CC-BY", date_created = unix_timestamp(),
               access = "private")
 
-  board %>% pin_write(f)
+  board %>% dspin_write(f)
 
-  all_pins_names <- board %>% pin_list()
-  all_pins <- board %>% pin_list(extended = TRUE)
+  all_pins_names <- board %>% dspin_list()
+  all_pins <- board %>% dspin_list(extended = TRUE)
 
   expect_true(slug %in% all_pins_names)
 

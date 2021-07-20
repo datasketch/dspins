@@ -1,6 +1,6 @@
 #' @export
 dspin_get <- function(name, board = NULL, cache = TRUE, extract = NULL, version = NULL, files = FALSE, signature = NULL, ...) {
-  .Deprecated("pin_read")
+  .Deprecated("dspin_read")
   args <- list(...)
   folder <- args$folder
   bucket_id <- args$bucket_id

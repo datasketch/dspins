@@ -13,13 +13,13 @@ test_that("dspins, write, read fringe ", {
               license = "CC-BY", date_created = unix_timestamp(),
               access = "private")
 
-  board %>% pin_write(f)
+  board %>% dspin_write(f)
 
-  pin_exists <- board %>% pin_exists(slug)
+  dspin_exists <- board %>% dspin_exists(slug)
 
-  expect_true(pin_exists)
+  expect_true(dspin_exists)
 
-  pin <- board %>% pin_read(slug)
+  pin <- board %>% dspin_read(slug)
 
   expect_equal(class(pin), "fringe")
 
@@ -38,13 +38,13 @@ test_that("dspins, write, read dsviz ", {
 
   hgdv <- dsviz(hgviz, name = title)
 
-  board %>% pin_write(hgdv)
+  board %>% dspin_write(hgdv)
 
-  pin_exists <- board %>% pin_exists(slug)
+  dspin_exists <- board %>% dspin_exists(slug)
 
-  expect_true(pin_exists)
+  expect_true(dspin_exists)
 
-  pin <- board %>% pin_read(slug)
+  pin <- board %>% dspin_read(slug)
 
   expect_equal(class(pin), "dsviz")
 
@@ -56,13 +56,13 @@ test_that("dspins, write, read dsviz ", {
 
   ggdv <- dsviz(ggviz, name = title)
 
-  board %>% pin_write(ggdv)
+  board %>% dspin_write(ggdv)
 
-  pin_exists <- board %>% pin_exists(slug)
+  dspin_exists <- board %>% dspin_exists(slug)
 
-  expect_true(pin_exists)
+  expect_true(dspin_exists)
 
-  pin <- board %>% pin_read(slug)
+  pin <- board %>% dspin_read(slug)
 
   expect_equal(class(pin), "dsviz")
 
@@ -81,15 +81,15 @@ test_that("dspins, write, read, download drop ", {
   slug <- create_slug(title)
   dp <- drop(sample_path, name = title)
 
-  board %>% pin_write(dp)
+  board %>% dspin_write(dp)
 
-  pin_exists <- board %>% pin_exists(slug)
+  dspin_exists <- board %>% dspin_exists(slug)
 
-  expect_true(pin_exists)
+  expect_true(dspin_exists)
 
-  expect_error(board %>% pin_read(slug), "DS type `drop` can't be read.")
+  expect_error(board %>% dspin_read(slug), "DS type `drop` can't be read.")
 
-  expect_output(board %>% pin_download(slug), "Found")
+  expect_output(board %>% dspin_download(slug), "Found")
 
 })
 

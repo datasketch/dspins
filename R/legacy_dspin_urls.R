@@ -1,10 +1,10 @@
 #' @export
-dspin_urls <- function(element = NULL,
-                       user_name = NULL,
-                       org_name = NULL,
-                     bucket_id = NULL,
-                     overwrite = FALSE, ...) {
-  .Deprecated("pin_urls")
+legacy_dspin_urls <- function(element = NULL,
+                              user_name = NULL,
+                              org_name = NULL,
+                              bucket_id = NULL,
+                              overwrite = FALSE, ...) {
+  .Deprecated("dspin_urls")
   if (is.null(element)) {
     stop("Element cannot be null")
   }

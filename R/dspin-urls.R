@@ -16,11 +16,11 @@
 #' board <- ds_board_s3(user_name = "test", bucket_id = "user")
 #'
 #' fringe_mtcars <- homodatum::fringe(mtcars, name = "Mtcars dataset")
-#' dsurls <- board %>% pin_urls(fringe_mtcars)
+#' dsurls <- board %>% dspin_urls(fringe_mtcars)
 #' }
-pin_urls <- function(board,
-                     element = NULL,
-                      ...) {
+dspin_urls <- function(board,
+                       element = NULL,
+                       ...) {
 
 
   bucket <- board$bucket
@@ -33,7 +33,7 @@ pin_urls <- function(board,
   }
   Sys.setlocale(locale = locale)
 
-  board %>% pin_write(element, ...)
+  board %>% dspin_write(element, ...)
   get_element_urls(element, folder, bucket_id)
 }
 

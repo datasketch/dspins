@@ -16,19 +16,13 @@
 #' \dontrun{
 #' board <- ds_board_s3(user_name = "test", bucket_id = "user")
 #'
-#' board %>% pin_list()
-#' board %>% pin_list(extended = TRUE)
+#' board %>% dspin_list()
+#' board %>% dspin_list(extended = TRUE)
 #' }
 #' @export
-pin_list <- function(board, name, ...) {
-ellipsis::check_dots_used()
-UseMethod("pin_list")
-}
-
-
-pin_list.dspins_board_s3 <- function(board,
-                                     extended = FALSE,
-                                     ...) {
+dspin_list <- function(board,
+                       extended = FALSE,
+                       ...) {
 
   download <- tryCatch(ds_s3_download(board, "data.txt", immutable = TRUE),
                        error = function(e){ e })
@@ -46,19 +40,4 @@ pin_list.dspins_board_s3 <- function(board,
   }
 
   ls
-}
-
-
-#' @export
-dspin_list <- function(folder, bucket_id = NULL) {
-  .Deprecated("pin_list")
-
-  if(is.null(bucket_id)){
-    message("No bucket_id specified. Using 'user.dskt.ch' by default.")
-    bucket_id <- "user"
-  }
-
-  board <- ds_board_s3(folder, bucket_id)
-
-  pin_list(board, extended = TRUE)
 }

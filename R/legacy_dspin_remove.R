@@ -1,6 +1,6 @@
 #' @export
 dspin_remove <- function(slug, folder = NULL, bucket_id = NULL) {
-  .Deprecated("pin_delete")
+  .Deprecated("dspin_delete")
 
   if(is.null(bucket_id)){
     stop("Need a bucket_id to remove pin")

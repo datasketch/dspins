@@ -10,9 +10,9 @@ test_that("dspins, exists ", {
                license = "CC-BY", date_created = unix_timestamp(),
               access = "private")
 
-  board %>% pin_write(f)
+  board %>% dspin_write(f)
 
-  expect_true(board %>% pin_exists("some-file-exists"))
+  expect_true(board %>% dspin_exists("some-file-exists"))
 
 })
 
@@ -26,11 +26,11 @@ test_that("dspins, delete ", {
   current_title <- paste0("mtcars-delete")
   f <- fringe(mtcars, name = current_title)
 
-  board %>% pin_write(f)
+  board %>% dspin_write(f)
 
-  board %>% pin_delete(current_title)
+  board %>% dspin_delete(current_title)
 
-  expect_false(board %>% pin_exists(current_title))
+  expect_false(board %>% dspin_exists(current_title))
 
 })
 
@@ -46,9 +46,9 @@ test_that("dspins, meta ", {
   data <- mtcars
   f <- fringe(mtcars, name = current_title)
 
-  board %>% pin_write(f)
+  board %>% dspin_write(f)
 
-  meta <- board %>% pin_meta("some-file-meta")
+  meta <- board %>% dspin_meta("some-file-meta")
 
   expect_equal(meta$type, "fringe")
   expect_equal(meta$title, current_title)

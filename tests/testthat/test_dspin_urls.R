@@ -17,7 +17,7 @@ test_that("User url", {
   expect_equal(paste0("https://",bucket_id,".dskt.ch/",user_name,"/", f$slug, "/", f$slug, ".json"),
                urls$permalink)
   # Pin url
-  urls <- board %>% pin_urls(f, download_formats = "xlsx")
+  urls <- board %>% dspin_urls(f, download_formats = "xlsx")
   expect_equal(urls$link, paste0("https://datasketch.co/",user_name,"/", f$slug))
   expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",f$slug,"/",f$slug,".json"))
 
@@ -37,7 +37,7 @@ test_that("User url", {
                paste0("<iframe src=\"",paste0("https://",bucket_id,".dskt.ch/",user_name,"/", dvhg$slug, "/", dvhg$slug, ".html"),"\" frameborder=0 width=\"100%\" height=\"400px\"></iframe>"))
 
   # pin viz
-  urls <- board %>% pin_urls(dvhg)
+  urls <- board %>% dspin_urls(dvhg)
   expect_equal(urls$link, paste0("https://datasketch.co/",user_name,"/", dvhg$slug))
   expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",dvhg$slug,"/",dvhg$slug,".html"))
 
@@ -52,7 +52,7 @@ test_that("User url", {
   expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",dvgg$slug,"/",dvgg$slug,".png"))
 
   # pin viz
-  urls <- board %>% pin_urls(dvgg)
+  urls <- board %>% dspin_urls(dvgg)
   expect_equal(urls$link, paste0("https://datasketch.co/",user_name,"/", dvgg$slug))
   expect_equal(urls$permalink, paste0("https://",bucket_id,".dskt.ch/",user_name,"/",dvgg$slug,"/",dvgg$slug,".png"))
 

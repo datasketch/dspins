@@ -1,7 +1,7 @@
 
 #' @export
-dspin_list <- function(folder = NULL, bucket_id = NULL){
-  .Deprecated("pin_list")
+legacy_dspin_list <- function(folder = NULL, bucket_id = NULL){
+  .Deprecated("dspin_list")
   if(is.null(bucket_id)){
     message("No bucket_id specified. Using 'user.dskt.ch' by default.")
     bucket_id <- "user"

@@ -1,6 +1,6 @@
 #' Store a DS pin
 #'
-#' Used by `pin_write()` to upload local DS file(s) to `dspins_board_s3`,
+#' Used by `dspin_write()` to upload local DS file(s) to `dspins_board_s3`,
 #' not to be called directly.
 #'
 #' @param board `dspins_board_s3` board
@@ -11,31 +11,11 @@
 #' @return Board
 #'
 #' @export
-pin_store <- function(board, element, ...) {
-  ellipsis::check_dots_used()
-  UseMethod("pin_store")
-}
-
-
-#' Fetch a DS pin
-#'
-#' Used by `pin_read()` to download pins on `dspins_board_s3` to local cache,
-#' not to be called directly.
-#'
-#' @param board `dspins_board_s3` board
-#' @param slug Slug of element to be downloaded
-#'
-#' @return Metadata of element
-#'
-#' @export
-pin_fetch <- function(board, element, ...) {
-  ellipsis::check_dots_used()
-  UseMethod("pin_fetch")
-}
-
-
-pin_store.dspins_board_s3 <- function(board, slug, path, metadata,
-                                      ...) {
+dspin_store <- function(board,
+                        slug,
+                        path,
+                        metadata,
+                        ...) {
   check_name(slug)
 
   all_paths <- list.files(path, full.names = TRUE)
@@ -56,9 +36,22 @@ pin_store.dspins_board_s3 <- function(board, slug, path, metadata,
 }
 
 
-pin_fetch.dspins_board_s3 <- function(board, slug, ...) {
+#' Fetch a DS pin
+#'
+#' Used by `dspin_read()` to download pins on `dspins_board_s3` to local cache,
+#' not to be called directly.
+#'
+#' @param board `dspins_board_s3` board
+#' @param slug Slug of element to be downloaded
+#'
+#' @return Metadata of element
+#'
+#' @export
+dspin_fetch <- function(board,
+                        slug,
+                        ...) {
 
-  meta <- pin_meta(board, slug)
+  meta <- dspin_meta(board, slug)
   cache_touch(board, meta)
 
   for (file in meta$path) {

@@ -14,11 +14,14 @@
 #' \dontrun{
 #' board <- ds_board_s3(user_name = "test", bucket_id = "user")
 #'
-#' board %>% pin_exists("mtcars-dataset")
+#' board %>% dspin_exists("mtcars-dataset")
 #' }
-pin_exists <- function(board, name, ...) {
-  ellipsis::check_dots_used()
-  UseMethod("pin_exists")
+dspin_exists <- function(board,
+                         name,
+                         ...) {
+  folder <- board$folder
+  resp <- board$svc$list_objects_v2(board$bucket, Prefix = paste0(folder, "/", name, "/"))
+  resp$KeyCount > 0
 }
 
 
@@ -36,11 +39,13 @@ pin_exists <- function(board, name, ...) {
 #' \dontrun{
 #' board <- ds_board_s3(user_name = "test", bucket_id = "user")
 #'
-#' board %>% pin_deleted("mtcars-dataset")
+#' board %>% dspin_delete("mtcars-dataset")
 #' }
-pin_delete <- function(board, name, ...) {
-  ellipsis::check_dots_used()
-  UseMethod("pin_delete")
+dspin_delete <- function(board, names, ...) {
+  for (name in names) {
+    ds_s3_delete_slug(board, name)
+  }
+  invisible(board)
 }
 
 
@@ -60,30 +65,9 @@ pin_delete <- function(board, name, ...) {
 #' \dontrun{
 #' board <- ds_board_s3(user_name = "test", bucket_id = "user")
 #'
-#' board %>% pin_meta("mtcars-dataset")
+#' board %>% dspin_meta("mtcars-dataset")
 #' }
-pin_meta <- function(board, name, ...) {
-  ellipsis::check_dots_used()
-  UseMethod("pin_meta")
-}
-
-
-pin_exists.dspins_board_s3 <- function(board, name, ...) {
-  folder <- board$folder
-  resp <- board$svc$list_objects_v2(board$bucket, Prefix = paste0(folder, "/", name, "/"))
-  resp$KeyCount > 0
-}
-
-
-pin_delete.dspins_board_s3 <- function(board, names, ...) {
-  for (name in names) {
-    ds_s3_delete_slug(board, name)
-  }
-  invisible(board)
-}
-
-
-pin_meta.dspins_board_s3 <- function(board, name, version = NULL, ...) {
+dspin_meta <- function(board, name, version = NULL, ...) {
 
   check_pin_exists(board, name)
 
@@ -97,6 +81,7 @@ pin_meta.dspins_board_s3 <- function(board, name, version = NULL, ...) {
     version = NULL
   )
 }
+
 
 local_meta <- function(x, dir, version, ...) {
   x$local <- list(
@@ -130,12 +115,12 @@ read_meta <- function(path) {
 
 
 check_pin_exists <- function(board, name) {
-  if (pin_exists(board, name)) {
+  if (dspin_exists(board, name)) {
     invisible()
   } else {
     abort(c(
       glue("Can't find pin called '{name}'"),
-      i = "Use `pin_list()` to see all available pins in this board"
+      i = "Use `dspin_list()` to see all available pins in this board"
     ), class = "pins_pin_absent")
   }
 }

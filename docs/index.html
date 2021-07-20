@@ -95,41 +95,41 @@
 <div id="writeread-pin" class="section level3">
 <h3 class="hasAnchor">
 <a href="#writeread-pin" class="anchor"></a>Write/read pin</h3>
-<p>To pin an element to the board created above, use <code><a href="reference/pin_write.html">pin_write()</a></code> or <code><a href="reference/pin_urls.html">pin_urls()</a></code>; <code><a href="reference/pin_urls.html">pin_urls()</a></code> calls <code><a href="reference/pin_write.html">pin_write()</a></code> and additionally returns the URLs to file location in the DS profile.</p>
-<p>To load a pin, pass the slug of a pin of type <code>fringe</code> and <code>dsviz</code> to <code><a href="reference/pin_read.html">pin_read()</a></code>. This will raise an error if the type of the pin is <code>drop</code>. For pins of type <code>drop</code>, use <code>pin_download()</code> to download the pin and to display the file path(s) of the downloaded file(s).</p>
+<p>To pin an element to the board created above, use <code><a href="reference/dspin_write.html">dspin_write()</a></code> or <code><a href="reference/dspin_urls.html">dspin_urls()</a></code>; <code><a href="reference/dspin_urls.html">dspin_urls()</a></code> calls <code><a href="reference/dspin_write.html">dspin_write()</a></code> and additionally returns the URLs to file location in the DS profile.</p>
+<p>To load a pin, pass the slug of a pin of type <code>fringe</code> and <code>dsviz</code> to <code><a href="reference/dspin_read.html">dspin_read()</a></code>. This will raise an error if the type of the pin is <code>drop</code>. For pins of type <code>drop</code>, use <code><a href="reference/dspin_download.html">dspin_download()</a></code> to download the pin and to display the file path(s) of the downloaded file(s).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fringe_mtcars</span> <span class="op">&lt;-</span> <span class="fu">homodatum</span><span class="fu">::</span><span class="fu">fringe</span><span class="op">(</span><span class="va">mtcars</span>, name <span class="op">=</span> <span class="st">"Mtcars dataset"</span><span class="op">)</span>
 
 <span class="co"># Write pins</span>
-<span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/pin_write.html">pin_write</a></span><span class="op">(</span><span class="va">fringe_mtcars</span><span class="op">)</span>
+<span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/dspin_write.html">dspin_write</a></span><span class="op">(</span><span class="va">fringe_mtcars</span><span class="op">)</span>
 
-<span class="va">urls</span> <span class="op">&lt;-</span> <span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/pin_urls.html">pin_urls</a></span><span class="op">(</span><span class="va">fringe_mtcars</span><span class="op">)</span>
+<span class="va">urls</span> <span class="op">&lt;-</span> <span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/dspin_urls.html">dspin_urls</a></span><span class="op">(</span><span class="va">fringe_mtcars</span><span class="op">)</span>
 
 <span class="co"># Read pins</span>
-<span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/pin_read.html">pin_read</a></span><span class="op">(</span><span class="st">"mtcars-dataset"</span><span class="op">)</span>
+<span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/dspin_read.html">dspin_read</a></span><span class="op">(</span><span class="st">"mtcars-dataset"</span><span class="op">)</span>
 
 <span class="co"># For a pin of type drop</span>
-<span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu">pin_download</span><span class="op">(</span><span class="st">"slug-of-drop-pin"</span><span class="op">)</span></code></pre></div>
+<span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/dspin_download.html">dspin_download</a></span><span class="op">(</span><span class="st">"slug-of-drop-pin"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="check-existence-delete-meta-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#check-existence-delete-meta-data" class="anchor"></a>Check existence, delete, meta data</h3>
-<p>To check whether a pin exists, delete a pin, or return a list of the meta data saved in its <code>data.txt</code> file, use the functions <code><a href="reference/pin_exists.html">pin_exists()</a></code>, <code><a href="reference/pin_delete.html">pin_delete()</a></code>, and <code><a href="reference/pin_meta.html">pin_meta()</a></code> respectively.</p>
+<p>To check whether a pin exists, delete a pin, or return a list of the meta data saved in its <code>data.txt</code> file, use the functions <code><a href="reference/dspin_exists.html">dspin_exists()</a></code>, <code><a href="reference/dspin_delete.html">dspin_delete()</a></code>, and <code><a href="reference/dspin_meta.html">dspin_meta()</a></code> respectively.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/pin_exists.html">pin_exists</a></span><span class="op">(</span><span class="st">"mtcars-dataset"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/dspin_exists.html">dspin_exists</a></span><span class="op">(</span><span class="st">"mtcars-dataset"</span><span class="op">)</span>
 
-<span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/pin_delete.html">pin_delete</a></span><span class="op">(</span><span class="st">"mtcars-dataset"</span><span class="op">)</span>
+<span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/dspin_delete.html">dspin_delete</a></span><span class="op">(</span><span class="st">"mtcars-dataset"</span><span class="op">)</span>
 
-<span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/pin_meta.html">pin_meta</a></span><span class="op">(</span><span class="st">"mtcars-dataset"</span><span class="op">)</span></code></pre></div>
+<span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/dspin_meta.html">dspin_meta</a></span><span class="op">(</span><span class="st">"mtcars-dataset"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="list-pins" class="section level3">
 <h3 class="hasAnchor">
 <a href="#list-pins" class="anchor"></a>List pins</h3>
-<p>The <code><a href="reference/pin_list.html">pin_list()</a></code> function returns a character vector of the slugs of all pins saved to the board. Using <code>extended = FALSE</code>, it returns a dataframe with one row per pin and the metadata from the board’s <code>data.txt</code> file across its columns.</p>
+<p>The <code><a href="reference/dspin_list.html">dspin_list()</a></code> function returns a character vector of the slugs of all pins saved to the board. Using <code>extended = FALSE</code>, it returns a dataframe with one row per pin and the metadata from the board’s <code>data.txt</code> file across its columns.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pins</span> <span class="op">&lt;-</span> <span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/pin_list.html">pin_list</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">pins</span> <span class="op">&lt;-</span> <span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/dspin_list.html">dspin_list</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="va">pins_extended</span> <span class="op">&lt;-</span> <span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/pin_list.html">pin_list</a></span><span class="op">(</span>extended <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<span class="va">pins_extended</span> <span class="op">&lt;-</span> <span class="va">board</span> <span class="op">%&gt;%</span> <span class="fu"><a href="reference/dspin_list.html">dspin_list</a></span><span class="op">(</span>extended <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 </div>
