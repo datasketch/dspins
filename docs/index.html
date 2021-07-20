@@ -72,6 +72,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 <p>Wrapper for <a href="https://github.com/rstudio/pins"><code>rstudio/pins</code></a> to save DS elements in folders of users or organisations within AWS S3 buckets.</p>
+<p>Check out the full documentation at <a href="https://datasketch.github.io/dspins/" class="uri">https://datasketch.github.io/dspins/</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -86,6 +87,7 @@
 <h3 class="hasAnchor">
 <a href="#create-board" class="anchor"></a>Create board</h3>
 <p>The following two lines will create a pin board called <code>board</code>, using the folder <code>test</code> within the AWS S3 bucket <code>user.dskt.ch</code>. They return the same result, as <code>bucket_id</code> defaults to <code>"user"</code>.</p>
+<p>To create a board, the <code>.env</code> file with the necessary AWS access keys must be located in the root directory.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">board</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ds_board_s3.html">ds_board_s3</a></span><span class="op">(</span>user_name <span class="op">=</span> <span class="st">"test"</span>, bucket_id <span class="op">=</span> <span class="st">"user"</span><span class="op">)</span>
 <span class="va">board</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ds_board_s3.html">ds_board_s3</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></code></pre></div>
