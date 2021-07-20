@@ -34,6 +34,8 @@ devtools::install_github("datasketch/dspins")
 
 The following two lines will create a pin board called `board`, using the folder `test` within the AWS S3 bucket `user.dskt.ch`. They return the same result, as `bucket_id` defaults to `"user"`.
 
+To create a board, the `.env` file with the necessary AWS access keys must be located in the root directory.
+
 ```{r, eval = FALSE}
 board <- ds_board_s3(user_name = "test", bucket_id = "user")
 board <- ds_board_s3("test")
