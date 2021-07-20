@@ -26,4 +26,3 @@ tmp/*
 .DS_Store
 inst/move_existing_files.R
 
-docs
