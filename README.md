@@ -10,6 +10,9 @@
 Wrapper for [`rstudio/pins`](https://github.com/rstudio/pins) to save DS
 elements in folders of users or organisations within AWS S3 buckets.
 
+Check out the full documentation at
+<https://datasketch.github.io/dspins/>.
+
 ## Installation
 
 You can install the development version of dspins with:
