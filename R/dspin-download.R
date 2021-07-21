@@ -22,9 +22,9 @@ dspin_download <- function(board, name, hash = NULL, ...) {
   meta <- dspin_fetch(board, name, ...)
   check_hash(meta, hash)
 
-  paths <- meta$path %>% map_chr(~ as.character(fs::path(meta$local$dir, .x)))
-  n_paths <- length(paths)
-  print(paste0("Found ", n_paths, " download paths."))
-  print(paths)
-  paths
+  download_dir <- meta$local$dir
+  n_files <- length(meta$path)
+  print(paste0(n_files, " files have been downloaded to local directory:"))
+  print(download_dir)
+  invisible(as.character(download_dir))
 }

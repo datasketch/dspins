@@ -71,7 +71,7 @@ test_that("dspins, write, read dsviz ", {
 test_that("dspins, write, read, download drop ", {
 
   user_name <- "test"
-  bucket_id <- "testuser"
+  bucket_id <- "user"
   board <- ds_board_s3(user_name = user_name, bucket_id = bucket_id)
 
   sample_path <- system.file("drop_sample", package = "dspins")
@@ -89,7 +89,7 @@ test_that("dspins, write, read, download drop ", {
 
   expect_error(board %>% dspin_read(slug), "DS type `drop` can't be read.")
 
-  expect_output(board %>% dspin_download(slug), "Found")
+  expect_output(board %>% dspin_download(slug), "6 files have been downloaded to local directory")
 
 })
 
