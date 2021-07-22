@@ -34,7 +34,10 @@ dspin_urls <- function(board,
   Sys.setlocale(locale = locale)
 
   board %>% dspin_write(element, ...)
-  get_element_urls(element, folder, bucket_id)
+
+  if(!class(element) == "drop"){
+    get_element_urls(element, folder, bucket_id)
+  }
 }
 
 
