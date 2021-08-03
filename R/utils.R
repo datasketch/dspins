@@ -1,3 +1,5 @@
+#' @importFrom dplyr %>%
+
 
 flatten_vec_chr <- function(x, sep = ","){
   paste0(flatten_chr(as.list(x)), collapse = sep)
