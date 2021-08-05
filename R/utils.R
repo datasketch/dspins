@@ -141,6 +141,18 @@ check_hash <- function(meta, hash) {
   }
 }
 
+pin_hash <- function(paths) {
+  if (length(paths) == 1) {
+    hash_file(paths)
+  } else {
+    hashes <- map_chr(paths, hash_file)
+    hash(hashes)
+  }
+}
+
+hash_file <- function(path) {
+  digest::digest(file = path, algo = "xxhash64")
+}
 
 check_board <- function(x, v1, v0) {
   if (!inherits(x, "dspins_board_s3")) {
@@ -152,6 +164,9 @@ check_board <- function(x, v1, v0) {
   }
 }
 
+this_not_that <- function(this, that) {
+  abort(glue("Use `{this}` with this board, not `{that}`"))
+}
 
 check_name <- function(x) {
   if (!is.character(x)) {
