@@ -61,7 +61,7 @@ ds_board_s3 <- function(
   # Check that have access to the bucket
   svc$head_bucket(bucket)
 
-  cache <- cache %||% paste0(board_cache_path(paste0("s3-", bucket)), "/", folder)
+  cache <- cache %||% paste0(pins::board_cache_path(paste0("s3-", bucket)), "/", folder)
   new_board_v1("dspins_board_s3",
                name = "s3",
                bucket = bucket,
