@@ -2,13 +2,13 @@ test_that("valid names", {
 
 
   folder <- ""
-  expect_error(valid_folder_name(folder)) # Cannot be empty
+  expect_error(validate_folder_name(folder)) # Cannot be empty
 
   folder <- "test_board"
-  expect_error(valid_folder_name(folder)) # can only contain letters, numbers and dashes
+  expect_error(validate_folder_name(folder)) # can only contain letters, numbers and dashes
 
   folder <- "test"
-  expect_equal(valid_folder_name(folder), "test")
+  expect_equal(validate_folder_name(folder), "test")
 
   bucket_id <- ""
   expect_error(bucket_name(bucket_id)) # Cannot be empty
