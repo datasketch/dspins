@@ -77,32 +77,15 @@ dsviz_write <- function(dv, path, ...){
   type <- dsviz_type(viz)
   viz_width <- dv$width
   viz_height <- dv$height
-
   viz_path <- file.path(path, dv$slug)
 
-  if(type == "gg"){
-    ggsave(paste0(viz_path,".png"), plot = viz,
-           width = viz_width/100, height = viz_height/100, units = "in", dpi = 100,
-           device = "png")
-    ggsave(paste0(viz_path,".svg"), plot = viz,
-           width = viz_width/100, height = viz_height/100, units = "in", dpi = 100,
-           device = "svg")
-    # ggmagic::save_ggmagic(viz, viz_path, "png",
-    #                       width = viz_width %||% 6, height = viz_height %||% 4)
-  }
-  if(type == "htmlwidget"){
-    filepath <- paste0(random_name(),".html")
-    htmlwidgets::saveWidget(viz, filepath,
-                            selfcontained = TRUE)
-    dir.create(path, recursive = TRUE)
-    file.copy(filepath, paste0(viz_path,".html"))
-    if (!webshot::is_phantomjs_installed())
-      webshot::install_phantomjs()
-    webshot::webshot(paste0(viz_path,".html"), paste0(viz_path,".png"),
-                     vheight = viz_height, delay = 0.2)
-    file.remove(filepath)
+  save_local(type = type,
+             viz = viz,
+             viz_path = viz_path,
+             path = path,
+             viz_height = viz_height,
+             viz_width = viz_width)
 
-  }
   dv$viz <- NULL
   y <- modifyList(dv, args$meta %||% list())
 
@@ -143,4 +126,32 @@ get_dsviz_title <- function(viz){
 }
 
 
+save_local <- function(type, viz, viz_path, path, viz_height, viz_width){
+  switch(type,
+         "gg" = save_gg(viz = viz, viz_path = viz_path, viz_height = viz_height, viz_width = viz_width),
+         "htmlwidget" = save_htmlwidget(viz = viz, viz_path = viz_path, viz_height = viz_height, viz_width = viz_width, path = path))
+}
+
+
+save_htmlwidget <- function(viz, viz_path, viz_height, viz_width, path){
+  filepath <- paste0(random_name(),".html")
+  htmlwidgets::saveWidget(viz, filepath,
+                          selfcontained = TRUE)
+  dir.create(path, recursive = TRUE)
+  file.copy(filepath, paste0(viz_path,".html"))
+  if (!webshot::is_phantomjs_installed())
+    webshot::install_phantomjs()
+  webshot::webshot(paste0(viz_path,".html"), paste0(viz_path,".png"),
+                   vheight = viz_height, delay = 0.2)
+  file.remove(filepath)
+}
+
+save_gg <- function(viz, viz_path, viz_height, viz_width){
+  ggsave(paste0(viz_path,".png"), plot = viz,
+         width = viz_width/100, height = viz_height/100, units = "in", dpi = 100,
+         device = "png")
+  ggsave(paste0(viz_path,".svg"), plot = viz,
+         width = viz_width/100, height = viz_height/100, units = "in", dpi = 100,
+         device = "svg")
+}
 

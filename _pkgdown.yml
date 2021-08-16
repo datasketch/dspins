@@ -1,0 +1,31 @@
+reference:
+- title: "Boards"
+  desc: "Load .env file to authenticate access to board and create boards"
+- contents:
+  - load_env
+  - ds_board_s3
+- title: "Reading and writing pins"
+- contents:
+  - dspin_read
+  - dspin_write
+  - dspin_urls
+- title: "Pin functions"
+  desc: "Functions on DS pins."
+- contents:
+  - dspin_exists
+  - dspin_delete
+  - dspin_meta
+  - dspin_download
+- title: "Board functions"
+  desc: "Get list of pins saved to board"
+- contents:
+  - dspin_list
+- title: "Other"
+- contents:
+  - create_ds_links
+- title: "Internal functions"
+  desc: "Functions that power the reading and writing of pins"
+- contents:
+  - dspin_fetch
+  - dspin_store
+  - dspin_save

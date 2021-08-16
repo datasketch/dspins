@@ -1,21 +1,31 @@
+#' Write DS pins and return URLs
+#'
+#' Pin a `fringe`, `dsviz`, or `drop` element to a board of type `dspins_board_s3`
+#' and return links to pin on DS profile.
+#'
+#' @param board `dspins_board_s3` board
+#' @param element Element to be saved (`fringe`, `dsviz`, or `drop`)
+#' @param ...
+#'
+#' @return List of links to pin in DS profile
+#'
 #' @export
-dspin_urls <- function(element = NULL,
-                       user_name = NULL,
-                       org_name = NULL,
-                     bucket_id = NULL,
-                     overwrite = FALSE, ...) {
-  if (is.null(element)) {
-    stop("Element cannot be null")
-  }
-  if (is.null(user_name) && is.null(org_name)) {
-    stop("User, organization id or name cannot be null")
-  }
+#'
+#' @examples
+#' \dontrun{
+#' board <- ds_board_s3(user_name = "test", bucket_id = "user")
+#'
+#' fringe_mtcars <- homodatum::fringe(mtcars, name = "Mtcars dataset")
+#' dsurls <- board %>% dspin_urls(fringe_mtcars)
+#' }
+dspin_urls <- function(board,
+                       element = NULL,
+                       ...) {
 
-  if(is.null(bucket_id)){
-    bucket_id <- "user"
-  }
 
-  folder <- org_name %||% user_name
+  bucket <- board$bucket
+  bucket_id <- get_bucket_id(bucket)
+  folder <- board$folder
 
   locale <- "en_US.UTF-8"
   if(Sys.info()[['sysname']] == "Windows") {
@@ -23,23 +33,19 @@ dspin_urls <- function(element = NULL,
   }
   Sys.setlocale(locale = locale)
 
-  if(!dspins_is_board_connected(folder, bucket_id)){
-    message("creating new user board")
-    dspins_user_board_connect(folder, bucket_id)
+  board %>% dspin_write(element, ...)
+
+  if(!class(element) == "drop"){
+    get_element_urls(element, folder, bucket_id)
   }
-
-  # Validate element is fringe or dsviz
-  element_type(element)
-
-  el <- pin(element, folder = folder, bucket_id = bucket_id, ...)
-  get_element_urls(el, folder, bucket_id)
 }
 
 
 element_type <- function(x){
   if(homodatum::is_fringe(x)) return("fringe")
   if(is_dsviz(x)) return("dsviz")
-  stop("Element must be fringe or dsviz")
+  if(class(x) == "drop") return("drop")
+  stop("Element must be fringe, dsviz or drop.")
 }
 
 get_element_urls <- function(element, folder, bucket_id){

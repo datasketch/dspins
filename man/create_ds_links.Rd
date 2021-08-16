@@ -4,18 +4,18 @@
 \alias{create_ds_links}
 \title{Create ds links}
 \usage{
-create_ds_links(slug, folder, bucket, formats, element_type)
+create_ds_links(slug, folder, formats, element_type, bucket_id = "user")
 }
 \arguments{
 \item{slug}{Slug of element}
 
 \item{folder}{Folder of user}
 
-\item{bucket}{AWS S3 bucket}
-
 \item{formats}{File formats}
 
 \item{element_type}{Element type ('dsviz', 'fringe', or 'drop')}
+
+\item{bucket}{AWS S3 bucket}
 }
 \value{
 List containing a list of links to files in ds profile and a list of links to share element

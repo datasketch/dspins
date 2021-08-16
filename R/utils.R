@@ -1,3 +1,5 @@
+#' @importFrom dplyr %>%
+
 
 flatten_vec_chr <- function(x, sep = ","){
   paste0(flatten_chr(as.list(x)), collapse = sep)
@@ -73,8 +75,29 @@ is.url <- function(x){
 }
 
 
+change_content_types <- function(metadata, board){
 
-change_content_type <- function(slug, format, bucket, folder){
+  slug <- metadata$slug
+  viz_type <- metadata$viz_type
+
+  if(is.null(viz_type)) stop("Need viz type to change content type.")
+  if(!viz_type %in% c("gg", "htmlwidget")) stop("Viz type must be `gg` or `htmlwidget`.")
+
+  if(viz_type == "htmlwidget"){
+    change_content_type(slug = slug, format = "png", board = board)
+    change_content_type(slug = slug, format = "html", board = board)
+  }
+  if(viz_type == "gg"){
+    change_content_type(slug = slug, format = "png", board = board)
+    change_content_type(slug = slug, format = "svg", board = board)
+  }
+}
+
+
+change_content_type <- function(slug, format, board){
+
+  bucket <- board$bucket
+  folder <- board$folder
 
   content_type <- list(csv = "text/csv",
                        html = "text/html",
@@ -94,3 +117,86 @@ change_content_type <- function(slug, format, bucket, folder){
 }
 
 
+cache_touch <- function(board, meta) {
+  path <- fs::path(meta$local$dir, "data.txt")
+  if (fs::file_exists(path)) {
+    fs::file_touch(path)
+  } else {
+    fs::file_create(path)
+  }
+
+}
+
+
+check_hash <- function(meta, hash) {
+  if (is.null(hash)) {
+    return()
+  }
+
+  pin_hash <- pin_hash(fs::path(meta$local$dir, meta$file))
+  if (!is_prefix(hash, pin_hash)) {
+    abort(paste0(
+      "Specified hash '", hash, "' doesn't match pin hash '", pin_hash, "'"
+    ))
+  }
+}
+
+pin_hash <- function(paths) {
+  if (length(paths) == 1) {
+    hash_file(paths)
+  } else {
+    hashes <- map_chr(paths, hash_file)
+    hash(hashes)
+  }
+}
+
+hash_file <- function(path) {
+  digest::digest(file = path, algo = "xxhash64")
+}
+
+check_board <- function(x, v1, v0) {
+  if (!inherits(x, "dspins_board_s3")) {
+    abort("`board` must be a dspin board")
+  }
+
+  if (!1 %in% x$api) {
+    this_not_that(v0, v1)
+  }
+}
+
+this_not_that <- function(this, that) {
+  abort(glue("Use `{this}` with this board, not `{that}`"))
+}
+
+check_name <- function(x) {
+  if (!is.character(x)) {
+    abort("`name` must be a string")
+  }
+
+  if (grepl("\\\\|/", x, perl = TRUE)) {
+    abort("`name` can not contain slashes")
+  }
+}
+
+write_meta <- function(x, path) {
+  path <- fs::path(path, "data.txt")
+  write_yaml(x, path)
+}
+
+write_yaml <- function(x, path) {
+  x <- to_utf8(x)
+  yaml::write_yaml(x, path)
+}
+
+to_utf8 <- function(x) {
+  if (is.list(x)) {
+    if (!is.null(names(x))) {
+      names(x) <- enc2utf8(names(x))
+    }
+    lapply(x, to_utf8)
+  } else if (is.character(x)) {
+    enc2utf8(x)
+  } else {
+    x
+  }
+}
