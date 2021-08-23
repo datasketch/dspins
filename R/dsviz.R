@@ -147,11 +147,11 @@ save_htmlwidget <- function(viz, viz_path, viz_height, viz_width, path){
 }
 
 save_gg <- function(viz, viz_path, viz_height, viz_width){
-  ggsave(paste0(viz_path,".png"), plot = viz,
-         width = viz_width/100, height = viz_height/100, units = "in", dpi = 100,
-         device = "png")
-  ggsave(paste0(viz_path,".svg"), plot = viz,
-         width = viz_width/100, height = viz_height/100, units = "in", dpi = 100,
-         device = "svg")
+  ggplot2::ggsave(paste0(viz_path,".png"), plot = viz,
+                  width = viz_width/100, height = viz_height/100, units = "in", dpi = 100,
+                  device = "png")
+  ggplot2::ggsave(paste0(viz_path,".svg"), plot = viz,
+                  width = viz_width/100, height = viz_height/100, units = "in", dpi = 100,
+                  device = "svg")
 }
 
