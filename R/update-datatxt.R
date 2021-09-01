@@ -7,7 +7,7 @@ update_datatxt <- function(metadata, board){
   slug <- metadata$slug
 
   # try to download data.txt for board
-  download <- tryCatch(ds_s3_download(board, "data.txt", immutable = TRUE),
+  download <- tryCatch(ds_s3_download(board, "data.txt", immutable = FALSE),
                        error = function(e){ e })
 
   path <- fs::path(board$cache)

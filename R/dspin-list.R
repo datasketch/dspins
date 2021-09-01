@@ -24,7 +24,7 @@ dspin_list <- function(board,
                        extended = FALSE,
                        ...) {
 
-  download <- tryCatch(ds_s3_download(board, "data.txt", immutable = TRUE),
+  download <- tryCatch(ds_s3_download(board, "data.txt", immutable = FALSE),
                        error = function(e){ e })
 
   if(inherits(download, "error")) return("No pins in folder.")

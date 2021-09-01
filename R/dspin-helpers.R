@@ -32,7 +32,7 @@ ds_s3_delete_slug <- function(board, slug) {
   delete <- list(Objects = map(resp$Contents, "[", "Key"))
   board$svc$delete_objects(board$bucket, Delete = delete)
 
-  download <- tryCatch(ds_s3_download(board, "data.txt", immutable = TRUE),
+  download <- tryCatch(ds_s3_download(board, "data.txt", immutable = FALSE),
                        error = function(e){ e })
 
   path <- fs::path(board$cache)
