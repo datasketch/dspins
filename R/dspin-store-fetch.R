@@ -56,7 +56,7 @@ dspin_fetch <- function(board,
 
   for (file in meta$path) {
     key <- fs::path(slug, file)
-    ds <- ds_s3_download(board, key, immutable = TRUE)
+    ds <- ds_s3_download(board, key, immutable = FALSE)
   }
 
   meta
